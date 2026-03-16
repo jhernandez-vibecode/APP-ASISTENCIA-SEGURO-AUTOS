@@ -1,0 +1,404 @@
+import React, { useState } from 'react';
+import { 
+  Car, 
+  Phone, 
+  Camera, 
+  AlertTriangle, 
+  CheckCircle,
+  ChevronLeft,
+  Clock,
+  ShieldAlert,
+  MapPin,
+  Wrench,
+  Plane,
+  Shield,
+  CloudRain
+} from 'lucide-react';
+
+export default function App() {
+  const [currentView, setCurrentView] = useState('home');
+
+  const renderHeader = () => (
+    <header className="bg-blue-900 text-white p-4 shadow-md sticky top-0 z-10">
+      <div className="max-w-md mx-auto flex items-center justify-between">
+        {currentView !== 'home' && (
+          <button onClick={() => setCurrentView('home')} className="p-1 hover:bg-blue-800 rounded">
+            <ChevronLeft size={24} />
+          </button>
+        )}
+        <h1 className="text-sm sm:text-base font-bold text-center flex-1 leading-tight px-2">
+          {currentView === 'home' ? 'Asistencia Seguro Automóviles' : 
+           currentView === 'accidente' ? 'Reporte de Accidente' : 
+           currentView === 'vial' ? 'Asistencia Vial' : 
+           currentView === 'robo' ? 'Robo Total / Parcial' :
+           currentView === 'coberturaH' ? 'Vandalismo / Naturaleza' :
+           'Contactos Oficiales'}
+        </h1>
+        <button onClick={() => setCurrentView('contactos')} className="p-1 hover:bg-blue-800 rounded">
+          <Phone size={24} />
+        </button>
+      </div>
+    </header>
+  );
+
+  const renderHome = () => (
+    <div className="p-4 max-w-md mx-auto space-y-4">
+      <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-6 rounded shadow-sm">
+        <div className="flex items-center text-yellow-800 font-semibold mb-1">
+          <ShieldAlert size={20} className="mr-2" />
+          ¿Tienes una emergencia?
+        </div>
+        <p className="text-sm text-yellow-900">Selecciona el tipo de asistencia que necesitas en el territorio nacional para guiarte paso a paso.</p>
+      </div>
+
+      <button 
+        onClick={() => setCurrentView('accidente')}
+        className="w-full bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow flex items-center space-x-4 text-left"
+      >
+        <div className="bg-red-100 p-3 rounded-full text-red-800 flex-shrink-0">
+          <Car size={24} />
+        </div>
+        <div>
+          <h2 className="text-base font-bold text-gray-800">Accidente de Tránsito</h2>
+          <p className="text-xs text-gray-500 mt-1">Reporte de choques y guía para el Pacto Amistoso.</p>
+        </div>
+      </button>
+
+      <button 
+        onClick={() => setCurrentView('vial')}
+        className="w-full bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow flex items-center space-x-4 text-left"
+      >
+        <div className="bg-orange-100 p-3 rounded-full text-orange-800 flex-shrink-0">
+          <Wrench size={24} />
+        </div>
+        <div>
+          <h2 className="text-base font-bold text-gray-800">Asistencia Vial (Avería)</h2>
+          <p className="text-xs text-gray-500 mt-1">Grúa, cerrajería, batería, llanta o traslado al aeropuerto.</p>
+        </div>
+      </button>
+
+      <button 
+        onClick={() => setCurrentView('robo')}
+        className="w-full bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow flex items-center space-x-4 text-left"
+      >
+        <div className="bg-purple-100 p-3 rounded-full text-purple-800 flex-shrink-0">
+          <Shield size={24} />
+        </div>
+        <div>
+          <h2 className="text-base font-bold text-gray-800">Robo Total o Parcial</h2>
+          <p className="text-xs text-gray-500 mt-1">Denuncia ante OIJ, traslados y trámites con el INS.</p>
+        </div>
+      </button>
+
+      <button 
+        onClick={() => setCurrentView('coberturaH')}
+        className="w-full bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow flex items-center space-x-4 text-left"
+      >
+        <div className="bg-teal-100 p-3 rounded-full text-teal-800 flex-shrink-0">
+          <CloudRain size={24} />
+        </div>
+        <div>
+          <h2 className="text-base font-bold text-gray-800">Vandalismo / Cobertura H</h2>
+          <p className="text-xs text-gray-500 mt-1">Rayonazos, inundaciones, huracanes, caída de árboles.</p>
+        </div>
+      </button>
+      
+      <button 
+        onClick={() => setCurrentView('contactos')}
+        className="w-full bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow flex items-center space-x-4 text-left"
+      >
+        <div className="bg-green-100 p-3 rounded-full text-green-800 flex-shrink-0">
+          <Phone size={24} />
+        </div>
+        <div>
+          <h2 className="text-base font-bold text-gray-800">Directorio de Contactos</h2>
+          <p className="text-xs text-gray-500 mt-1">Números directos de atención 24/7 en Costa Rica.</p>
+        </div>
+      </button>
+    </div>
+  );
+
+  const renderAccidente = () => (
+    <div className="p-4 max-w-md mx-auto space-y-6 animate-in slide-in-from-right-4">
+      <div className="bg-red-50 border border-red-200 rounded-lg p-4 shadow-sm">
+        <h3 className="font-bold text-red-900 flex items-center mb-2">
+          <AlertTriangle size={20} className="mr-2" /> Paso 1: Reporte Inmediato
+        </h3>
+        <p className="text-sm text-red-800 mb-3">Si tuviste un choque, <strong>¡NO muevas el vehículo!</strong> (a menos que aplique Pacto Amistoso). Llama de inmediato a:</p>
+        <a href="tel:8008008000" className="block text-center bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg shadow-md text-lg transition-colors">
+          800-800-8000 (Reporte Accidente)
+        </a>
+      </div>
+
+      <div className="bg-white border rounded-lg shadow-sm overflow-hidden">
+        <div className="bg-blue-50 px-4 py-3 border-b border-blue-100">
+          <h3 className="font-bold text-blue-900 flex items-center">
+            <ShieldAlert size={20} className="mr-2" /> ¿Aplica Pacto Amistoso?
+          </h3>
+        </div>
+        <div className="p-4 space-y-4">
+          <p className="text-sm text-gray-600">Puedes mover el vehículo sin esperar al Oficial de Tránsito SI se cumplen <strong>TODAS</strong> estas condiciones:</p>
+          <ul className="text-sm text-gray-700 space-y-2 bg-gray-50 p-3 rounded border border-gray-100">
+            <li className="flex items-start"><CheckCircle size={16} className="text-green-500 mr-2 mt-0.5 flex-shrink-0"/> Ambos conductores <strong>están de acuerdo</strong> en hacer el arreglo.</li>
+            <li className="flex items-start"><CheckCircle size={16} className="text-green-500 mr-2 mt-0.5 flex-shrink-0"/> No hay lesionados ni fallecidos.</li>
+            <li className="flex items-start"><CheckCircle size={16} className="text-green-500 mr-2 mt-0.5 flex-shrink-0"/> No hay bicicletas, motos ni peatones involucrados.</li>
+            <li className="flex items-start"><CheckCircle size={16} className="text-green-500 mr-2 mt-0.5 flex-shrink-0"/> Ambos vehículos están asegurados y al día.</li>
+          </ul>
+          
+          <div className="border border-blue-200 bg-blue-50 p-3 rounded-lg">
+            <h4 className="font-bold text-sm mb-2 text-blue-900 flex items-center"><Camera size={16} className="mr-2" /> Pasos para el Pacto:</h4>
+            <ol className="text-sm text-blue-800 list-decimal pl-5 space-y-2">
+              <li>Llamar al <strong>800-800-8000</strong> e indicar que desean realizar un Pacto Amistoso.</li>
+              <li>Grabar un <strong>pequeño video 360°</strong> de la escena completa del evento.</li>
+              <li>Tomar las siguientes fotografías:
+                <ul className="list-disc pl-4 mt-1 text-xs space-y-1 text-blue-700">
+                  <li>1 foto de cada costado de los vehículos.</li>
+                  <li>3 fotos de los daños de cada vehículo.</li>
+                  <li>2 fotos panorámicas de la escena y posición.</li>
+                </ul>
+              </li>
+            </ol>
+            <p className="text-xs font-bold text-blue-900 mt-3 border-t border-blue-200 pt-2">Luego de documentar todo, mueve el vehículo a un lugar seguro y espera al inspector del INS.</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white border border-red-200 rounded-lg shadow-sm overflow-hidden">
+        <div className="bg-red-100 px-4 py-3 border-b border-red-200">
+          <h3 className="font-bold text-red-900 flex items-center">
+            <AlertTriangle size={20} className="mr-2" /> Si NO aplica el Pacto Amistoso
+          </h3>
+        </div>
+        <div className="p-4">
+          <ul className="space-y-3 text-sm text-gray-800">
+            <li className="flex items-start font-bold text-red-700">
+              <span className="bg-red-200 text-red-900 rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 flex-shrink-0">1</span>
+              ¡NO MOVER LOS VEHÍCULOS!
+            </li>
+            <li className="flex items-start">
+              <span className="bg-red-200 text-red-900 rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 flex-shrink-0">2</span>
+              Llamar a la Policía de Tránsito (117 o 911) para que confeccionen el parte oficial.
+            </li>
+            <li className="flex items-start">
+              <span className="bg-red-200 text-red-900 rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 flex-shrink-0">3</span>
+              Llamar al INS (800-800-8000) y esperar al inspector en la escena.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="bg-white border rounded-lg shadow-sm overflow-hidden">
+        <div className="bg-gray-100 px-4 py-3 border-b">
+          <h3 className="font-bold text-gray-800 flex items-center">
+            <Clock size={20} className="mr-2 text-gray-600" /> Trámites Posteriores
+          </h3>
+        </div>
+        <div className="p-4">
+          <ul className="space-y-3 text-sm text-gray-700">
+            <li className="flex items-start">
+              <div className="bg-gray-200 text-gray-700 rounded-full w-5 h-5 flex items-center justify-center font-bold text-xs mr-2 flex-shrink-0">1</div>
+              <span>Si no pudiste llamar al momento (Fuerza Mayor), tienes <strong>7 días hábiles</strong> para formalizar el aviso por escrito.</span>
+            </li>
+            <li className="flex items-start">
+              <div className="bg-gray-200 text-gray-700 rounded-full w-5 h-5 flex items-center justify-center font-bold text-xs mr-2 flex-shrink-0">2</div>
+              <span>Tienes <strong>10 días hábiles</strong> tras el evento para llevar el vehículo a un Centro de Estimación de Daños (CED).</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderVial = () => (
+    <div className="p-4 max-w-md mx-auto space-y-6 animate-in slide-in-from-right-4">
+      <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 shadow-sm">
+        <h3 className="font-bold text-orange-900 flex items-center mb-2">
+          <Wrench size={20} className="mr-2" /> Solicitar Asistencia
+        </h3>
+        <p className="text-sm text-orange-800 mb-3">Si tu vehículo sufrió una avería mecánica, llama para solicitar asistencia en carretera:</p>
+        <a href="tel:8008008001" className="block text-center bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-lg shadow-md text-lg transition-colors">
+          800-800-8001 (Multiasistencia)
+        </a>
+      </div>
+
+      <div className="bg-white border rounded-lg shadow-sm p-4">
+        <h3 className="font-bold text-gray-800 mb-4 border-b pb-2">Servicios Disponibles</h3>
+        <ul className="space-y-4 text-sm text-gray-700">
+          <li className="flex items-start">
+            <CheckCircle size={16} className="text-orange-500 mr-2 mt-0.5 flex-shrink-0" /> 
+            <span><strong>Remolque y Básicos:</strong> Grúa por avería mecánica, envío de combustible, cambio de llanta estallada, paso de corriente y cerrajería.</span>
+          </li>
+          <li className="flex items-start bg-blue-50 p-3 rounded-lg border border-blue-100">
+            <Plane size={20} className="text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
+            <div>
+              <span className="font-bold text-blue-900 block mb-1">Taxi al Aeropuerto</span>
+              <span className="text-blue-800">Beneficio de 2 traslados al año. Cada traslado incluye taxi de ida y regreso.</span>
+              <p className="text-xs text-blue-600 font-semibold mt-1">* Aplica únicamente para vehículos con una antigüedad no mayor a 6 años.</p>
+            </div>
+          </li>
+        </ul>
+        <p className="text-xs text-gray-400 mt-5 italic border-t pt-3">* Los límites de eventos y distancias de grúa/asistencias dependen del plan contratado (Limitado, Básico o Plus).</p>
+      </div>
+    </div>
+  );
+
+  const renderRobo = () => (
+    <div className="p-4 max-w-md mx-auto space-y-6 animate-in slide-in-from-right-4">
+      <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 shadow-sm">
+        <h3 className="font-bold text-purple-900 flex items-center mb-2">
+          <Shield size={20} className="mr-2" /> Paso 1: Denuncia Inmediata
+        </h3>
+        <p className="text-sm text-purple-800 mb-3">En caso de robo total o parcial, debes presentar la denuncia <strong>inmediatamente</strong> ante el OIJ y reportarlo al INS:</p>
+        <div className="space-y-3 mt-3">
+          <a href="tel:911" className="block text-center bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 rounded-lg shadow-sm transition-colors">
+            Llamar al 911 (OIJ)
+          </a>
+          <a href="tel:8008008000" className="block text-center bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg shadow-sm transition-colors">
+            800-800-8000 (Reporte INS)
+          </a>
+        </div>
+      </div>
+
+      <div className="bg-white border rounded-lg shadow-sm p-4">
+        <h3 className="font-bold text-gray-800 mb-3 border-b pb-2">En caso de Robo Total</h3>
+        <ul className="space-y-3 text-sm text-gray-700">
+          <li className="flex items-start">
+            <CheckCircle size={16} className="text-purple-500 mr-2 mt-0.5 flex-shrink-0" /> 
+            <span><strong>Beneficio de Transporte:</strong> Puedes llamar al <a href="tel:8008008001" className="text-blue-600 font-bold underline">800-800-8001</a> para solicitar un taxi que te lleve al OIJ a poner la denuncia y luego a tu residencia.</span>
+          </li>
+          <li className="flex items-start">
+            <CheckCircle size={16} className="text-purple-500 mr-2 mt-0.5 flex-shrink-0" /> 
+            <span><strong>Trámite con el INS:</strong> A los 15 días hábiles de la denuncia, debes presentar al Instituto la certificación del OIJ donde conste que el vehículo no apareció.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div className="bg-white border rounded-lg shadow-sm p-4">
+        <h3 className="font-bold text-gray-800 mb-3 border-b pb-2">En caso de Robo Parcial</h3>
+        <ul className="space-y-3 text-sm text-gray-700">
+          <li className="flex items-start">
+            <CheckCircle size={16} className="text-purple-500 mr-2 mt-0.5 flex-shrink-0" /> 
+            <span>Si el vehículo cuenta con descuento por dispositivo de seguridad (GPS/monitoreo), deberás comprobar que el mismo estaba activo al momento del robo.</span>
+          </li>
+          <li className="flex items-start">
+            <CheckCircle size={16} className="text-purple-500 mr-2 mt-0.5 flex-shrink-0" /> 
+            <span>Si el vehículo aparece antes del pago de la indemnización, debes solicitar una inspección ocular del OIJ sobre los daños.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  );
+
+  const renderCoberturaH = () => (
+    <div className="p-4 max-w-md mx-auto space-y-6 animate-in slide-in-from-right-4">
+      <div className="bg-teal-50 border border-teal-200 rounded-lg p-4 shadow-sm">
+        <h3 className="font-bold text-teal-900 flex items-center mb-2">
+          <CloudRain size={20} className="mr-2" /> ¿Qué incluye la Cobertura H?
+        </h3>
+        <p className="text-sm text-teal-800 mb-3">Protege tu vehículo contra riesgos adicionales como:</p>
+        <ul className="text-sm text-teal-800 list-disc pl-5 space-y-1">
+          <li><strong>Daños Vandálicos:</strong> Rayonazos, raspones, sustancias corrosivas, manchas de pintura.</li>
+          <li><strong>Naturaleza:</strong> Inundación, ciclón, huracán, temblor, deslizamiento.</li>
+          <li><strong>Otros:</strong> Caída de árboles, explosión, incendio, etc.</li>
+        </ul>
+      </div>
+
+      <div className="bg-red-50 border border-red-200 rounded-lg p-4 shadow-sm">
+        <h3 className="font-bold text-red-900 flex items-center mb-2">
+          <AlertTriangle size={20} className="mr-2" /> Reporte de Daños
+        </h3>
+        <p className="text-sm text-red-800 mb-3"><strong>No repares ni alteres los daños.</strong> Reporta el evento de inmediato para que un inspector lo valore:</p>
+        <a href="tel:8008008000" className="block text-center bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg shadow-md text-lg transition-colors">
+          800-800-8000 (Reporte INS)
+        </a>
+      </div>
+
+      <div className="bg-white border rounded-lg shadow-sm overflow-hidden">
+        <div className="bg-gray-100 px-4 py-3 border-b">
+          <h3 className="font-bold text-gray-800 flex items-center">
+            <Clock size={20} className="mr-2 text-gray-600" /> Trámites Posteriores
+          </h3>
+        </div>
+        <div className="p-4 space-y-4">
+          <ul className="space-y-3 text-sm text-gray-700">
+            <li className="flex items-start">
+              <div className="bg-gray-200 text-gray-700 rounded-full w-5 h-5 flex items-center justify-center font-bold text-xs mr-2 flex-shrink-0">1</div>
+              <span><strong>Cooperación:</strong> En casos de vandalismo, el INS requiere y puede solicitar tu colaboración adicional para la investigación.</span>
+            </li>
+            <li className="flex items-start">
+              <div className="bg-gray-200 text-gray-700 rounded-full w-5 h-5 flex items-center justify-center font-bold text-xs mr-2 flex-shrink-0">2</div>
+              <span>Tienes <strong>10 días hábiles</strong> tras el evento para llevar el vehículo a un Centro de Estimación de Daños (CED) para su valoración oficial.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderContactos = () => (
+    <div className="p-4 max-w-md mx-auto space-y-4 animate-in slide-in-from-right-4">
+      <h2 className="text-xl font-bold text-gray-800 mb-4">Directorio Oficial</h2>
+      
+      <div className="space-y-3">
+        <a href="tel:8008008000" className="block bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex items-center justify-between hover:bg-gray-50 active:bg-gray-100 transition-colors">
+          <div>
+            <h3 className="font-bold text-gray-800 text-base">Reporte de Accidentes</h3>
+            <p className="text-xs text-gray-500">Choques / Daños (24/7)</p>
+          </div>
+          <span className="bg-red-100 text-red-800 px-3 py-1.5 rounded-lg font-bold text-sm">800-800-8000</span>
+        </a>
+
+        <a href="tel:8008008001" className="block bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex items-center justify-between hover:bg-gray-50 active:bg-gray-100 transition-colors">
+          <div>
+            <h3 className="font-bold text-gray-800 text-base">Asistencia Vial</h3>
+            <p className="text-xs text-gray-500">Grúa, batería, cerrajero</p>
+          </div>
+          <span className="bg-orange-100 text-orange-800 px-3 py-1.5 rounded-lg font-bold text-sm">800-800-8001</span>
+        </a>
+
+        <a href="tel:8008353467" className="block bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex items-center justify-between hover:bg-gray-50 active:bg-gray-100 transition-colors">
+          <div>
+            <h3 className="font-bold text-gray-800 text-base">Consultas Generales</h3>
+            <p className="text-xs text-gray-500">Línea Teleins</p>
+          </div>
+          <span className="bg-gray-100 text-gray-800 px-3 py-1.5 rounded-lg font-bold text-sm">800-8353467</span>
+        </a>
+      </div>
+      
+      <div className="mt-6 bg-gray-50 p-4 rounded-lg border border-gray-200 text-sm text-gray-600 text-center">
+        <MapPin size={24} className="mx-auto text-gray-400 mb-2" />
+        <p><strong>Oficinas Centrales INS:</strong><br/>Calle 9 y 11, Avenida 7, San José, Costa Rica</p>
+        <a href="mailto:contactenos@grupoins.com" className="text-blue-600 font-bold mt-2 block hover:underline">contactenos@grupoins.com</a>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="flex flex-col min-h-screen bg-gray-50 font-sans text-gray-900">
+      {renderHeader()}
+      <main className="flex-1 pb-8">
+        {currentView === 'home' && renderHome()}
+        {currentView === 'vial' && renderVial()}
+        {currentView === 'accidente' && renderAccidente()}
+        {currentView === 'robo' && renderRobo()}
+        {currentView === 'coberturaH' && renderCoberturaH()}
+        {currentView === 'contactos' && renderContactos()}
+      </main>
+      
+      <footer className="bg-gray-800 text-gray-300 py-6 px-4 text-center text-sm mt-auto">
+        <p className="mb-1">Esta aplicación pertenece a <strong className="text-white">Seguros Digitales SDI</strong>.</p>
+        <p>
+          Visítenos en{' '}
+          <a 
+            href="https://www.segurosdelins.com" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-blue-400 font-bold hover:text-blue-300 hover:underline transition-colors"
+          >
+            www.segurosdelins.com
+          </a>
+        </p>
+      </footer>
+    </div>
+  );
+}
