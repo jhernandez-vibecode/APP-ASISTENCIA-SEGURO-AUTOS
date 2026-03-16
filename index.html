@@ -167,18 +167,18 @@
       );
 
       const renderAccidente = () => (
-        <div className="p-4 max-w-md mx-auto space-y-6 animate-in-right">
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 shadow-sm">
-            <h3 className="font-bold text-red-900 flex items-center mb-2">
-              <i className="fa-solid fa-triangle-exclamation text-xl mr-2"></i> Paso 1: Reporte Inmediato
+        <div className="p-4 max-w-md mx-auto space-y-6 animate-right">
+          <div className="bg-white border-2 border-red-100 rounded-2xl p-5 shadow-sm">
+            <h3 className="font-bold flex items-center mb-2 text-lg text-red-600">
+              <i className="fa-solid fa-triangle-exclamation mr-2"></i> Paso 1: Reporte Inmediato
             </h3>
-            <p className="text-sm text-red-800 mb-3">Si tuviste un choque, <strong>¡NO muevas el vehículo!</strong> (a menos que aplique Pacto Amistoso). Llama de inmediato a:</p>
-            <a href="tel:8008008000" className="block text-center bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg shadow-md text-lg transition-colors">
-              800-800-8000 (Reporte Accidente)
+            <p className="text-sm text-slate-700 mb-4">Si tuvo un choque, <strong>¡NO MUEVA EL VEHÍCULO!</strong> (a menos que aplique Pacto Amistoso).</p>
+            <a href="tel:8008008000" className="flex items-center justify-center bg-green-600 hover:bg-green-500 text-white font-black py-4 rounded-xl shadow-md active:scale-95 transition-all text-xl">
+              <i className="fa-solid fa-phone mr-2"></i> 800-800-8000
             </a>
           </div>
 
-          <div className="bg-white border rounded-lg shadow-sm overflow-hidden">
+          <div className="bg-white border border-blue-200 rounded-2xl shadow-sm overflow-hidden">
             <div className="bg-blue-50 px-4 py-3 border-b border-blue-100">
               <h3 className="font-bold text-blue-900 flex items-center">
                 <i className="fa-solid fa-shield-halved text-xl mr-2 text-blue-600"></i> ¿Aplica Pacto Amistoso?
@@ -258,18 +258,18 @@
       );
 
       const renderVial = () => (
-        <div className="p-4 max-w-md mx-auto space-y-6 animate-in-right">
-          <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 shadow-sm">
-            <h3 className="font-bold text-orange-900 flex items-center mb-2">
-              <i className="fa-solid fa-screwdriver-wrench text-xl mr-2"></i> Solicitar Asistencia
+        <div className="p-4 max-w-md mx-auto space-y-6 animate-right">
+          <div className="bg-white border-2 border-orange-100 rounded-2xl p-5 shadow-sm">
+            <h3 className="font-bold flex items-center mb-2 text-lg text-orange-600">
+              <i className="fa-solid fa-truck-pickup mr-2"></i> Asistencia en Carretera
             </h3>
-            <p className="text-sm text-orange-800 mb-3">Si tu vehículo sufrió una avería mecánica, llama para solicitar asistencia en carretera:</p>
-            <a href="tel:8008008001" className="block text-center bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-lg shadow-md text-lg transition-colors">
-              800-800-8001 (Multiasistencia)
+            <p className="text-sm text-slate-700 mb-4">Disponible para averías mecánicas, falta de combustible o llanta pinchada.</p>
+            <a href="tel:8008008001" className="flex items-center justify-center bg-green-600 hover:bg-green-500 text-white font-black py-4 rounded-xl shadow-md active:scale-95 transition-all text-xl">
+              <i className="fa-solid fa-phone mr-2"></i> 800-800-8001
             </a>
           </div>
 
-          <div className="bg-white border rounded-lg shadow-sm p-4">
+          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
             <h3 className="font-bold text-gray-800 mb-4 border-b pb-2">Servicios Disponibles</h3>
             <ul className="space-y-4 text-sm text-gray-700">
               <li className="flex items-start">
@@ -291,23 +291,23 @@
       );
 
       const renderRobo = () => (
-        <div className="p-4 max-w-md mx-auto space-y-6 animate-in-right">
-          <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 shadow-sm">
-            <h3 className="font-bold text-purple-900 flex items-center mb-2">
-              <i className="fa-solid fa-shield text-xl mr-2"></i> Paso 1: Denuncia Inmediata
-            </h3>
-            <p className="text-sm text-purple-800 mb-3">En caso de robo total o parcial, debes presentar la denuncia <strong>inmediatamente</strong> ante el OIJ y reportarlo al INS:</p>
-            <div className="space-y-3 mt-3">
-              <a href="tel:911" className="block text-center bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 rounded-lg shadow-sm transition-colors">
-                Llamar al 911 (OIJ)
-              </a>
-              <a href="tel:8008008000" className="block text-center bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg shadow-sm transition-colors">
-                800-800-8000 (Reporte INS)
-              </a>
-            </div>
+        <div className="p-4 max-w-md mx-auto space-y-6 animate-right">
+          <div className="bg-indigo-600 text-white rounded-2xl p-5 shadow-lg text-center">
+            <i className="fa-solid fa-shield-virus text-5xl mb-3 opacity-50"></i>
+            <h3 className="font-bold text-lg mb-2">Protocolo de Robo</h3>
+            <p className="text-sm opacity-90">Reporte inmediato obligatorio ante autoridades e INS.</p>
           </div>
 
-          <div className="bg-white border rounded-lg shadow-sm p-4">
+          <div className="space-y-3">
+            <a href="tel:911" className="block bg-slate-800 hover:bg-slate-700 text-white text-center py-4 rounded-xl font-bold text-lg shadow-md active:scale-95 transition-all">
+              <i className="fa-solid fa-building-shield mr-2"></i> 1. Reportar al OIJ (911)
+            </a>
+            <a href="tel:8008008000" className="block bg-green-600 hover:bg-green-500 text-white text-center py-4 rounded-xl font-bold text-lg shadow-md active:scale-95 transition-all">
+              <i className="fa-solid fa-phone mr-2"></i> 2. Reportar al INS
+            </a>
+          </div>
+
+          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
             <h3 className="font-bold text-gray-800 mb-3 border-b pb-2">En caso de Robo Total</h3>
             <ul className="space-y-3 text-sm text-gray-700">
               <li className="flex items-start">
@@ -338,54 +338,54 @@
       );
 
       const renderCoberturaH = () => (
-        <div className="p-4 max-w-md mx-auto space-y-6 animate-in-right">
-          <div className="bg-teal-50 border border-teal-200 rounded-lg p-4 shadow-sm">
-            <h3 className="font-bold text-teal-900 flex items-center mb-2">
-              <i className="fa-solid fa-cloud-showers-heavy text-xl mr-2"></i> ¿Qué incluye la Cobertura H?
+        <div className="p-4 max-w-md mx-auto space-y-6 animate-right">
+          <div className="bg-teal-600 text-white rounded-2xl p-5 shadow-lg">
+            <h3 className="font-bold flex items-center mb-2">
+              <i className="fa-solid fa-cloud-bolt mr-2"></i> Riesgos Adicionales H
             </h3>
-            <p className="text-sm text-teal-800 mb-3">Protege tu vehículo contra riesgos adicionales como:</p>
-            <ul className="text-sm text-teal-800 list-disc pl-5 space-y-1">
-              <li><strong>Daños Vandálicos:</strong> Rayonazos, raspones, sustancias corrosivas, manchas de pintura.</li>
-              <li><strong>Naturaleza:</strong> Inundación, ciclón, huracán, temblor, deslizamiento.</li>
-              <li><strong>Otros:</strong> Caída de árboles, explosión, incendio, etc.</li>
+            <p className="text-sm opacity-90">Cubre eventos de la naturaleza y actos malintencionados.</p>
+          </div>
+
+          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+            <h4 className="font-bold text-slate-800 mb-3">¿Qué incluye?</h4>
+            <ul className="grid grid-cols-2 gap-3">
+              {[
+                { n: 'Inundación', i: 'fa-house-flood-water' },
+                { n: 'Vandalismo', i: 'fa-mask' },
+                { n: 'Temblor', i: 'fa-house-crack' },
+                { n: 'Derrumbe', i: 'fa-mountain' },
+                { n: 'Rayonazos', i: 'fa-car-side' },
+                { n: 'Incendio', i: 'fa-fire' }
+              ].map((item, idx) => (
+                <li key={idx} className="flex flex-col items-center bg-teal-50 p-3 rounded-xl border border-teal-100 text-teal-900 text-center">
+                  <i className={`fa-solid ${item.i} text-xl mb-1`}></i>
+                  <span className="text-[10px] font-bold uppercase">{item.n}</span>
+                </li>
+              ))}
             </ul>
-          </div>
-
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 shadow-sm">
-            <h3 className="font-bold text-red-900 flex items-center mb-2">
-              <i className="fa-solid fa-triangle-exclamation text-xl mr-2"></i> Reporte de Daños
-            </h3>
-            <p className="text-sm text-red-800 mb-3"><strong>No repares ni alteres los daños.</strong> Reporta el evento de inmediato para que un inspector lo valore:</p>
-            <a href="tel:8008008000" className="block text-center bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg shadow-md text-lg transition-colors">
-              800-800-8000 (Reporte INS)
-            </a>
-          </div>
-
-          <div className="bg-white border rounded-lg shadow-sm overflow-hidden">
-            <div className="bg-gray-100 px-4 py-3 border-b">
-              <h3 className="font-bold text-gray-800 flex items-center">
-                <i className="fa-solid fa-clock text-xl mr-2 text-gray-600"></i> Trámites Posteriores
-              </h3>
-            </div>
-            <div className="p-4 space-y-4">
-              <ul className="space-y-3 text-sm text-gray-700">
-                <li className="flex items-start">
-                  <div className="bg-gray-200 text-gray-700 rounded-full w-5 h-5 flex items-center justify-center font-bold text-xs mr-2 flex-shrink-0">1</div>
-                  <span><strong>Cooperación:</strong> En casos de vandalismo, el INS requiere y puede solicitar tu colaboración adicional para la investigación.</span>
-                </li>
-                <li className="flex items-start">
-                  <div className="bg-gray-200 text-gray-700 rounded-full w-5 h-5 flex items-center justify-center font-bold text-xs mr-2 flex-shrink-0">2</div>
-                  <span>Tienes <strong>10 días hábiles</strong> tras el evento para llevar el vehículo a un Centro de Estimación de Daños (CED) para su valoración oficial.</span>
-                </li>
-              </ul>
+            <div className="mt-5 p-4 bg-slate-50 border border-slate-200 rounded-xl text-center">
+              <p className="text-xs text-slate-600 leading-relaxed font-medium mb-3">
+                <strong className="text-red-600">Importante:</strong> NO repare ni altere los daños. Reporte de inmediato al INS:
+              </p>
+              <a href="tel:8008008000" className="flex items-center justify-center bg-green-600 hover:bg-green-500 text-white font-black py-3 rounded-xl shadow-md active:scale-95 transition-all text-lg">
+                <i className="fa-solid fa-phone mr-2"></i> 800-800-8000
+              </a>
+              <p className="text-[10px] text-slate-500 mt-3 uppercase font-bold tracking-wide">Tiene 10 días hábiles para valoración en CED</p>
             </div>
           </div>
         </div>
       );
 
       const renderContactos = () => (
-        <div className="p-4 max-w-md mx-auto space-y-4 animate-in-right">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">Directorio Oficial</h2>
+        <div className="p-4 max-w-md mx-auto space-y-4 animate-right">
+          <h2 className="text-xl font-black text-slate-800 mb-4 px-2">Directorio Oficial</h2>
+          
+          <div className="space-y-3">
+            {[
+              { label: 'Accidentes y Daños', num: '800-800-8000', color: 'bg-green-600', sub: 'Reporte inmediato 24/7' },
+              { label: 'Asistencia Vial (Grúa)', num: '800-800-8001', color: 'bg-green-600', sub: 'Batería, cerrajero, etc.' },
+              { label: 'Consultas Teleins', num: '800-835-3467', color: 'bg-green-600', sub: 'Información general' }
+            ].map((c, i) => (
           
           <div className="space-y-3">
             <a href="tel:8008008000" className="block bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex items-center justify-between hover:bg-gray-50 active:bg-gray-100 transition-colors">
