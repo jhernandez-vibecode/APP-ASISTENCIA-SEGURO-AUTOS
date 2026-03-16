@@ -15,8 +15,30 @@
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   
-  <!-- Babel para que el navegador entienda React sin necesidad de compilar -->
+  <!-- Babel para que el navegador entienda React -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    /* Animaciones para transiciones fluidas */
+    @keyframes slideInFromBottom {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideInFromRight {
+      from { opacity: 0; transform: translateX(10px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .animate-in-bottom {
+      animation: slideInFromBottom 0.3s ease-out forwards;
+    }
+    .animate-in-right {
+      animation: slideInFromRight 0.3s ease-out forwards;
+    }
+    body {
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
 </head>
 <body class="bg-gray-50">
   <div id="root"></div>
@@ -27,15 +49,30 @@
     function App() {
       const [currentView, setCurrentView] = useState('home');
 
+      const navigateTo = (view) => {
+        setCurrentView(view);
+        window.scrollTo(0, 0);
+      };
+
       const renderHeader = () => (
-        <header className="bg-blue-900 text-white p-4 shadow-md sticky top-0 z-10">
+        <header className="bg-blue-900 text-white p-4 shadow-md sticky top-0 z-50">
           <div className="max-w-md mx-auto flex items-center justify-between">
-            {currentView !== 'home' && (
-              <button onClick={() => setCurrentView('home')} className="p-1 hover:bg-blue-800 rounded px-2">
-                <i className="fa-solid fa-chevron-left text-xl"></i>
-              </button>
-            )}
-            <h1 className="text-sm sm:text-base font-bold text-center flex-1 leading-tight px-2">
+            <div className="flex items-center">
+              {currentView !== 'home' && (
+                <button onClick={() => navigateTo('home')} className="p-1 hover:bg-blue-800 rounded px-2 mr-2 transition-colors">
+                  <i className="fa-solid fa-chevron-left text-xl"></i>
+                </button>
+              )}
+              {/* Aquí se integra el logo del INS */}
+              <img 
+                src="INS BLANCO.png" 
+                alt="INS" 
+                className="h-7 sm:h-8 object-contain" 
+                onError={(e) => { e.target.style.display = 'none'; }} 
+              />
+            </div>
+            
+            <h1 className="text-xs sm:text-sm font-bold text-right flex-1 leading-tight px-2">
               {currentView === 'home' ? 'Asistencia Seguro Automóviles' : 
                currentView === 'accidente' ? 'Reporte de Accidente' : 
                currentView === 'vial' ? 'Asistencia Vial' : 
@@ -43,7 +80,7 @@
                currentView === 'coberturaH' ? 'Vandalismo / Naturaleza' :
                'Contactos Oficiales'}
             </h1>
-            <button onClick={() => setCurrentView('contactos')} className="p-1 hover:bg-blue-800 rounded px-2">
+            <button onClick={() => navigateTo('contactos')} className="p-1 hover:bg-blue-800 rounded pl-2 transition-colors">
               <i className="fa-solid fa-phone text-xl"></i>
             </button>
           </div>
@@ -51,7 +88,7 @@
       );
 
       const renderHome = () => (
-        <div className="p-4 max-w-md mx-auto space-y-4">
+        <div className="p-4 max-w-md mx-auto space-y-4 animate-in-bottom">
           <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-6 rounded shadow-sm">
             <div className="flex items-center text-yellow-800 font-semibold mb-1">
               <i className="fa-solid fa-shield-halved text-xl mr-2"></i>
@@ -61,8 +98,8 @@
           </div>
 
           <button 
-            onClick={() => setCurrentView('accidente')}
-            className="w-full bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow flex items-center space-x-4 text-left"
+            onClick={() => navigateTo('accidente')}
+            className="w-full bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-all active:scale-95 flex items-center space-x-4 text-left"
           >
             <div className="bg-red-100 p-3 rounded-full text-red-800 flex-shrink-0 w-12 h-12 flex items-center justify-center">
               <i className="fa-solid fa-car text-xl"></i>
@@ -74,8 +111,8 @@
           </button>
 
           <button 
-            onClick={() => setCurrentView('vial')}
-            className="w-full bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow flex items-center space-x-4 text-left"
+            onClick={() => navigateTo('vial')}
+            className="w-full bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-all active:scale-95 flex items-center space-x-4 text-left"
           >
             <div className="bg-orange-100 p-3 rounded-full text-orange-800 flex-shrink-0 w-12 h-12 flex items-center justify-center">
               <i className="fa-solid fa-screwdriver-wrench text-xl"></i>
@@ -87,8 +124,8 @@
           </button>
 
           <button 
-            onClick={() => setCurrentView('robo')}
-            className="w-full bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow flex items-center space-x-4 text-left"
+            onClick={() => navigateTo('robo')}
+            className="w-full bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-all active:scale-95 flex items-center space-x-4 text-left"
           >
             <div className="bg-purple-100 p-3 rounded-full text-purple-800 flex-shrink-0 w-12 h-12 flex items-center justify-center">
               <i className="fa-solid fa-shield text-xl"></i>
@@ -100,8 +137,8 @@
           </button>
 
           <button 
-            onClick={() => setCurrentView('coberturaH')}
-            className="w-full bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow flex items-center space-x-4 text-left"
+            onClick={() => navigateTo('coberturaH')}
+            className="w-full bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-all active:scale-95 flex items-center space-x-4 text-left"
           >
             <div className="bg-teal-100 p-3 rounded-full text-teal-800 flex-shrink-0 w-12 h-12 flex items-center justify-center">
               <i className="fa-solid fa-cloud-showers-heavy text-xl"></i>
@@ -113,8 +150,8 @@
           </button>
           
           <button 
-            onClick={() => setCurrentView('contactos')}
-            className="w-full bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow flex items-center space-x-4 text-left"
+            onClick={() => navigateTo('contactos')}
+            className="w-full bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-all active:scale-95 flex items-center space-x-4 text-left"
           >
             <div className="bg-green-100 p-3 rounded-full text-green-800 flex-shrink-0 w-12 h-12 flex items-center justify-center">
               <i className="fa-solid fa-phone text-xl"></i>
@@ -128,7 +165,7 @@
       );
 
       const renderAccidente = () => (
-        <div className="p-4 max-w-md mx-auto space-y-6 animate-in slide-in-from-right-4">
+        <div className="p-4 max-w-md mx-auto space-y-6 animate-in-right">
           <div className="bg-red-50 border border-red-200 rounded-lg p-4 shadow-sm">
             <h3 className="font-bold text-red-900 flex items-center mb-2">
               <i className="fa-solid fa-triangle-exclamation text-xl mr-2"></i> Paso 1: Reporte Inmediato
@@ -219,7 +256,7 @@
       );
 
       const renderVial = () => (
-        <div className="p-4 max-w-md mx-auto space-y-6 animate-in slide-in-from-right-4">
+        <div className="p-4 max-w-md mx-auto space-y-6 animate-in-right">
           <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 shadow-sm">
             <h3 className="font-bold text-orange-900 flex items-center mb-2">
               <i className="fa-solid fa-screwdriver-wrench text-xl mr-2"></i> Solicitar Asistencia
@@ -252,7 +289,7 @@
       );
 
       const renderRobo = () => (
-        <div className="p-4 max-w-md mx-auto space-y-6 animate-in slide-in-from-right-4">
+        <div className="p-4 max-w-md mx-auto space-y-6 animate-in-right">
           <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 shadow-sm">
             <h3 className="font-bold text-purple-900 flex items-center mb-2">
               <i className="fa-solid fa-shield text-xl mr-2"></i> Paso 1: Denuncia Inmediata
@@ -299,7 +336,7 @@
       );
 
       const renderCoberturaH = () => (
-        <div className="p-4 max-w-md mx-auto space-y-6 animate-in slide-in-from-right-4">
+        <div className="p-4 max-w-md mx-auto space-y-6 animate-in-right">
           <div className="bg-teal-50 border border-teal-200 rounded-lg p-4 shadow-sm">
             <h3 className="font-bold text-teal-900 flex items-center mb-2">
               <i className="fa-solid fa-cloud-showers-heavy text-xl mr-2"></i> ¿Qué incluye la Cobertura H?
@@ -345,7 +382,7 @@
       );
 
       const renderContactos = () => (
-        <div className="p-4 max-w-md mx-auto space-y-4 animate-in slide-in-from-right-4">
+        <div className="p-4 max-w-md mx-auto space-y-4 animate-in-right">
           <h2 className="text-xl font-bold text-gray-800 mb-4">Directorio Oficial</h2>
           
           <div className="space-y-3">
@@ -374,7 +411,7 @@
             </a>
           </div>
           
-          <div className="mt-6 bg-gray-50 p-4 rounded-lg border border-gray-200 text-sm text-gray-600 text-center">
+          <div className="mt-6 bg-gray-50 p-4 rounded-lg border border-gray-200 text-sm text-gray-600 text-center shadow-inner">
             <i className="fa-solid fa-location-dot text-3xl mx-auto text-gray-400 mb-2"></i>
             <p><strong>Oficinas Centrales INS:</strong><br/>Calle 9 y 11, Avenida 7, San José, Costa Rica</p>
             <a href="mailto:contactenos@grupoins.com" className="text-blue-600 font-bold mt-2 block hover:underline">contactenos@grupoins.com</a>
@@ -383,9 +420,9 @@
       );
 
       return (
-        <div className="flex flex-col min-h-screen font-sans text-gray-900">
+        <div className="flex flex-col min-h-screen font-sans text-gray-900 bg-gray-50">
           {renderHeader()}
-          <main className="flex-1 pb-8">
+          <main className="flex-1 pb-8 overflow-x-hidden">
             {currentView === 'home' && renderHome()}
             {currentView === 'vial' && renderVial()}
             {currentView === 'accidente' && renderAccidente()}
@@ -394,7 +431,7 @@
             {currentView === 'contactos' && renderContactos()}
           </main>
           
-          <footer className="bg-gray-800 text-gray-300 py-6 px-4 text-center text-sm mt-auto">
+          <footer className="bg-gray-800 text-gray-300 py-6 px-4 text-center text-sm mt-auto shadow-inner border-t border-gray-700">
             <p className="mb-1">Esta aplicación pertenece a <strong className="text-white">Seguros Digitales SDI&reg;</strong>.</p>
             <p>
               Visítenos en{' '}
