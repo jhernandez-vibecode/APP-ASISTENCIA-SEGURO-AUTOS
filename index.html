@@ -22,6 +22,22 @@
   <div id="root"></div>
 
   <script type="text/babel">
+    // =========================================================================
+    // ZONA DE CONFIGURACIÓN (FÁCIL DE EDITAR PARA TU HERMANO)
+    // =========================================================================
+    const CONFIG = {
+      // 1. Para OCULTAR toda la leyenda del pie de página, cambia true por false
+      mostrarLeyenda: true, 
+      
+      // 2. Personaliza el nombre de la empresa aquí:
+      nombreEmpresa: "Seguros Digitales SDI®",
+      
+      // 3. Personaliza el enlace web (si lo dejas en blanco "", no aparecerá):
+      textoEnlace: "www.segurosdelins.com",
+      linkEnlace: "https://www.segurosdelins.com"
+    };
+    // =========================================================================
+
     const { useState } = React;
 
     function App() {
@@ -404,20 +420,24 @@
             {currentView === 'contactos' && renderContactos()}
           </main>
           
-          <footer className="bg-gray-800 text-gray-300 py-6 px-4 text-center text-sm mt-auto shadow-inner border-t border-gray-700">
-            <p className="mb-1">Esta aplicación pertenece a <strong className="text-white">Seguros Digitales SDI&reg;</strong>.</p>
-            <p>
-              Visítenos en{' '}
-              <a 
-                href="https://www.segurosdelins.com" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="text-blue-400 font-bold hover:text-blue-300 hover:underline transition-colors"
-              >
-                www.segurosdelins.com
-              </a>
-            </p>
-          </footer>
+          {CONFIG.mostrarLeyenda && (
+            <footer className="bg-gray-800 text-gray-300 py-6 px-4 text-center text-sm mt-auto shadow-inner border-t border-gray-700">
+              <p className="mb-1">Esta aplicación pertenece a <strong className="text-white">{CONFIG.nombreEmpresa}</strong>.</p>
+              {CONFIG.textoEnlace !== "" && (
+                <p>
+                  Visítenos en{' '}
+                  <a 
+                    href={CONFIG.linkEnlace} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-blue-400 font-bold hover:text-blue-300 hover:underline transition-colors"
+                  >
+                    {CONFIG.textoEnlace}
+                  </a>
+                </p>
+              )}
+            </footer>
+          )}
         </div>
       );
     }
