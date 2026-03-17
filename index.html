@@ -3,6 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  
+  <!-- ETIQUETAS ANTI-CACHÉ (Para forzar a los celulares a ver los cambios) -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
   <title>Asistencia Seguro Automóviles</title>
   
   <!-- Tailwind CSS para los estilos -->
@@ -24,6 +30,7 @@
   <script type="text/babel">
     // =========================================================================
     // ZONA DE CONFIGURACIÓN (FÁCIL DE EDITAR PARA TU HERMANO)
+    // Dile a tu hermano que solo debe editar lo que está aquí adentro:
     // =========================================================================
     const CONFIG = {
       // 1. Para OCULTAR toda la leyenda del pie de página, cambia true por false
@@ -34,7 +41,10 @@
       
       // 3. Personaliza el enlace web (si lo dejas en blanco "", no aparecerá):
       textoEnlace: "www.segurosdelins.com",
-      linkEnlace: "https://www.segurosdelins.com"
+      linkEnlace: "https://www.segurosdelins.com",
+
+      // 4. Personaliza el aviso legal (si lo deja en blanco "", no aparecerá):
+      leyendaLegal: "© 2026 Propiedad Intelectual de Juan Carlos Hernández Vargas. Todos los derechos reservados. Esta plataforma es una herramienta de uso exclusivo para los clientes vinculados a la Licencia Sugese 08-1318. Queda prohibida su reproducción o uso por terceros sin autorización expresa del titular"
     };
     // =========================================================================
 
@@ -48,7 +58,7 @@
           <div className="max-w-md mx-auto flex items-center justify-between">
             <div className="flex items-center">
               {currentView !== 'home' && (
-                <button onClick={() => setCurrentView('home')} className="p-1 hover:bg-blue-800 rounded px-2 mr-2">
+                <button onClick={() => setCurrentView('home')} className="p-1 hover:bg-blue-800 rounded px-2 mr-2 transition-colors">
                   <i className="fa-solid fa-chevron-left text-xl"></i>
                 </button>
               )}
@@ -69,7 +79,7 @@
                currentView === 'coberturaH' ? 'Vandalismo / Naturaleza' :
                'Contactos Oficiales'}
             </h1>
-            <button onClick={() => setCurrentView('contactos')} className="p-1 hover:bg-blue-800 rounded pl-2">
+            <button onClick={() => setCurrentView('contactos')} className="p-1 hover:bg-blue-800 rounded pl-2 transition-colors">
               <i className="fa-solid fa-phone text-xl"></i>
             </button>
           </div>
@@ -78,6 +88,8 @@
 
       const renderHome = () => (
         <div className="p-4 max-w-md mx-auto space-y-4">
+          
+          {/* CUADRO AZUL TENUE (Neuromarketing: Tranquilidad) */}
           <div className="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6 rounded shadow-sm">
             <div className="flex items-center text-blue-800 font-semibold mb-1">
               <i className="fa-solid fa-shield-halved text-xl mr-2"></i>
@@ -154,12 +166,14 @@
       );
 
       const renderAccidente = () => (
-        <div className="p-4 max-w-md mx-auto space-y-6 animate-in slide-in-from-right-4">
+        <div className="p-4 max-w-md mx-auto space-y-6">
           <div className="bg-red-50 border border-red-200 rounded-lg p-4 shadow-sm">
             <h3 className="font-bold text-red-900 flex items-center mb-2">
               <i className="fa-solid fa-triangle-exclamation text-xl mr-2"></i> Paso 1: Reporte Inmediato
             </h3>
             <p className="text-sm text-red-800 mb-3">Si tuviste un choque, <strong>¡NO muevas el vehículo!</strong> (a menos que aplique Pacto Amistoso). Llama de inmediato a:</p>
+            
+            {/* BOTÓN VERDE */}
             <a href="tel:8008008000" className="block text-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow-md text-lg transition-colors">
               800-800-8000 (Reporte Accidente)
             </a>
@@ -245,12 +259,14 @@
       );
 
       const renderVial = () => (
-        <div className="p-4 max-w-md mx-auto space-y-6 animate-in slide-in-from-right-4">
+        <div className="p-4 max-w-md mx-auto space-y-6">
           <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 shadow-sm">
             <h3 className="font-bold text-orange-900 flex items-center mb-2">
               <i className="fa-solid fa-screwdriver-wrench text-xl mr-2"></i> Solicitar Asistencia
             </h3>
             <p className="text-sm text-orange-800 mb-3">Si tu vehículo sufrió una avería mecánica, llama para solicitar asistencia en carretera:</p>
+            
+            {/* BOTÓN VERDE */}
             <a href="tel:8008008001" className="block text-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow-md text-lg transition-colors">
               800-800-8001 (Multiasistencia)
             </a>
@@ -278,7 +294,7 @@
       );
 
       const renderRobo = () => (
-        <div className="p-4 max-w-md mx-auto space-y-6 animate-in slide-in-from-right-4">
+        <div className="p-4 max-w-md mx-auto space-y-6">
           <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 shadow-sm">
             <h3 className="font-bold text-purple-900 flex items-center mb-2">
               <i className="fa-solid fa-shield text-xl mr-2"></i> Paso 1: Denuncia Inmediata
@@ -288,6 +304,7 @@
               <a href="tel:911" className="block text-center bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 rounded-lg shadow-sm transition-colors">
                 Llamar al 911 (OIJ)
               </a>
+              {/* BOTÓN VERDE */}
               <a href="tel:8008008000" className="block text-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow-sm transition-colors">
                 800-800-8000 (Reporte INS)
               </a>
@@ -325,7 +342,7 @@
       );
 
       const renderCoberturaH = () => (
-        <div className="p-4 max-w-md mx-auto space-y-6 animate-in slide-in-from-right-4">
+        <div className="p-4 max-w-md mx-auto space-y-6">
           <div className="bg-teal-50 border border-teal-200 rounded-lg p-4 shadow-sm">
             <h3 className="font-bold text-teal-900 flex items-center mb-2">
               <i className="fa-solid fa-cloud-showers-heavy text-xl mr-2"></i> ¿Qué incluye la Cobertura H?
@@ -343,6 +360,8 @@
               <i className="fa-solid fa-triangle-exclamation text-xl mr-2"></i> Reporte de Daños
             </h3>
             <p className="text-sm text-red-800 mb-3"><strong>No repares ni alteres los daños.</strong> Reporta el evento de inmediato para que un inspector lo valore:</p>
+            
+            {/* BOTÓN VERDE */}
             <a href="tel:8008008000" className="block text-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow-md text-lg transition-colors">
               800-800-8000 (Reporte INS)
             </a>
@@ -371,7 +390,7 @@
       );
 
       const renderContactos = () => (
-        <div className="p-4 max-w-md mx-auto space-y-4 animate-in slide-in-from-right-4">
+        <div className="p-4 max-w-md mx-auto space-y-4">
           <h2 className="text-xl font-bold text-gray-800 mb-4">Directorio Oficial</h2>
           
           <div className="space-y-3">
@@ -380,6 +399,7 @@
                 <h3 className="font-bold text-gray-800 text-base">Reporte de Accidentes</h3>
                 <p className="text-xs text-gray-500">Choques / Daños (24/7)</p>
               </div>
+              {/* ETIQUETA VERDE */}
               <span className="bg-green-100 text-green-800 px-3 py-1.5 rounded-lg font-bold text-sm">800-800-8000</span>
             </a>
 
@@ -388,6 +408,7 @@
                 <h3 className="font-bold text-gray-800 text-base">Asistencia Vial</h3>
                 <p className="text-xs text-gray-500">Grúa, batería, cerrajero</p>
               </div>
+              {/* ETIQUETA VERDE */}
               <span className="bg-green-100 text-green-800 px-3 py-1.5 rounded-lg font-bold text-sm">800-800-8001</span>
             </a>
 
@@ -396,6 +417,7 @@
                 <h3 className="font-bold text-gray-800 text-base">Consultas Generales</h3>
                 <p className="text-xs text-gray-500">Línea Teleins</p>
               </div>
+              {/* ETIQUETA VERDE */}
               <span className="bg-green-100 text-green-800 px-3 py-1.5 rounded-lg font-bold text-sm">800-8353467</span>
             </a>
           </div>
@@ -424,7 +446,7 @@
             <footer className="bg-gray-800 text-gray-300 py-6 px-4 text-center text-sm mt-auto shadow-inner border-t border-gray-700">
               <p className="mb-1">Esta aplicación pertenece a <strong className="text-white">{CONFIG.nombreEmpresa}</strong>.</p>
               {CONFIG.textoEnlace !== "" && (
-                <p>
+                <p className="mb-4">
                   Visítenos en{' '}
                   <a 
                     href={CONFIG.linkEnlace} 
@@ -435,6 +457,13 @@
                     {CONFIG.textoEnlace}
                   </a>
                 </p>
+              )}
+              {CONFIG.leyendaLegal !== "" && (
+                <div className="border-t border-gray-600 pt-4 mt-2">
+                  <p className="text-[10px] text-gray-400 leading-tight max-w-sm mx-auto">
+                    {CONFIG.leyendaLegal}
+                  </p>
+                </div>
               )}
             </footer>
           )}
