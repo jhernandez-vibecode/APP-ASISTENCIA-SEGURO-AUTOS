@@ -44,7 +44,10 @@
       linkEnlace: "https://www.segurosdelins.com",
 
       // 4. Personaliza el aviso legal (si lo deja en blanco "", no aparecerá):
-      leyendaLegal: "© 2026 Propiedad Intelectual de Juan Carlos Hernández Vargas. Todos los derechos reservados. Esta plataforma es una herramienta de uso exclusivo para los clientes vinculados a la Licencia Sugese 08-1318. Queda prohibida su reproducción o uso por terceros sin autorización expresa del titular"
+      leyendaLegal: "© 2026 Propiedad Intelectual de Juan Carlos Hernández Vargas. Todos los derechos reservados. Esta plataforma es una herramienta de uso exclusivo para los clientes vinculados a la Licencia Sugese 08-1318. Queda prohibida su reproducción o uso por terceros sin autorización expresa del titular",
+
+      // 5. Personaliza la leyenda del encabezado (si lo deja en blanco "", no aparecerá):
+      textoAgente: "Agente: Juan Carlos Hernandez Vargas • Licencia 08-1318"
     };
     // =========================================================================
 
@@ -55,33 +58,42 @@
 
       const renderHeader = () => (
         <header className="bg-blue-900 text-white p-4 shadow-md sticky top-0 z-10">
-          <div className="max-w-md mx-auto flex items-center justify-between">
-            <div className="flex items-center">
-              {currentView !== 'home' && (
-                <button onClick={() => setCurrentView('home')} className="p-1 hover:bg-blue-800 rounded px-2 mr-2 transition-colors">
-                  <i className="fa-solid fa-chevron-left text-xl"></i>
-                </button>
-              )}
-              {/* Aquí se integra el logo del INS */}
-              <img 
-                src="INS BLANCO.png" 
-                alt="Logo INS" 
-                className="h-7 sm:h-8 object-contain" 
-                onError={(e) => { e.target.style.display = 'none'; }} 
-              />
+          <div className="max-w-md mx-auto">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                {currentView !== 'home' && (
+                  <button onClick={() => setCurrentView('home')} className="p-1 hover:bg-blue-800 rounded px-2 mr-2 transition-colors">
+                    <i className="fa-solid fa-chevron-left text-xl"></i>
+                  </button>
+                )}
+                {/* Aquí se integra el logo del INS */}
+                <img 
+                  src="INS BLANCO.png" 
+                  alt="Logo INS" 
+                  className="h-7 sm:h-8 object-contain" 
+                  onError={(e) => { e.target.style.display = 'none'; }} 
+                />
+              </div>
+              
+              <h1 className="text-xs sm:text-sm font-bold text-right flex-1 leading-tight px-2">
+                {currentView === 'home' ? 'Asistencia Seguro Automóviles' : 
+                 currentView === 'accidente' ? 'Reporte de Accidente' : 
+                 currentView === 'vial' ? 'Asistencia Vial' : 
+                 currentView === 'robo' ? 'Robo Total / Parcial' :
+                 currentView === 'coberturaH' ? 'Vandalismo / Naturaleza' :
+                 'Contactos Oficiales'}
+              </h1>
+              <button onClick={() => setCurrentView('contactos')} className="p-1 hover:bg-blue-800 rounded pl-2 transition-colors">
+                <i className="fa-solid fa-phone text-xl"></i>
+              </button>
             </div>
             
-            <h1 className="text-xs sm:text-sm font-bold text-right flex-1 leading-tight px-2">
-              {currentView === 'home' ? 'Asistencia Seguro Automóviles' : 
-               currentView === 'accidente' ? 'Reporte de Accidente' : 
-               currentView === 'vial' ? 'Asistencia Vial' : 
-               currentView === 'robo' ? 'Robo Total / Parcial' :
-               currentView === 'coberturaH' ? 'Vandalismo / Naturaleza' :
-               'Contactos Oficiales'}
-            </h1>
-            <button onClick={() => setCurrentView('contactos')} className="p-1 hover:bg-blue-800 rounded pl-2 transition-colors">
-              <i className="fa-solid fa-phone text-xl"></i>
-            </button>
+            {/* LEYENDA DEL AGENTE EN EL ENCABEZADO */}
+            {CONFIG.textoAgente !== "" && (
+              <div className="mt-2 pt-2 border-t border-blue-800 text-[10px] sm:text-xs text-blue-200 text-center font-medium tracking-wide">
+                {CONFIG.textoAgente}
+              </div>
+            )}
           </div>
         </header>
       );
@@ -226,7 +238,7 @@
                 </li>
                 <li className="flex items-start">
                   <span className="bg-red-200 text-red-900 rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 flex-shrink-0">2</span>
-                  Llamar a la Policía de Tránsito (911) para que confeccionen el parte oficial.
+                  Llamar a la Policía de Tránsito (117 o 911) para que confeccionen el parte oficial.
                 </li>
                 <li className="flex items-start">
                   <span className="bg-red-200 text-red-900 rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 flex-shrink-0">3</span>
