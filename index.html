@@ -3,482 +3,984 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  
-  <!-- ETIQUETAS ANTI-CACHÉ (Para forzar a los celulares a ver los cambios) -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <title>Asistencia Seguro Automóviles</title>
-  
-  <!-- Tailwind CSS para los estilos -->
+  <title>Asistencia Seguro Automóviles · SDI</title>
+
+  <!-- Sora -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- FontAwesome para los íconos -->
+
+  <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
+
   <!-- React y ReactDOM -->
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  
-  <!-- Babel para que el navegador entienda React sin necesidad de compilar -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    :root {
+      --navy:       #0c2340;
+      --navy-soft:  #143055;
+      --blue:       #0369a1;
+      --blue-light: #0ea5e9;
+      --blue-50:    #f0f9ff;
+      --green:      #16a34a;
+      --green-dark: #15803d;
+      --green-50:   #f0fdf4;
+      --amber:      #d97706;
+      --amber-50:   #fffbeb;
+      --red:        #dc2626;
+      --red-dark:   #991b1b;
+      --red-50:     #fef2f2;
+      --purple-50:  #faf5ff;
+      --teal-50:    #f0fdfa;
+
+      --gray-50:    #f9fafb;
+      --gray-100:   #f3f4f6;
+      --gray-200:   #e5e7eb;
+      --gray-300:   #d1d5db;
+      --gray-500:   #6b7280;
+      --gray-700:   #374151;
+      --gray-900:   #111827;
+
+      --shadow-sm:  0 1px 2px rgba(0,0,0,.05);
+      --shadow-md:  0 4px 8px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.04);
+      --shadow-lg:  0 12px 24px rgba(12,35,64,.12), 0 2px 6px rgba(0,0,0,.06);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--gray-900);
+      background: var(--gray-50);
+      min-height: 100vh;
+    }
+
+    /* ============ HEADER ============ */
+    .app-header {
+      position: sticky; top: 0; z-index: 40;
+      background: var(--navy);
+      color: #fff;
+      box-shadow: var(--shadow-md);
+    }
+    .header-inner {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 14px 16px;
+    }
+    .header-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 10px; min-width: 0;
+    }
+    .brand-logo-ins {
+      height: 32px; width: auto;
+      flex-shrink: 0;
+      object-fit: contain;
+    }
+    .brand-logo-ins-fallback {
+      height: 32px; min-width: 56px;
+      border-radius: 6px;
+      border: 1.5px solid #fff;
+      display: grid; place-items: center;
+      font-weight: 800; font-size: 14px;
+      letter-spacing: 1.5px;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .brand-text { min-width: 0; }
+    .brand-title { font-size: 13px; font-weight: 700; letter-spacing: .2px; line-height: 1.15; }
+    .brand-subtitle { font-size: 10px; opacity: .7; margin-top: 2px; letter-spacing: .3px; }
+
+    .header-btn {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.10);
+      color: #fff;
+      border: 0;
+      display: grid; place-items: center;
+      cursor: pointer;
+      transition: background .15s;
+      flex-shrink: 0;
+    }
+    .header-btn:hover { background: rgba(255,255,255,.18); }
+    .header-btn i { font-size: 16px; }
+    .header-actions { display: flex; gap: 8px; }
+
+    .agent-strip {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,.12);
+      font-size: 11px;
+      color: rgba(255,255,255,.78);
+      text-align: center;
+      letter-spacing: .2px;
+    }
+    .agent-strip strong { color: #fff; font-weight: 600; }
+
+    .back-btn {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.10);
+      color: #fff; border: 0;
+      display: grid; place-items: center;
+      cursor: pointer;
+      transition: background .15s;
+      flex-shrink: 0;
+    }
+    .back-btn:hover { background: rgba(255,255,255,.18); }
+
+    /* ============ MAIN ============ */
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .hero-card {
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border: 1px solid #bfdbfe;
+      border-left: 4px solid var(--blue);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+    .hero-card h2 {
+      font-size: 15px; font-weight: 700; color: var(--navy);
+      display: flex; align-items: center; gap: 8px;
+      margin: 0 0 4px;
+    }
+    .hero-card p { font-size: 13px; color: #1e3a5f; margin: 0; line-height: 1.5; }
+
+    .action-card {
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 10px;
+      box-shadow: var(--shadow-sm);
+      display: flex; align-items: center; gap: 14px;
+      cursor: pointer;
+      transition: transform .15s, box-shadow .15s, border-color .15s;
+      width: 100%;
+      text-align: left;
+    }
+    .action-card:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+      border-color: #cbd5e1;
+    }
+    .action-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      display: grid; place-items: center;
+      flex-shrink: 0;
+    }
+    .action-icon i { font-size: 20px; }
+    .action-icon.red { background: #fee2e2; color: var(--red-dark); }
+    .action-icon.amber { background: #ffedd5; color: #9a3412; }
+    .action-icon.purple { background: #f3e8ff; color: #6b21a8; }
+    .action-icon.teal { background: #ccfbf1; color: #115e59; }
+    .action-icon.green { background: #dcfce7; color: var(--green-dark); }
+    .action-text h3 { font-size: 14px; font-weight: 700; color: var(--gray-900); margin: 0 0 2px; }
+    .action-text p { font-size: 12px; color: var(--gray-500); margin: 0; line-height: 1.4; }
+
+    /* ============ SECTION CARDS ============ */
+    .section-card {
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      border-radius: 14px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
+    .section-card-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--gray-100);
+      font-size: 14px; font-weight: 700;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-card-header.red    { background: var(--red-50);    color: var(--red-dark); }
+    .section-card-header.blue   { background: var(--blue-50);   color: var(--navy); }
+    .section-card-header.amber  { background: var(--amber-50);  color: #92400e; }
+    .section-card-header.purple { background: var(--purple-50); color: #6b21a8; }
+    .section-card-header.teal   { background: var(--teal-50);   color: #115e59; }
+    .section-card-header.gray   { background: var(--gray-50);   color: var(--gray-700); }
+    .section-card-body { padding: 14px 16px; font-size: 13px; color: var(--gray-700); line-height: 1.55; }
+
+    /* ============ EMERGENCY BUTTON ============ */
+    .btn-emergency {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(180deg, var(--green) 0%, var(--green-dark) 100%);
+      color: #fff;
+      text-align: center;
+      font-weight: 700;
+      font-size: 16px;
+      border-radius: 12px;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(22,163,74,.32), 0 1px 3px rgba(0,0,0,.08);
+      transition: transform .12s, box-shadow .12s;
+    }
+    .btn-emergency:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(22,163,74,.4); }
+
+    /* ============ AGENT CARD (en directorio) ============ */
+    .agent-card {
+      background: linear-gradient(135deg, #0c2340 0%, #143055 60%, #0369a1 100%);
+      color: #fff;
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 10px 28px rgba(12,35,64,.28);
+      position: relative;
+      overflow: hidden;
+    }
+    .agent-card::after {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 140px; height: 140px;
+      background: radial-gradient(circle, rgba(14,165,233,.35) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .agent-card-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #93c5fd;
+      margin-bottom: 6px;
+    }
+    .agent-card-name {
+      font-size: 18px; font-weight: 700;
+      line-height: 1.25; margin-bottom: 4px;
+    }
+    .agent-card-meta {
+      font-size: 12px; color: rgba(255,255,255,.78);
+      margin-bottom: 14px;
+      display: flex; gap: 12px; flex-wrap: wrap;
+    }
+    .agent-card-meta span { display: inline-flex; align-items: center; gap: 5px; }
+    .agent-card-actions {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+    }
+    .agent-action-btn {
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.18);
+      color: #fff;
+      border-radius: 10px;
+      padding: 10px 6px;
+      font-size: 11px; font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      backdrop-filter: blur(6px);
+      transition: background .15s;
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+    }
+    .agent-action-btn:hover { background: rgba(255,255,255,.24); }
+    .agent-action-btn i { font-size: 16px; }
+    .agent-action-btn.wa  { background: linear-gradient(180deg, #25d366 0%, #1da851 100%); border-color: transparent; }
+    .agent-action-btn.wa:hover { background: linear-gradient(180deg, #2ee07a 0%, #1da851 100%); }
+
+    /* ============ CONTACT TILE (INS) ============ */
+    .contact-tile {
+      display: flex; align-items: center; justify-content: space-between;
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: var(--shadow-sm);
+      transition: background .12s, border-color .12s;
+    }
+    .contact-tile:hover { background: var(--gray-50); border-color: var(--gray-300); }
+    .contact-tile h4 { margin: 0 0 2px; font-size: 14px; font-weight: 700; color: var(--gray-900); }
+    .contact-tile p  { margin: 0; font-size: 11px; color: var(--gray-500); }
+    .contact-pill {
+      background: #dcfce7; color: var(--green-dark);
+      padding: 6px 12px; border-radius: 10px;
+      font-weight: 700; font-size: 13px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ============ FOOTER ============ */
+    .app-footer {
+      margin-top: 32px;
+      background: var(--navy);
+      color: #cbd5e1;
+      padding: 22px 16px 28px;
+      text-align: center;
+      font-size: 12px;
+    }
+    .footer-sdi-logo {
+      height: 56px; width: auto;
+      display: block;
+      margin: 0 auto 16px;
+      opacity: .95;
+    }
+    .footer-agent {
+      background: rgba(14,165,233,.08);
+      border: 1px solid rgba(14,165,233,.22);
+      border-radius: 12px;
+      padding: 12px 14px;
+      max-width: 360px;
+      margin: 0 auto 14px;
+    }
+    .footer-agent .label {
+      font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+      color: #7dd3fc; font-weight: 600; margin-bottom: 4px;
+    }
+    .footer-agent .name { color: #fff; font-weight: 700; font-size: 14px; margin-bottom: 2px; }
+    .footer-agent .meta { color: #cbd5e1; font-size: 11px; }
+    .footer-brand { color: #fff; font-weight: 700; }
+    .footer-link { color: #7dd3fc; font-weight: 600; text-decoration: none; }
+    .footer-link:hover { text-decoration: underline; }
+    .footer-legal {
+      margin-top: 14px; padding-top: 14px;
+      border-top: 1px solid rgba(255,255,255,.10);
+      font-size: 10px; color: #94a3b8; line-height: 1.5;
+      max-width: 360px; margin-left: auto; margin-right: auto;
+    }
+
+    /* ============ MODAL ============ */
+    .modal-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(12,35,64,.55);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 100;
+      padding: 0;
+    }
+    .modal-backdrop.open { display: flex; }
+    @media (min-width: 600px) {
+      .modal-backdrop { align-items: center; padding: 24px; }
+    }
+    .modal-card {
+      background: #fff;
+      border-radius: 18px 18px 0 0;
+      width: 100%;
+      max-width: 480px;
+      max-height: 92vh;
+      display: flex; flex-direction: column;
+      box-shadow: 0 -8px 32px rgba(0,0,0,.18);
+    }
+    @media (min-width: 600px) {
+      .modal-card { border-radius: 18px; }
+    }
+    .modal-header {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--gray-100);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .modal-title { font-size: 16px; font-weight: 700; color: var(--navy); margin: 0; }
+    .modal-close {
+      background: var(--gray-100); border: 0;
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      font-size: 18px; color: var(--gray-700);
+      cursor: pointer;
+    }
+    .modal-close:disabled { opacity: .25; cursor: not-allowed; }
+    .modal-body {
+      padding: 16px 18px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .modal-hint {
+      font-size: 12px; color: var(--gray-500);
+      margin: 0 0 14px; line-height: 1.5;
+    }
+    .form-row { margin-bottom: 12px; }
+    .form-label {
+      display: block; font-size: 12px; font-weight: 600;
+      color: var(--gray-700); margin-bottom: 5px;
+    }
+    .form-label.required::after { content: ' *'; color: var(--red); }
+    .form-control {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--gray-300);
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--gray-900);
+      background: #fff;
+    }
+    .form-control:focus { outline: 2px solid var(--blue-light); outline-offset: 1px; border-color: var(--blue); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .modal-info {
+      background: var(--blue-50);
+      border-left: 3px solid var(--blue);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      color: #1e3a5f;
+      line-height: 1.5;
+      margin-top: 8px;
+    }
+    .modal-footer {
+      padding: 14px 18px;
+      border-top: 1px solid var(--gray-100);
+      display: flex; gap: 10px; justify-content: flex-end;
+      flex-shrink: 0;
+    }
+    .btn {
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      border: 0;
+      font-family: inherit;
+    }
+    .btn-secondary { background: var(--gray-100); color: var(--gray-700); }
+    .btn-secondary:hover { background: var(--gray-200); }
+    .btn-secondary:disabled { opacity: .4; cursor: not-allowed; }
+    .btn-primary {
+      background: linear-gradient(180deg, var(--blue) 0%, #075985 100%);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(3,105,161,.3);
+    }
+    .btn-primary:hover { box-shadow: 0 6px 18px rgba(3,105,161,.4); }
+
+    /* ============ HELPERS ============ */
+    .text-tabular { font-variant-numeric: tabular-nums; }
+    .check-item { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; }
+    .check-item i { color: var(--green); margin-top: 3px; flex-shrink: 0; }
+  </style>
 </head>
-<body class="bg-gray-50">
+<body>
   <div id="root"></div>
 
   <script type="text/babel">
-    // =========================================================================
-    // ZONA DE CONFIGURACIÓN (FÁCIL DE EDITAR PARA TU HERMANO)
-    // Dile a tu hermano que solo debe editar lo que está aquí adentro:
-    // =========================================================================
-    const CONFIG = {
-      // 1. Para OCULTAR toda la leyenda del pie de página, cambia true por false
-      mostrarLeyenda: true, 
-      
-      // 2. Personaliza el nombre de la empresa aquí:
-      nombreEmpresa: "Seguros Digitales SDI®",
-      
-      // 3. Personaliza el enlace web (si lo dejas en blanco "", no aparecerá):
-      textoEnlace: "www.segurosdelins.com",
-      linkEnlace: "https://www.segurosdelins.com",
+    const { useState, useEffect } = React;
 
-      // 4. Personaliza el aviso legal (si lo deja en blanco "", no aparecerá):
-      leyendaLegal: "© 2026 Propiedad Intelectual de Juan Carlos Hernández Vargas. Todos los derechos reservados. Esta plataforma es una herramienta de uso exclusivo para los clientes vinculados a la Licencia Sugese 08-1318. Queda prohibida su reproducción o uso por terceros sin autorización expresa del titular",
-
-      // 5. Personaliza la leyenda del encabezado (si lo deja en blanco "", no aparecerá):
-      textoAgente: "Agente: Juan Carlos Hernandez Vargas • Licencia 08-1318"
+    // ---------- PERFIL DEL AGENTE (localStorage multi-tenant) ----------
+    const PROFILE_KEY = 'app_asistencia_agent_v1';
+    const EMPTY_PROFILE = {
+      name: '', email: '', phone: '', whatsapp: '', license: '', website: ''
     };
-    // =========================================================================
 
-    const { useState } = React;
+    function loadProfile() {
+      try {
+        const raw = localStorage.getItem(PROFILE_KEY);
+        if (!raw) return null;
+        const p = JSON.parse(raw);
+        if (!p || !p.name || !p.email || !p.phone || !p.license) return null;
+        return { ...EMPTY_PROFILE, ...p };
+      } catch (e) { return null; }
+    }
+
+    function saveProfileToStorage(p) {
+      try {
+        localStorage.setItem(PROFILE_KEY, JSON.stringify({
+          name:     (p.name     || '').trim(),
+          email:    (p.email    || '').trim(),
+          phone:    (p.phone    || '').trim(),
+          whatsapp: (p.whatsapp || '').trim(),
+          license:  (p.license  || '').trim(),
+          website:  (p.website  || '').trim()
+        }));
+        return true;
+      } catch (e) {
+        alert('No se pudo guardar el perfil. Verifica que el navegador permita localStorage.');
+        return false;
+      }
+    }
+
+    function clearProfileFromStorage() {
+      try { localStorage.removeItem(PROFILE_KEY); } catch (e) {}
+    }
+
+    const BRAND = {
+      empresa: 'Seguros Digitales SDI®',
+      legal: '© 2026 Propiedad Intelectual de Juan Carlos Hernández Vargas. Todos los derechos reservados.'
+    };
 
     function App() {
-      const [currentView, setCurrentView] = useState('home');
+      const [view, setView] = useState('home');
+      const [profile, setProfile] = useState(EMPTY_PROFILE);
+      const [hasProfile, setHasProfile] = useState(false);
+      const [modalOpen, setModalOpen] = useState(false);
+      const [form, setForm] = useState(EMPTY_PROFILE);
 
-      const renderHeader = () => (
-        <header className="bg-blue-900 text-white p-4 shadow-md sticky top-0 z-10">
-          <div className="max-w-md mx-auto">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                {currentView !== 'home' && (
-                  <button onClick={() => setCurrentView('home')} className="p-1 hover:bg-blue-800 rounded px-2 mr-2 transition-colors">
-                    <i className="fa-solid fa-chevron-left text-xl"></i>
-                  </button>
-                )}
-                {/* Aquí se integra el logo del INS */}
-                <img 
-                  src="INS BLANCO.png" 
-                  alt="Logo INS" 
-                  className="h-7 sm:h-8 object-contain" 
-                  onError={(e) => { e.target.style.display = 'none'; }} 
-                />
-              </div>
-              
-              <h1 className="text-xs sm:text-sm font-bold text-right flex-1 leading-tight px-2">
-                {currentView === 'home' ? 'Asistencia Seguro Automóviles' : 
-                 currentView === 'accidente' ? 'Reporte de Accidente' : 
-                 currentView === 'vial' ? 'Asistencia Vial' : 
-                 currentView === 'robo' ? 'Robo Total / Parcial' :
-                 currentView === 'coberturaH' ? 'Vandalismo / Naturaleza' :
-                 'Contactos Oficiales'}
-              </h1>
-              <button onClick={() => setCurrentView('contactos')} className="p-1 hover:bg-blue-800 rounded pl-2 transition-colors">
-                <i className="fa-solid fa-phone text-xl"></i>
-              </button>
-            </div>
-            
-            {/* LEYENDA DEL AGENTE EN EL ENCABEZADO */}
-            {CONFIG.textoAgente !== "" && (
-              <div className="mt-2 pt-2 border-t border-blue-800 text-[10px] sm:text-xs text-blue-200 text-center font-medium tracking-wide">
-                {CONFIG.textoAgente}
-              </div>
-            )}
-          </div>
-        </header>
-      );
+      useEffect(() => {
+        const p = loadProfile();
+        if (p) {
+          setProfile(p);
+          setHasProfile(true);
+        } else {
+          setForm(EMPTY_PROFILE);
+          setModalOpen(true);
+        }
+      }, []);
 
-      const renderHome = () => (
-        <div className="p-4 max-w-md mx-auto space-y-4">
-          
-          {/* CUADRO AZUL TENUE (Neuromarketing: Tranquilidad) */}
-          <div className="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6 rounded shadow-sm">
-            <div className="flex items-center text-blue-800 font-semibold mb-1">
-              <i className="fa-solid fa-shield-halved text-xl mr-2"></i>
-              ¿Tienes una emergencia?
-            </div>
-            <p className="text-sm text-blue-900">Selecciona el tipo de asistencia que necesitas en el territorio nacional para guiarte paso a paso.</p>
-          </div>
+      const openModal = () => { setForm(profile); setModalOpen(true); };
+      const closeModal = () => { if (hasProfile) setModalOpen(false); };
+      const saveProfile = () => {
+        const required = ['name','email','phone','license'];
+        const missing = required.filter(k => !form[k] || !String(form[k]).trim());
+        if (missing.length > 0) {
+          alert('Faltan campos obligatorios: ' + missing.join(', '));
+          return;
+        }
+        if (saveProfileToStorage(form)) {
+          setProfile({ ...EMPTY_PROFILE, ...form });
+          setHasProfile(true);
+          setModalOpen(false);
+        }
+      };
+      const handleClearProfile = () => {
+        if (!confirm('¿Borrar perfil del agente de este dispositivo? Tendrás que volver a configurarlo.')) return;
+        clearProfileFromStorage();
+        setProfile(EMPTY_PROFILE);
+        setForm(EMPTY_PROFILE);
+        setHasProfile(false);
+        setModalOpen(true);
+      };
 
-          <button 
-            onClick={() => setCurrentView('accidente')}
-            className="w-full bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow flex items-center space-x-4 text-left"
-          >
-            <div className="bg-red-100 p-3 rounded-full text-red-800 flex-shrink-0 w-12 h-12 flex items-center justify-center">
-              <i className="fa-solid fa-car text-xl"></i>
-            </div>
-            <div>
-              <h2 className="text-base font-bold text-gray-800">Accidente de Tránsito</h2>
-              <p className="text-xs text-gray-500 mt-1">Reporte de choques y guía para el Pacto Amistoso.</p>
-            </div>
-          </button>
+      const titleByView = {
+        home:       'Asistencia Seguro Automóviles',
+        accidente:  'Reporte de Accidente',
+        vial:       'Asistencia Vial',
+        robo:       'Robo Total / Parcial',
+        coberturaH: 'Vandalismo / Naturaleza',
+        contactos:  'Directorio de Contactos'
+      };
 
-          <button 
-            onClick={() => setCurrentView('vial')}
-            className="w-full bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow flex items-center space-x-4 text-left"
-          >
-            <div className="bg-orange-100 p-3 rounded-full text-orange-800 flex-shrink-0 w-12 h-12 flex items-center justify-center">
-              <i className="fa-solid fa-screwdriver-wrench text-xl"></i>
-            </div>
-            <div>
-              <h2 className="text-base font-bold text-gray-800">Asistencia Vial (Avería)</h2>
-              <p className="text-xs text-gray-500 mt-1">Grúa, cerrajería, batería, llanta o traslado al aeropuerto.</p>
-            </div>
-          </button>
-
-          <button 
-            onClick={() => setCurrentView('robo')}
-            className="w-full bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow flex items-center space-x-4 text-left"
-          >
-            <div className="bg-purple-100 p-3 rounded-full text-purple-800 flex-shrink-0 w-12 h-12 flex items-center justify-center">
-              <i className="fa-solid fa-shield text-xl"></i>
-            </div>
-            <div>
-              <h2 className="text-base font-bold text-gray-800">Robo Total o Parcial</h2>
-              <p className="text-xs text-gray-500 mt-1">Denuncia ante OIJ, traslados y trámites con el INS.</p>
-            </div>
-          </button>
-
-          <button 
-            onClick={() => setCurrentView('coberturaH')}
-            className="w-full bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow flex items-center space-x-4 text-left"
-          >
-            <div className="bg-teal-100 p-3 rounded-full text-teal-800 flex-shrink-0 w-12 h-12 flex items-center justify-center">
-              <i className="fa-solid fa-cloud-showers-heavy text-xl"></i>
-            </div>
-            <div>
-              <h2 className="text-base font-bold text-gray-800">Vandalismo / Cobertura H</h2>
-              <p className="text-xs text-gray-500 mt-1">Rayonazos, inundaciones, huracanes, caída de árboles.</p>
-            </div>
-          </button>
-          
-          <button 
-            onClick={() => setCurrentView('contactos')}
-            className="w-full bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow flex items-center space-x-4 text-left"
-          >
-            <div className="bg-green-100 p-3 rounded-full text-green-800 flex-shrink-0 w-12 h-12 flex items-center justify-center">
-              <i className="fa-solid fa-phone text-xl"></i>
-            </div>
-            <div>
-              <h2 className="text-base font-bold text-gray-800">Directorio de Contactos</h2>
-              <p className="text-xs text-gray-500 mt-1">Números directos de atención 24/7 en Costa Rica.</p>
-            </div>
-          </button>
-        </div>
-      );
-
-      const renderAccidente = () => (
-        <div className="p-4 max-w-md mx-auto space-y-6">
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 shadow-sm">
-            <h3 className="font-bold text-red-900 flex items-center mb-2">
-              <i className="fa-solid fa-triangle-exclamation text-xl mr-2"></i> Paso 1: Reporte Inmediato
-            </h3>
-            <p className="text-sm text-red-800 mb-3">Si tuviste un choque, <strong>¡NO muevas el vehículo!</strong> (a menos que aplique Pacto Amistoso). Llama de inmediato a:</p>
-            
-            {/* BOTÓN VERDE */}
-            <a href="tel:8008008000" className="block text-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow-md text-lg transition-colors">
-              800-800-8000 (Reporte Accidente)
-            </a>
-          </div>
-
-          <div className="bg-white border rounded-lg shadow-sm overflow-hidden">
-            <div className="bg-blue-50 px-4 py-3 border-b border-blue-100">
-              <h3 className="font-bold text-blue-900 flex items-center">
-                <i className="fa-solid fa-shield-halved text-xl mr-2 text-blue-600"></i> ¿Aplica Pacto Amistoso?
-              </h3>
-            </div>
-            <div className="p-4 space-y-4">
-              <p className="text-sm text-gray-600">Puedes mover el vehículo sin esperar al Oficial de Tránsito SI se cumplen <strong>TODAS</strong> estas condiciones:</p>
-              <ul className="text-sm text-gray-700 space-y-2 bg-gray-50 p-3 rounded border border-gray-100">
-                <li className="flex items-start"><i className="fa-solid fa-circle-check text-green-500 mr-2 mt-1 flex-shrink-0"></i> Ambos conductores <strong>están de acuerdo</strong> en hacer el arreglo.</li>
-                <li className="flex items-start"><i className="fa-solid fa-circle-check text-green-500 mr-2 mt-1 flex-shrink-0"></i> No hay lesionados ni fallecidos.</li>
-                <li className="flex items-start"><i className="fa-solid fa-circle-check text-green-500 mr-2 mt-1 flex-shrink-0"></i> No hay bicicletas, motos ni peatones involucrados.</li>
-                <li className="flex items-start"><i className="fa-solid fa-circle-check text-green-500 mr-2 mt-1 flex-shrink-0"></i> Ambos vehículos están asegurados y al día.</li>
-              </ul>
-              
-              <div className="border border-blue-200 bg-blue-50 p-3 rounded-lg">
-                <h4 className="font-bold text-sm mb-2 text-blue-900 flex items-center"><i className="fa-solid fa-camera mr-2"></i> Pasos para el Pacto:</h4>
-                <ol className="text-sm text-blue-800 list-decimal pl-5 space-y-2">
-                  <li>Llamar al <strong>800-800-8000</strong> e indicar que desean realizar un Pacto Amistoso.</li>
-                  <li>Grabar un <strong>pequeño video 360°</strong> de la escena completa del evento.</li>
-                  <li>Tomar las siguientes fotografías:
-                    <ul className="list-disc pl-4 mt-1 text-xs space-y-1 text-blue-700">
-                      <li>1 foto de cada costado de los vehículos.</li>
-                      <li>3 fotos de los daños de cada vehículo.</li>
-                      <li>2 fotos panorámicas de la escena y posición.</li>
-                    </ul>
-                  </li>
-                </ol>
-                <p className="text-xs font-bold text-blue-900 mt-3 border-t border-blue-200 pt-2">Luego de documentar todo, mueve el vehículo a un lugar seguro y espera al inspector del INS.</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white border border-red-200 rounded-lg shadow-sm overflow-hidden">
-            <div className="bg-red-100 px-4 py-3 border-b border-red-200">
-              <h3 className="font-bold text-red-900 flex items-center">
-                <i className="fa-solid fa-triangle-exclamation text-xl mr-2"></i> Si NO aplica el Pacto Amistoso
-              </h3>
-            </div>
-            <div className="p-4">
-              <ul className="space-y-3 text-sm text-gray-800">
-                <li className="flex items-start font-bold text-red-700">
-                  <span className="bg-red-200 text-red-900 rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 flex-shrink-0">1</span>
-                  ¡NO MOVER LOS VEHÍCULOS!
-                </li>
-                <li className="flex items-start">
-                  <span className="bg-red-200 text-red-900 rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 flex-shrink-0">2</span>
-                  Llamar a la Policía de Tránsito (117 o 911) para que confeccionen el parte oficial.
-                </li>
-                <li className="flex items-start">
-                  <span className="bg-red-200 text-red-900 rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 flex-shrink-0">3</span>
-                  Llamar al INS (800-800-8000) y esperar al inspector en la escena.
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="bg-white border rounded-lg shadow-sm overflow-hidden">
-            <div className="bg-gray-100 px-4 py-3 border-b">
-              <h3 className="font-bold text-gray-800 flex items-center">
-                <i className="fa-solid fa-clock text-xl mr-2 text-gray-600"></i> Trámites Posteriores
-              </h3>
-            </div>
-            <div className="p-4">
-              <ul className="space-y-3 text-sm text-gray-700">
-                <li className="flex items-start">
-                  <div className="bg-gray-200 text-gray-700 rounded-full w-5 h-5 flex items-center justify-center font-bold text-xs mr-2 flex-shrink-0">1</div>
-                  <span>Si no pudiste llamar al momento (Fuerza Mayor), tienes <strong>7 días hábiles</strong> para formalizar el aviso por escrito.</span>
-                </li>
-                <li className="flex items-start">
-                  <div className="bg-gray-200 text-gray-700 rounded-full w-5 h-5 flex items-center justify-center font-bold text-xs mr-2 flex-shrink-0">2</div>
-                  <span>Tienes <strong>10 días hábiles</strong> tras el evento para llevar el vehículo a un Centro de Estimación de Daños (CED).</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      );
-
-      const renderVial = () => (
-        <div className="p-4 max-w-md mx-auto space-y-6">
-          <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 shadow-sm">
-            <h3 className="font-bold text-orange-900 flex items-center mb-2">
-              <i className="fa-solid fa-screwdriver-wrench text-xl mr-2"></i> Solicitar Asistencia
-            </h3>
-            <p className="text-sm text-orange-800 mb-3">Si tu vehículo sufrió una avería mecánica, llama para solicitar asistencia en carretera:</p>
-            
-            {/* BOTÓN VERDE */}
-            <a href="tel:8008008001" className="block text-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow-md text-lg transition-colors">
-              800-800-8001 (Multiasistencia)
-            </a>
-          </div>
-
-          <div className="bg-white border rounded-lg shadow-sm p-4">
-            <h3 className="font-bold text-gray-800 mb-4 border-b pb-2">Servicios Disponibles</h3>
-            <ul className="space-y-4 text-sm text-gray-700">
-              <li className="flex items-start">
-                <i className="fa-solid fa-circle-check text-orange-500 mr-2 mt-1 flex-shrink-0"></i> 
-                <span><strong>Remolque y Básicos:</strong> Grúa por avería mecánica, envío de combustible, cambio de llanta estallada, paso de corriente y cerrajería.</span>
-              </li>
-              <li className="flex items-start bg-blue-50 p-3 rounded-lg border border-blue-100">
-                <i className="fa-solid fa-plane text-xl text-blue-600 mr-2 mt-1 flex-shrink-0"></i>
-                <div>
-                  <span className="font-bold text-blue-900 block mb-1">Taxi al Aeropuerto</span>
-                  <span className="text-blue-800">Beneficio de 2 traslados al año. Cada traslado incluye taxi de ida y regreso.</span>
-                  <p className="text-xs text-blue-600 font-semibold mt-1">* Aplica únicamente para vehículos con una antigüedad no mayor a 6 años.</p>
-                </div>
-              </li>
-            </ul>
-            <p className="text-xs text-gray-400 mt-5 italic border-t pt-3">* Los límites de eventos y distancias de grúa/asistencias dependen del plan contratado (Limitado, Básico o Plus).</p>
-          </div>
-        </div>
-      );
-
-      const renderRobo = () => (
-        <div className="p-4 max-w-md mx-auto space-y-6">
-          <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 shadow-sm">
-            <h3 className="font-bold text-purple-900 flex items-center mb-2">
-              <i className="fa-solid fa-shield text-xl mr-2"></i> Paso 1: Denuncia Inmediata
-            </h3>
-            <p className="text-sm text-purple-800 mb-3">En caso de robo total o parcial, debes presentar la denuncia <strong>inmediatamente</strong> ante el OIJ y reportarlo al INS:</p>
-            <div className="space-y-3 mt-3">
-              <a href="tel:911" className="block text-center bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 rounded-lg shadow-sm transition-colors">
-                Llamar al 911 (OIJ)
-              </a>
-              {/* BOTÓN VERDE */}
-              <a href="tel:8008008000" className="block text-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow-sm transition-colors">
-                800-800-8000 (Reporte INS)
-              </a>
-            </div>
-          </div>
-
-          <div className="bg-white border rounded-lg shadow-sm p-4">
-            <h3 className="font-bold text-gray-800 mb-3 border-b pb-2">En caso de Robo Total</h3>
-            <ul className="space-y-3 text-sm text-gray-700">
-              <li className="flex items-start">
-                <i className="fa-solid fa-circle-check text-purple-500 mr-2 mt-1 flex-shrink-0"></i> 
-                <span><strong>Beneficio de Transporte:</strong> Puedes llamar al <a href="tel:8008008001" className="text-blue-600 font-bold underline">800-800-8001</a> para solicitar un taxi que te lleve al OIJ a poner la denuncia y luego a tu residencia.</span>
-              </li>
-              <li className="flex items-start">
-                <i className="fa-solid fa-circle-check text-purple-500 mr-2 mt-1 flex-shrink-0"></i> 
-                <span><strong>Trámite con el INS:</strong> A los 15 días hábiles de la denuncia, debes presentar al Instituto la certificación del OIJ donde conste que el vehículo no apareció.</span>
-              </li>
-            </ul>
-          </div>
-
-          <div className="bg-white border rounded-lg shadow-sm p-4">
-            <h3 className="font-bold text-gray-800 mb-3 border-b pb-2">En caso de Robo Parcial</h3>
-            <ul className="space-y-3 text-sm text-gray-700">
-              <li className="flex items-start">
-                <i className="fa-solid fa-circle-check text-purple-500 mr-2 mt-1 flex-shrink-0"></i> 
-                <span>Si el vehículo cuenta con descuento por dispositivo de seguridad (GPS/monitoreo), deberás comprobar que el mismo estaba activo al momento del robo.</span>
-              </li>
-              <li className="flex items-start">
-                <i className="fa-solid fa-circle-check text-purple-500 mr-2 mt-1 flex-shrink-0"></i> 
-                <span>Si el vehículo aparece antes del pago de la indemnización, debes solicitar una inspección ocular del OIJ sobre los daños.</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      );
-
-      const renderCoberturaH = () => (
-        <div className="p-4 max-w-md mx-auto space-y-6">
-          <div className="bg-teal-50 border border-teal-200 rounded-lg p-4 shadow-sm">
-            <h3 className="font-bold text-teal-900 flex items-center mb-2">
-              <i className="fa-solid fa-cloud-showers-heavy text-xl mr-2"></i> ¿Qué incluye la Cobertura H?
-            </h3>
-            <p className="text-sm text-teal-800 mb-3">Protege tu vehículo contra riesgos adicionales como:</p>
-            <ul className="text-sm text-teal-800 list-disc pl-5 space-y-1">
-              <li><strong>Daños Vandálicos:</strong> Rayonazos, raspones, sustancias corrosivas, manchas de pintura.</li>
-              <li><strong>Naturaleza:</strong> Inundación, ciclón, huracán, temblor, deslizamiento.</li>
-              <li><strong>Otros:</strong> Caída de árboles, explosión, incendio, etc.</li>
-            </ul>
-          </div>
-
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 shadow-sm">
-            <h3 className="font-bold text-red-900 flex items-center mb-2">
-              <i className="fa-solid fa-triangle-exclamation text-xl mr-2"></i> Reporte de Daños
-            </h3>
-            <p className="text-sm text-red-800 mb-3"><strong>No repares ni alteres los daños.</strong> Reporta el evento de inmediato para que un inspector lo valore:</p>
-            
-            {/* BOTÓN VERDE */}
-            <a href="tel:8008008000" className="block text-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow-md text-lg transition-colors">
-              800-800-8000 (Reporte INS)
-            </a>
-          </div>
-
-          <div className="bg-white border rounded-lg shadow-sm overflow-hidden">
-            <div className="bg-gray-100 px-4 py-3 border-b">
-              <h3 className="font-bold text-gray-800 flex items-center">
-                <i className="fa-solid fa-clock text-xl mr-2 text-gray-600"></i> Trámites Posteriores
-              </h3>
-            </div>
-            <div className="p-4 space-y-4">
-              <ul className="space-y-3 text-sm text-gray-700">
-                <li className="flex items-start">
-                  <div className="bg-gray-200 text-gray-700 rounded-full w-5 h-5 flex items-center justify-center font-bold text-xs mr-2 flex-shrink-0">1</div>
-                  <span><strong>Cooperación:</strong> En casos de vandalismo, el INS requiere y puede solicitar tu colaboración adicional para la investigación.</span>
-                </li>
-                <li className="flex items-start">
-                  <div className="bg-gray-200 text-gray-700 rounded-full w-5 h-5 flex items-center justify-center font-bold text-xs mr-2 flex-shrink-0">2</div>
-                  <span>Tienes <strong>10 días hábiles</strong> tras el evento para llevar el vehículo a un Centro de Estimación de Daños (CED) para su valoración oficial.</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      );
-
-      const renderContactos = () => (
-        <div className="p-4 max-w-md mx-auto space-y-4">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">Directorio Oficial</h2>
-          
-          <div className="space-y-3">
-            <a href="tel:8008008000" className="block bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex items-center justify-between hover:bg-gray-50 active:bg-gray-100 transition-colors">
-              <div>
-                <h3 className="font-bold text-gray-800 text-base">Reporte de Accidentes</h3>
-                <p className="text-xs text-gray-500">Choques / Daños (24/7)</p>
-              </div>
-              {/* ETIQUETA VERDE */}
-              <span className="bg-green-100 text-green-800 px-3 py-1.5 rounded-lg font-bold text-sm">800-800-8000</span>
-            </a>
-
-            <a href="tel:8008008001" className="block bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex items-center justify-between hover:bg-gray-50 active:bg-gray-100 transition-colors">
-              <div>
-                <h3 className="font-bold text-gray-800 text-base">Asistencia Vial</h3>
-                <p className="text-xs text-gray-500">Grúa, batería, cerrajero</p>
-              </div>
-              {/* ETIQUETA VERDE */}
-              <span className="bg-green-100 text-green-800 px-3 py-1.5 rounded-lg font-bold text-sm">800-800-8001</span>
-            </a>
-
-            <a href="tel:8008353467" className="block bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex items-center justify-between hover:bg-gray-50 active:bg-gray-100 transition-colors">
-              <div>
-                <h3 className="font-bold text-gray-800 text-base">Consultas Generales</h3>
-                <p className="text-xs text-gray-500">Línea Teleins</p>
-              </div>
-              {/* ETIQUETA VERDE */}
-              <span className="bg-green-100 text-green-800 px-3 py-1.5 rounded-lg font-bold text-sm">800-8353467</span>
-            </a>
-          </div>
-          
-          <div className="mt-6 bg-gray-50 p-4 rounded-lg border border-gray-200 text-sm text-gray-600 text-center shadow-inner">
-            <i className="fa-solid fa-location-dot text-3xl mx-auto text-gray-400 mb-2"></i>
-            <p><strong>Oficinas Centrales INS:</strong><br/>Calle 9 y 11, Avenida 7, San José, Costa Rica</p>
-            <a href="mailto:contactenos@grupoins.com" className="text-blue-600 font-bold mt-2 block hover:underline">contactenos@grupoins.com</a>
-          </div>
-        </div>
-      );
+      const waNumber = (profile.whatsapp || profile.phone || '').replace(/\D/g,'');
+      const waLink = waNumber ? `https://wa.me/${waNumber}` : null;
 
       return (
-        <div className="flex flex-col min-h-screen font-sans text-gray-900 bg-gray-50">
-          {renderHeader()}
-          <main className="flex-1 pb-8 overflow-x-hidden">
-            {currentView === 'home' && renderHome()}
-            {currentView === 'vial' && renderVial()}
-            {currentView === 'accidente' && renderAccidente()}
-            {currentView === 'robo' && renderRobo()}
-            {currentView === 'coberturaH' && renderCoberturaH()}
-            {currentView === 'contactos' && renderContactos()}
-          </main>
-          
-          {CONFIG.mostrarLeyenda && (
-            <footer className="bg-gray-800 text-gray-300 py-6 px-4 text-center text-sm mt-auto shadow-inner border-t border-gray-700">
-              <p className="mb-1">Esta aplicación pertenece a <strong className="text-white">{CONFIG.nombreEmpresa}</strong>.</p>
-              {CONFIG.textoEnlace !== "" && (
-                <p className="mb-4">
-                  Visítenos en{' '}
-                  <a 
-                    href={CONFIG.linkEnlace} 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="text-blue-400 font-bold hover:text-blue-300 hover:underline transition-colors"
-                  >
-                    {CONFIG.textoEnlace}
-                  </a>
-                </p>
-              )}
-              {CONFIG.leyendaLegal !== "" && (
-                <div className="border-t border-gray-600 pt-4 mt-2">
-                  <p className="text-[10px] text-gray-400 leading-tight max-w-sm mx-auto">
-                    {CONFIG.leyendaLegal}
-                  </p>
+        <div className="flex flex-col min-h-screen">
+          <header className="app-header">
+            <div className="header-inner">
+              <div className="header-row">
+                {view === 'home' ? (
+                  <div className="brand">
+                    <img src="ins-blanco.png" alt="INS"
+                         className="brand-logo-ins"
+                         onError={(e) => { e.target.style.display='none'; e.target.nextElementSibling.style.display='grid'; }} />
+                    <div className="brand-logo-ins-fallback" style={{display:'none'}}>INS</div>
+                    <div className="brand-text">
+                      <div className="brand-title">Asistencia Autos</div>
+                      <div className="brand-subtitle">Instituto Nacional de Seguros</div>
+                    </div>
+                  </div>
+                ) : (
+                  <button className="back-btn" onClick={() => setView('home')} title="Volver">
+                    <i className="fa-solid fa-chevron-left"></i>
+                  </button>
+                )}
+                {view !== 'home' && (
+                  <div className="brand-text" style={{flex:1, textAlign:'center'}}>
+                    <div className="brand-title">{titleByView[view]}</div>
+                  </div>
+                )}
+                <div className="header-actions">
+                  <button className="header-btn" onClick={() => setView('contactos')} title="Contactos">
+                    <i className="fa-solid fa-phone"></i>
+                  </button>
+                  <button className="header-btn" onClick={openModal} title="Configurar agente">
+                    <i className="fa-solid fa-gear"></i>
+                  </button>
+                </div>
+              </div>
+              {hasProfile && (
+                <div className="agent-strip">
+                  Tu agente: <strong>{profile.name}</strong> · Licencia {profile.license}
                 </div>
               )}
-            </footer>
+            </div>
+          </header>
+
+          <main className="flex-1">
+            {view === 'home' && <Home setView={setView} />}
+            {view === 'accidente' && <Accidente />}
+            {view === 'vial' && <Vial />}
+            {view === 'robo' && <Robo />}
+            {view === 'coberturaH' && <CoberturaH />}
+            {view === 'contactos' && <Contactos profile={profile} waLink={waLink} hasProfile={hasProfile} openModal={openModal} />}
+          </main>
+
+          <footer className="app-footer">
+            <img src="sdi-logo-blanco.svg" alt="Seguros Digitales SDI" className="footer-sdi-logo" />
+            {hasProfile && (
+              <div className="footer-agent">
+                <div className="label">Tu agente</div>
+                <div className="name">{profile.name}</div>
+                <div className="meta">Licencia {profile.license} · {profile.email}</div>
+                {profile.website && (
+                  <div style={{marginTop:6}}>
+                    <a href={profile.website.startsWith('http') ? profile.website : `https://${profile.website}`}
+                       className="footer-link" target="_blank" rel="noopener noreferrer">
+                      <i className="fa-solid fa-globe" style={{marginRight:5}}></i>{profile.website}
+                    </a>
+                  </div>
+                )}
+              </div>
+            )}
+            <p style={{margin:'0 0 6px'}}>Plataforma de <span className="footer-brand">{BRAND.empresa}</span></p>
+            <div className="footer-legal">{BRAND.legal}</div>
+          </footer>
+
+          {/* MODAL */}
+          <div className={`modal-backdrop ${modalOpen ? 'open' : ''}`}>
+            <div className="modal-card">
+              <div className="modal-header">
+                <h2 className="modal-title">Configuración del agente</h2>
+                {hasProfile && (
+                  <button className="modal-close" onClick={closeModal} aria-label="Cerrar">×</button>
+                )}
+              </div>
+              <div className="modal-body">
+                <p className="modal-hint">
+                  {hasProfile
+                    ? 'Personaliza tus datos como agente. Aparecerán en el encabezado, el pie de página y el Directorio de Contactos.'
+                    : 'Antes de usar la app, configura tus datos como agente. Aparecerán en el encabezado, el pie de página y el Directorio de Contactos.'}
+                </p>
+
+                <div className="form-row">
+                  <label className="form-label required">Nombre completo</label>
+                  <input className="form-control" value={form.name}
+                    onChange={(e) => setForm({...form, name: e.target.value})}
+                    placeholder="Ej: Juan Carlos Hernandez Vargas" />
+                </div>
+
+                <div className="form-row">
+                  <label className="form-label required">Correo</label>
+                  <input className="form-control" type="email" value={form.email}
+                    onChange={(e) => setForm({...form, email: e.target.value})}
+                    placeholder="tu@dominio.com" />
+                </div>
+
+                <div className="grid-2">
+                  <div className="form-row">
+                    <label className="form-label required">Teléfono</label>
+                    <input className="form-control" value={form.phone}
+                      onChange={(e) => setForm({...form, phone: e.target.value})}
+                      placeholder="8888-8888" />
+                  </div>
+                  <div className="form-row">
+                    <label className="form-label">WhatsApp</label>
+                    <input className="form-control" value={form.whatsapp}
+                      onChange={(e) => setForm({...form, whatsapp: e.target.value})}
+                      placeholder="50688888888" />
+                  </div>
+                </div>
+
+                <div className="form-row">
+                  <label className="form-label required">Licencia SUGESE</label>
+                  <input className="form-control" value={form.license}
+                    onChange={(e) => setForm({...form, license: e.target.value})}
+                    placeholder="00-0000" />
+                </div>
+
+                <div className="form-row">
+                  <label className="form-label">Sitio web (opcional)</label>
+                  <input className="form-control" value={form.website}
+                    onChange={(e) => setForm({...form, website: e.target.value})}
+                    placeholder="www.misitio.com" />
+                </div>
+
+                <div className="modal-info">
+                  <strong>Privacidad:</strong> tus datos se guardan solo en este navegador (localStorage). No se envían a ningún servidor. Si limpias el caché del navegador deberás volver a configurarlos.
+                </div>
+              </div>
+              <div className="modal-footer">
+                {hasProfile && (
+                  <button className="btn btn-secondary" onClick={handleClearProfile} style={{marginRight:'auto'}}>
+                    Borrar
+                  </button>
+                )}
+                {hasProfile && (
+                  <button className="btn btn-secondary" onClick={closeModal}>Cancelar</button>
+                )}
+                <button className="btn btn-primary" onClick={saveProfile}>Guardar perfil</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function Home({ setView }) {
+      return (
+        <div className="container">
+          <div className="hero-card">
+            <h2><i className="fa-solid fa-shield-halved"></i> ¿Tienes una emergencia?</h2>
+            <p>Selecciona el tipo de asistencia que necesitas en el territorio nacional para guiarte paso a paso.</p>
+          </div>
+
+          <button className="action-card" onClick={() => setView('accidente')}>
+            <div className="action-icon red"><i className="fa-solid fa-car-burst"></i></div>
+            <div className="action-text">
+              <h3>Accidente de Tránsito</h3>
+              <p>Choques y guía para el Pacto Amistoso.</p>
+            </div>
+          </button>
+
+          <button className="action-card" onClick={() => setView('vial')}>
+            <div className="action-icon amber"><i className="fa-solid fa-screwdriver-wrench"></i></div>
+            <div className="action-text">
+              <h3>Asistencia Vial (Avería)</h3>
+              <p>Grúa, cerrajería, batería, llanta o aeropuerto.</p>
+            </div>
+          </button>
+
+          <button className="action-card" onClick={() => setView('robo')}>
+            <div className="action-icon purple"><i className="fa-solid fa-shield"></i></div>
+            <div className="action-text">
+              <h3>Robo Total o Parcial</h3>
+              <p>Denuncia ante OIJ, traslados y trámites con el INS.</p>
+            </div>
+          </button>
+
+          <button className="action-card" onClick={() => setView('coberturaH')}>
+            <div className="action-icon teal"><i className="fa-solid fa-cloud-showers-heavy"></i></div>
+            <div className="action-text">
+              <h3>Vandalismo / Cobertura H</h3>
+              <p>Rayonazos, inundaciones, huracanes, caída de árboles.</p>
+            </div>
+          </button>
+
+          <button className="action-card" onClick={() => setView('contactos')}>
+            <div className="action-icon green"><i className="fa-solid fa-phone"></i></div>
+            <div className="action-text">
+              <h3>Directorio de Contactos</h3>
+              <p>Tu agente y los números directos 24/7 del INS.</p>
+            </div>
+          </button>
+        </div>
+      );
+    }
+
+    function Accidente() {
+      return (
+        <div className="container">
+          <div className="section-card">
+            <div className="section-card-header red">
+              <i className="fa-solid fa-triangle-exclamation"></i> Paso 1: Reporte Inmediato
+            </div>
+            <div className="section-card-body">
+              <p style={{margin:'0 0 12px'}}>Si tuviste un choque, <strong>¡NO muevas el vehículo!</strong> (a menos que aplique Pacto Amistoso). Llama de inmediato:</p>
+              <a href="tel:8008008000" className="btn-emergency">800-800-8000 · Reporte Accidente</a>
+            </div>
+          </div>
+
+          <div className="section-card">
+            <div className="section-card-header blue">
+              <i className="fa-solid fa-shield-halved"></i> ¿Aplica Pacto Amistoso?
+            </div>
+            <div className="section-card-body">
+              <p style={{margin:'0 0 10px', color:'var(--gray-700)'}}>Puedes mover el vehículo sin esperar al Tránsito SI se cumplen <strong>TODAS</strong>:</p>
+              <div className="check-item"><i className="fa-solid fa-circle-check"></i><span>Ambos conductores <strong>están de acuerdo</strong> en hacer el arreglo.</span></div>
+              <div className="check-item"><i className="fa-solid fa-circle-check"></i><span>No hay lesionados ni fallecidos.</span></div>
+              <div className="check-item"><i className="fa-solid fa-circle-check"></i><span>No hay bicicletas, motos ni peatones involucrados.</span></div>
+              <div className="check-item"><i className="fa-solid fa-circle-check"></i><span>Ambos vehículos están asegurados y al día.</span></div>
+            </div>
+          </div>
+
+          <div className="section-card">
+            <div className="section-card-header gray">
+              <i className="fa-solid fa-clock"></i> Trámites Posteriores
+            </div>
+            <div className="section-card-body">
+              <p style={{margin:'0 0 8px'}}><strong>7 días hábiles</strong> para formalizar el aviso por escrito si no pudiste llamar al momento.</p>
+              <p style={{margin:0}}><strong>10 días hábiles</strong> para llevar el vehículo a un Centro de Estimación de Daños (CED).</p>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function Vial() {
+      return (
+        <div className="container">
+          <div className="section-card">
+            <div className="section-card-header amber">
+              <i className="fa-solid fa-screwdriver-wrench"></i> Solicitar Asistencia
+            </div>
+            <div className="section-card-body">
+              <p style={{margin:'0 0 12px'}}>Si tu vehículo sufrió una avería mecánica, solicita asistencia:</p>
+              <a href="tel:8008008001" className="btn-emergency">800-800-8001 · Multiasistencia</a>
+            </div>
+          </div>
+
+          <div className="section-card">
+            <div className="section-card-header gray">
+              <i className="fa-solid fa-list-check"></i> Servicios Disponibles
+            </div>
+            <div className="section-card-body">
+              <div className="check-item"><i className="fa-solid fa-circle-check"></i><span><strong>Remolque y Básicos:</strong> grúa por avería, combustible, llanta estallada, paso de corriente y cerrajería.</span></div>
+              <div className="check-item"><i className="fa-solid fa-plane" style={{color:'var(--blue)'}}></i><span><strong>Taxi al Aeropuerto:</strong> 2 traslados al año (ida y regreso). Vehículos hasta 6 años.</span></div>
+              <p style={{fontSize:11, color:'var(--gray-500)', marginTop:12, fontStyle:'italic'}}>* Límites de eventos y distancias dependen del plan (Limitado, Básico o Plus).</p>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function Robo() {
+      return (
+        <div className="container">
+          <div className="section-card">
+            <div className="section-card-header purple">
+              <i className="fa-solid fa-shield"></i> Paso 1: Denuncia Inmediata
+            </div>
+            <div className="section-card-body">
+              <p style={{margin:'0 0 12px'}}>Presenta la denuncia <strong>inmediatamente</strong> ante OIJ y reporta al INS:</p>
+              <a href="tel:911" className="btn-emergency" style={{background:'linear-gradient(180deg,#1f2937,#111827)', boxShadow:'0 4px 12px rgba(0,0,0,.3)', marginBottom:10}}>911 · OIJ</a>
+              <a href="tel:8008008000" className="btn-emergency">800-800-8000 · Reporte INS</a>
+            </div>
+          </div>
+
+          <div className="section-card">
+            <div className="section-card-header gray">En caso de Robo Total</div>
+            <div className="section-card-body">
+              <div className="check-item"><i className="fa-solid fa-circle-check"></i><span><strong>Transporte:</strong> llama al 800-800-8001 para taxi al OIJ y luego a tu residencia.</span></div>
+              <div className="check-item"><i className="fa-solid fa-circle-check"></i><span><strong>Trámite INS:</strong> 15 días hábiles después de la denuncia, presenta certificación del OIJ.</span></div>
+            </div>
+          </div>
+
+          <div className="section-card">
+            <div className="section-card-header gray">En caso de Robo Parcial</div>
+            <div className="section-card-body">
+              <div className="check-item"><i className="fa-solid fa-circle-check"></i><span>Si tiene GPS/monitoreo, comprueba que estaba activo al momento del robo.</span></div>
+              <div className="check-item"><i className="fa-solid fa-circle-check"></i><span>Si el vehículo aparece antes del pago, solicita inspección ocular del OIJ.</span></div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function CoberturaH() {
+      return (
+        <div className="container">
+          <div className="section-card">
+            <div className="section-card-header teal">
+              <i className="fa-solid fa-cloud-showers-heavy"></i> ¿Qué incluye la Cobertura H?
+            </div>
+            <div className="section-card-body">
+              <p style={{margin:'0 0 8px'}}><strong>Vandalismo:</strong> rayonazos, raspones, sustancias corrosivas, pintura.</p>
+              <p style={{margin:'0 0 8px'}}><strong>Naturaleza:</strong> inundación, ciclón, huracán, temblor, deslizamiento.</p>
+              <p style={{margin:0}}><strong>Otros:</strong> caída de árboles, explosión, incendio.</p>
+            </div>
+          </div>
+
+          <div className="section-card">
+            <div className="section-card-header red">
+              <i className="fa-solid fa-triangle-exclamation"></i> Reporte de Daños
+            </div>
+            <div className="section-card-body">
+              <p style={{margin:'0 0 12px'}}><strong>No repares ni alteres los daños.</strong> Reporta el evento de inmediato:</p>
+              <a href="tel:8008008000" className="btn-emergency">800-800-8000 · Reporte INS</a>
+            </div>
+          </div>
+
+          <div className="section-card">
+            <div className="section-card-header gray">Trámites Posteriores</div>
+            <div className="section-card-body">
+              <p style={{margin:'0 0 8px'}}><strong>Cooperación:</strong> en vandalismo, el INS puede pedir colaboración adicional para la investigación.</p>
+              <p style={{margin:0}}><strong>10 días hábiles</strong> para llevar el vehículo al Centro de Estimación de Daños (CED).</p>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function Contactos({ profile, waLink, hasProfile, openModal }) {
+      return (
+        <div className="container">
+          {hasProfile ? (
+            <div className="agent-card">
+              <div className="agent-card-label">Tu agente de seguros</div>
+              <div className="agent-card-name">{profile.name}</div>
+              <div className="agent-card-meta">
+                <span><i className="fa-solid fa-id-badge"></i> Licencia {profile.license}</span>
+              </div>
+              <div className="agent-card-actions">
+                <a href={`tel:${profile.phone.replace(/\D/g,'')}`} className="agent-action-btn">
+                  <i className="fa-solid fa-phone"></i>
+                  <span>Llamar</span>
+                </a>
+                {waLink ? (
+                  <a href={waLink} className="agent-action-btn wa" target="_blank" rel="noopener noreferrer">
+                    <i className="fa-brands fa-whatsapp"></i>
+                    <span>WhatsApp</span>
+                  </a>
+                ) : (
+                  <a href={`tel:${profile.phone.replace(/\D/g,'')}`} className="agent-action-btn">
+                    <i className="fa-solid fa-phone"></i>
+                    <span>Llamar</span>
+                  </a>
+                )}
+                <a href={`mailto:${profile.email}`} className="agent-action-btn">
+                  <i className="fa-solid fa-envelope"></i>
+                  <span>Correo</span>
+                </a>
+              </div>
+            </div>
+          ) : (
+            <button onClick={openModal} className="agent-card" style={{cursor:'pointer', border:0, width:'100%', textAlign:'left'}}>
+              <div className="agent-card-label">Configura tu información</div>
+              <div className="agent-card-name" style={{fontSize:16, marginBottom:8}}>Aún no has configurado tu perfil</div>
+              <div style={{fontSize:12, color:'rgba(255,255,255,.85)', display:'flex', alignItems:'center', gap:6}}>
+                <i className="fa-solid fa-gear"></i> Toca para abrir la configuración del agente
+              </div>
+            </button>
           )}
+
+          <h3 style={{fontSize:13, fontWeight:700, color:'var(--gray-500)', letterSpacing:1.5, textTransform:'uppercase', margin:'4px 4px 10px'}}>
+            Líneas oficiales INS
+          </h3>
+
+          <a href="tel:8008008000" className="contact-tile">
+            <div>
+              <h4>Reporte de Accidentes</h4>
+              <p>Choques / Daños · 24/7</p>
+            </div>
+            <span className="contact-pill">800-800-8000</span>
+          </a>
+
+          <a href="tel:8008008001" className="contact-tile">
+            <div>
+              <h4>Asistencia Vial</h4>
+              <p>Grúa, batería, cerrajero</p>
+            </div>
+            <span className="contact-pill">800-800-8001</span>
+          </a>
+
+          <a href="tel:8008353467" className="contact-tile">
+            <div>
+              <h4>Consultas Generales</h4>
+              <p>Línea Teleins</p>
+            </div>
+            <span className="contact-pill">800-8353467</span>
+          </a>
+
+          <div style={{marginTop:18, background:'var(--gray-50)', border:'1px solid var(--gray-200)', borderRadius:12, padding:14, textAlign:'center', fontSize:12, color:'var(--gray-700)'}}>
+            <i className="fa-solid fa-location-dot" style={{fontSize:22, color:'var(--gray-500)', marginBottom:6}}></i>
+            <p style={{margin:'0 0 6px'}}><strong>Oficinas Centrales INS</strong><br/>Calle 9 y 11, Av. 7, San José, CR</p>
+            <a href="mailto:contactenos@grupoins.com" style={{color:'var(--blue)', fontWeight:600, textDecoration:'none'}}>contactenos@grupoins.com</a>
+          </div>
         </div>
       );
     }
