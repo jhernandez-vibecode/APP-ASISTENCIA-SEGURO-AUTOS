@@ -470,43 +470,37 @@
   <div id="root"></div>
 
   <script type="text/babel">
-    const { useState, useEffect } = React;
+    const { useState } = React;
 
-    // ---------- PERFIL DEL AGENTE (localStorage multi-tenant) ----------
-    const PROFILE_KEY = 'app_asistencia_agent_v1';
-    const EMPTY_PROFILE = {
-      name: '', email: '', phone: '', whatsapp: '', license: '', website: ''
-    };
-
-    function loadProfile() {
-      try {
-        const raw = localStorage.getItem(PROFILE_KEY);
-        if (!raw) return null;
-        const p = JSON.parse(raw);
-        if (!p || !p.name || !p.email || !p.phone || !p.license) return null;
-        return { ...EMPTY_PROFILE, ...p };
-      } catch (e) { return null; }
-    }
-
-    function saveProfileToStorage(p) {
-      try {
-        localStorage.setItem(PROFILE_KEY, JSON.stringify({
-          name:     (p.name     || '').trim(),
-          email:    (p.email    || '').trim(),
-          phone:    (p.phone    || '').trim(),
-          whatsapp: (p.whatsapp || '').trim(),
-          license:  (p.license  || '').trim(),
-          website:  (p.website  || '').trim()
-        }));
-        return true;
-      } catch (e) {
-        alert('No se pudo guardar el perfil. Verifica que el navegador permita localStorage.');
-        return false;
+    // ---------- AGENTES (link masivo y fijo por agente) ----------
+    // Cada agente comparte SU URL con `?a=<id>`. Sin param => default (jc).
+    const AGENTES = {
+      jc: {
+        name:     'Juan Carlos Hernández Vargas',
+        email:    'jhernandez@segurosdelins.com',
+        phone:    '8822-1348',
+        whatsapp: '50688221348',
+        license:  '08-1318',
+        website:  'www.segurosdelins.com'
+      },
+      fhv: {
+        name:     'Fernando Hernández Vargas',
+        email:    'fhernandez@segurosdelins.com',
+        phone:    '8526-3532',
+        whatsapp: '50685263532',
+        license:  '08-1319',
+        website:  ''
       }
-    }
+    };
+    const DEFAULT_AGENT_ID = 'jc';
 
-    function clearProfileFromStorage() {
-      try { localStorage.removeItem(PROFILE_KEY); } catch (e) {}
+    function getAgent() {
+      try {
+        const id = (new URLSearchParams(window.location.search).get('a') || DEFAULT_AGENT_ID).toLowerCase();
+        return AGENTES[id] || AGENTES[DEFAULT_AGENT_ID];
+      } catch (e) {
+        return AGENTES[DEFAULT_AGENT_ID];
+      }
     }
 
     const BRAND = {
@@ -516,45 +510,7 @@
 
     function App() {
       const [view, setView] = useState('home');
-      const [profile, setProfile] = useState(EMPTY_PROFILE);
-      const [hasProfile, setHasProfile] = useState(false);
-      const [modalOpen, setModalOpen] = useState(false);
-      const [form, setForm] = useState(EMPTY_PROFILE);
-
-      useEffect(() => {
-        const p = loadProfile();
-        if (p) {
-          setProfile(p);
-          setHasProfile(true);
-        } else {
-          setForm(EMPTY_PROFILE);
-          setModalOpen(true);
-        }
-      }, []);
-
-      const openModal = () => { setForm(profile); setModalOpen(true); };
-      const closeModal = () => { if (hasProfile) setModalOpen(false); };
-      const saveProfile = () => {
-        const required = ['name','email','phone','license'];
-        const missing = required.filter(k => !form[k] || !String(form[k]).trim());
-        if (missing.length > 0) {
-          alert('Faltan campos obligatorios: ' + missing.join(', '));
-          return;
-        }
-        if (saveProfileToStorage(form)) {
-          setProfile({ ...EMPTY_PROFILE, ...form });
-          setHasProfile(true);
-          setModalOpen(false);
-        }
-      };
-      const handleClearProfile = () => {
-        if (!confirm('¿Borrar perfil del agente de este dispositivo? Tendrás que volver a configurarlo.')) return;
-        clearProfileFromStorage();
-        setProfile(EMPTY_PROFILE);
-        setForm(EMPTY_PROFILE);
-        setHasProfile(false);
-        setModalOpen(true);
-      };
+      const profile = getAgent();
 
       const titleByView = {
         home:       'Asistencia Seguro Automóviles',
@@ -598,16 +554,11 @@
                   <button className="header-btn" onClick={() => setView('contactos')} title="Contactos">
                     <i className="fa-solid fa-phone"></i>
                   </button>
-                  <button className="header-btn" onClick={openModal} title="Configurar agente">
-                    <i className="fa-solid fa-gear"></i>
-                  </button>
                 </div>
               </div>
-              {hasProfile && (
-                <div className="agent-strip">
-                  Tu agente: <strong>{profile.name}</strong> · Licencia {profile.license}
-                </div>
-              )}
+              <div className="agent-strip">
+                Tu agente: <strong>{profile.name}</strong> · Licencia {profile.license}
+              </div>
             </div>
           </header>
 
@@ -617,106 +568,27 @@
             {view === 'vial' && <Vial />}
             {view === 'robo' && <Robo />}
             {view === 'coberturaH' && <CoberturaH />}
-            {view === 'contactos' && <Contactos profile={profile} waLink={waLink} hasProfile={hasProfile} openModal={openModal} />}
+            {view === 'contactos' && <Contactos profile={profile} waLink={waLink} />}
           </main>
 
           <footer className="app-footer">
             <img src="sdi-logo-blanco.svg" alt="Seguros Digitales SDI" className="footer-sdi-logo" />
-            {hasProfile && (
-              <div className="footer-agent">
-                <div className="label">Tu agente</div>
-                <div className="name">{profile.name}</div>
-                <div className="meta">Licencia {profile.license} · {profile.email}</div>
-                {profile.website && (
-                  <div style={{marginTop:6}}>
-                    <a href={profile.website.startsWith('http') ? profile.website : `https://${profile.website}`}
-                       className="footer-link" target="_blank" rel="noopener noreferrer">
-                      <i className="fa-solid fa-globe" style={{marginRight:5}}></i>{profile.website}
-                    </a>
-                  </div>
-                )}
-              </div>
-            )}
+            <div className="footer-agent">
+              <div className="label">Tu agente</div>
+              <div className="name">{profile.name}</div>
+              <div className="meta">Licencia {profile.license} · {profile.email}</div>
+              {profile.website && (
+                <div style={{marginTop:6}}>
+                  <a href={profile.website.startsWith('http') ? profile.website : `https://${profile.website}`}
+                     className="footer-link" target="_blank" rel="noopener noreferrer">
+                    <i className="fa-solid fa-globe" style={{marginRight:5}}></i>{profile.website}
+                  </a>
+                </div>
+              )}
+            </div>
             <p style={{margin:'0 0 6px'}}>Plataforma de <span className="footer-brand">{BRAND.empresa}</span></p>
             <div className="footer-legal">{BRAND.legal}</div>
           </footer>
-
-          {/* MODAL */}
-          <div className={`modal-backdrop ${modalOpen ? 'open' : ''}`}>
-            <div className="modal-card">
-              <div className="modal-header">
-                <h2 className="modal-title">Configuración del agente</h2>
-                {hasProfile && (
-                  <button className="modal-close" onClick={closeModal} aria-label="Cerrar">×</button>
-                )}
-              </div>
-              <div className="modal-body">
-                <p className="modal-hint">
-                  {hasProfile
-                    ? 'Personaliza tus datos como agente. Aparecerán en el encabezado, el pie de página y el Directorio de Contactos.'
-                    : 'Antes de usar la app, configura tus datos como agente. Aparecerán en el encabezado, el pie de página y el Directorio de Contactos.'}
-                </p>
-
-                <div className="form-row">
-                  <label className="form-label required">Nombre completo</label>
-                  <input className="form-control" value={form.name}
-                    onChange={(e) => setForm({...form, name: e.target.value})}
-                    placeholder="Ej: Juan Carlos Hernandez Vargas" />
-                </div>
-
-                <div className="form-row">
-                  <label className="form-label required">Correo</label>
-                  <input className="form-control" type="email" value={form.email}
-                    onChange={(e) => setForm({...form, email: e.target.value})}
-                    placeholder="tu@dominio.com" />
-                </div>
-
-                <div className="grid-2">
-                  <div className="form-row">
-                    <label className="form-label required">Teléfono</label>
-                    <input className="form-control" value={form.phone}
-                      onChange={(e) => setForm({...form, phone: e.target.value})}
-                      placeholder="8888-8888" />
-                  </div>
-                  <div className="form-row">
-                    <label className="form-label">WhatsApp</label>
-                    <input className="form-control" value={form.whatsapp}
-                      onChange={(e) => setForm({...form, whatsapp: e.target.value})}
-                      placeholder="50688888888" />
-                  </div>
-                </div>
-
-                <div className="form-row">
-                  <label className="form-label required">Licencia SUGESE</label>
-                  <input className="form-control" value={form.license}
-                    onChange={(e) => setForm({...form, license: e.target.value})}
-                    placeholder="00-0000" />
-                </div>
-
-                <div className="form-row">
-                  <label className="form-label">Sitio web (opcional)</label>
-                  <input className="form-control" value={form.website}
-                    onChange={(e) => setForm({...form, website: e.target.value})}
-                    placeholder="www.misitio.com" />
-                </div>
-
-                <div className="modal-info">
-                  <strong>Privacidad:</strong> tus datos se guardan solo en este navegador (localStorage). No se envían a ningún servidor. Si limpias el caché del navegador deberás volver a configurarlos.
-                </div>
-              </div>
-              <div className="modal-footer">
-                {hasProfile && (
-                  <button className="btn btn-secondary" onClick={handleClearProfile} style={{marginRight:'auto'}}>
-                    Borrar
-                  </button>
-                )}
-                {hasProfile && (
-                  <button className="btn btn-secondary" onClick={closeModal}>Cancelar</button>
-                )}
-                <button className="btn btn-primary" onClick={saveProfile}>Guardar perfil</button>
-              </div>
-            </div>
-          </div>
         </div>
       );
     }
@@ -906,47 +778,30 @@
       );
     }
 
-    function Contactos({ profile, waLink, hasProfile, openModal }) {
+    function Contactos({ profile, waLink }) {
       return (
         <div className="container">
-          {hasProfile ? (
-            <div className="agent-card">
-              <div className="agent-card-label">Tu agente de seguros</div>
-              <div className="agent-card-name">{profile.name}</div>
-              <div className="agent-card-meta">
-                <span><i className="fa-solid fa-id-badge"></i> Licencia {profile.license}</span>
-              </div>
-              <div className="agent-card-actions">
-                <a href={`tel:${profile.phone.replace(/\D/g,'')}`} className="agent-action-btn">
-                  <i className="fa-solid fa-phone"></i>
-                  <span>Llamar</span>
-                </a>
-                {waLink ? (
-                  <a href={waLink} className="agent-action-btn wa" target="_blank" rel="noopener noreferrer">
-                    <i className="fa-brands fa-whatsapp"></i>
-                    <span>WhatsApp</span>
-                  </a>
-                ) : (
-                  <a href={`tel:${profile.phone.replace(/\D/g,'')}`} className="agent-action-btn">
-                    <i className="fa-solid fa-phone"></i>
-                    <span>Llamar</span>
-                  </a>
-                )}
-                <a href={`mailto:${profile.email}`} className="agent-action-btn">
-                  <i className="fa-solid fa-envelope"></i>
-                  <span>Correo</span>
-                </a>
-              </div>
+          <div className="agent-card">
+            <div className="agent-card-label">Tu agente de seguros</div>
+            <div className="agent-card-name">{profile.name}</div>
+            <div className="agent-card-meta">
+              <span><i className="fa-solid fa-id-badge"></i> Licencia {profile.license}</span>
             </div>
-          ) : (
-            <button onClick={openModal} className="agent-card" style={{cursor:'pointer', border:0, width:'100%', textAlign:'left'}}>
-              <div className="agent-card-label">Configura tu información</div>
-              <div className="agent-card-name" style={{fontSize:16, marginBottom:8}}>Aún no has configurado tu perfil</div>
-              <div style={{fontSize:12, color:'rgba(255,255,255,.85)', display:'flex', alignItems:'center', gap:6}}>
-                <i className="fa-solid fa-gear"></i> Toca para abrir la configuración del agente
-              </div>
-            </button>
-          )}
+            <div className="agent-card-actions">
+              <a href={`tel:${profile.phone.replace(/\D/g,'')}`} className="agent-action-btn">
+                <i className="fa-solid fa-phone"></i>
+                <span>Llamar</span>
+              </a>
+              <a href={waLink} className="agent-action-btn wa" target="_blank" rel="noopener noreferrer">
+                <i className="fa-brands fa-whatsapp"></i>
+                <span>WhatsApp</span>
+              </a>
+              <a href={`mailto:${profile.email}`} className="agent-action-btn">
+                <i className="fa-solid fa-envelope"></i>
+                <span>Correo</span>
+              </a>
+            </div>
+          </div>
 
           <h3 style={{fontSize:13, fontWeight:700, color:'var(--gray-500)', letterSpacing:1.5, textTransform:'uppercase', margin:'4px 4px 10px'}}>
             Líneas oficiales INS
