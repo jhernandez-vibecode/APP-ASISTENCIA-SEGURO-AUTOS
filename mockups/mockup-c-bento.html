@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Mockup C · Bento Tricolor · Asistencia Autos SDI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  :root{
+    --navy:#0c2340; --navy-2:#143055;
+    --ink:#16202e; --muted:#5d6878; --faint:#8b95a3;
+    --bg:#f4f6f8; --card:#ffffff; --line:#e8ebef;
+    --blue:#0369a1; --blue-soft:#e8f3fa;
+    --green:#157347; --green-soft:#e6f3ec;
+    --red:#c2342f; --red-soft:#fbeeed;
+    --amber:#b4690e; --amber-soft:#fdf3e7;
+    --violet:#5b4b8a; --violet-soft:#f0edf8;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{font-family:'Sora',system-ui,sans-serif;background:#dfe3e8;color:var(--ink);
+       display:flex;justify-content:center;padding:24px 0;min-height:100dvh;}
+  .phone{width:100%;max-width:430px;background:var(--bg);border-radius:34px;overflow:hidden;
+         box-shadow:0 30px 70px -20px rgba(12,35,64,.45),0 0 0 1px rgba(12,35,64,.05);}
+  .ribbon{background:#0c2340;color:#cfe3f5;text-align:center;font-size:10px;letter-spacing:1.5px;
+          text-transform:uppercase;padding:6px;font-weight:600;}
+
+  header{padding:18px 20px 6px;display:flex;align-items:center;justify-content:space-between;}
+  .brand{display:flex;align-items:center;gap:10px;}
+  .brand .badge{height:34px;padding:0 12px;background:var(--navy);border-radius:10px;display:flex;align-items:center;gap:9px;}
+  .brand .badge img{height:18px;width:auto;object-fit:contain;}
+  .brand .badge .fallback{color:#fff;font-weight:800;font-size:12px;letter-spacing:1px;display:none;}
+  .brand .t1{font-size:13px;font-weight:700;line-height:1.1;}
+  .brand .t2{font-size:9.5px;color:var(--faint);margin-top:1px;}
+  .hbtn{width:38px;height:38px;border-radius:12px;background:#fff;border:1px solid var(--line);color:var(--navy);
+        display:grid;place-items:center;font-size:15px;}
+
+  main{padding:14px 16px 8px;}
+  .bento{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+
+  .tile{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:18px;cursor:pointer;
+        text-align:left;display:flex;flex-direction:column;box-shadow:0 14px 30px -18px rgba(12,35,64,.18);
+        transition:transform .14s ease,box-shadow .14s ease;}
+  .tile:active{transform:translateY(2px) scale(.99);}
+  .tile .ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:19px;margin-bottom:auto;}
+  .ic.blue{background:var(--blue-soft);color:var(--blue);}
+  .ic.green{background:var(--green-soft);color:var(--green);}
+  .ic.red{background:var(--red-soft);color:var(--red);}
+  .ic.amber{background:var(--amber-soft);color:var(--amber);}
+  .ic.violet{background:var(--violet-soft);color:var(--violet);}
+  .tile h3{margin:16px 0 0;font-size:14px;font-weight:700;letter-spacing:-.2px;line-height:1.15;}
+  .tile p{margin:4px 0 0;font-size:11px;color:var(--muted);line-height:1.4;}
+
+  /* hero spanning tile */
+  .hero{grid-column:1/-1;background:linear-gradient(135deg,#0c2340 0%,#143055 55%,#0369a1 130%);
+        color:#fff;border:0;min-height:158px;position:relative;overflow:hidden;}
+  .hero::after{content:'';position:absolute;right:-40px;top:-40px;width:170px;height:170px;
+        background:radial-gradient(closest-side,rgba(14,165,233,.4),transparent);}
+  .hero .k{font-size:10.5px;letter-spacing:2px;text-transform:uppercase;color:#7fb0db;font-weight:600;}
+  .hero h1{margin:8px 0 0;font-size:23px;line-height:1.08;font-weight:700;letter-spacing:-.5px;max-width:13ch;}
+  .hero .cta{margin-top:auto;display:inline-flex;align-items:center;gap:8px;align-self:flex-start;
+        background:#fff;color:var(--navy);font-size:12px;font-weight:700;padding:9px 14px;border-radius:11px;}
+  .hero .num{position:absolute;right:18px;bottom:18px;font-size:12px;font-weight:700;color:#cfe3f5;
+        font-variant-numeric:tabular-nums;background:rgba(255,255,255,.12);padding:5px 10px;border-radius:8px;}
+
+  /* tall accident tile */
+  .tall{grid-row:span 2;background:linear-gradient(180deg,#c2342f,#9f2722);color:#fff;border:0;
+        box-shadow:0 18px 34px -16px rgba(194,52,47,.55);}
+  .tall .ic{background:rgba(255,255,255,.18);color:#fff;}
+  .tall h3,.tall p{color:#fff;}
+  .tall p{opacity:.85;}
+  .tall .num{margin-top:14px;font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;
+        background:rgba(0,0,0,.16);padding:6px 11px;border-radius:9px;align-self:flex-start;}
+
+  /* agent footer card */
+  .agent{grid-column:1/-1;display:flex;align-items:center;gap:12px;background:var(--card);
+         border:1px solid var(--line);border-radius:22px;padding:14px 16px;box-shadow:0 14px 30px -18px rgba(12,35,64,.18);}
+  .agent .av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#0ea5e9,#0369a1);
+         color:#fff;display:grid;place-items:center;font-weight:700;font-size:15px;flex-shrink:0;}
+  .agent .n{font-size:13px;font-weight:700;}
+  .agent .m{font-size:10.5px;color:var(--muted);margin-top:2px;}
+  .agent .acts{margin-left:auto;display:flex;gap:7px;}
+  .agent .acts a{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-size:15px;color:#fff;}
+  .acts .call{background:var(--blue);}
+  .acts .wa{background:#1f9d55;}
+
+  footer{padding:22px 20px 30px;text-align:center;}
+  footer img{height:40px;opacity:.5;margin-bottom:10px;filter:brightness(0) saturate(100%) invert(13%) sepia(38%) saturate(1400%) hue-rotate(184deg);}
+  footer .e{font-size:11px;color:var(--faint);}
+  footer .e b{color:var(--muted);}
+
+  /* === 100% responsive: en celular llena toda la pantalla === */
+  @media (max-width:520px){
+    body{padding:0;background:var(--bg);}
+    .phone{max-width:100%;min-height:100dvh;border-radius:0;box-shadow:none;}
+  }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="ribbon">Mockup C — Bento Tricolor</div>
+  <header>
+    <div class="brand">
+      <div class="badge">
+        <img src="../ins-blanco.png" alt="INS" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+        <span class="fallback">INS</span>
+      </div>
+      <div>
+        <div class="t1">Asistencia Autos</div>
+        <div class="t2">Instituto Nacional de Seguros</div>
+      </div>
+    </div>
+    <button class="hbtn"><i class="fa-solid fa-phone"></i></button>
+  </header>
+
+  <main>
+    <div class="bento">
+      <button class="tile hero">
+        <div class="k">Estamos contigo</div>
+        <h1>¿Qué pasó con tu vehículo?</h1>
+        <span class="cta">Ver guía de accidente <i class="fa-solid fa-arrow-right"></i></span>
+        <span class="num">800-800-8000</span>
+      </button>
+
+      <button class="tile tall">
+        <div class="ic"><i class="fa-solid fa-car-burst"></i></div>
+        <h3>Accidente de tránsito</h3>
+        <p>Choques y guía para el Pacto Amistoso.</p>
+        <span class="num">Reportar ahora</span>
+      </button>
+
+      <button class="tile">
+        <div class="ic amber"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+        <h3>Asistencia vial</h3>
+        <p>Grúa, batería, llanta, cerrajero.</p>
+      </button>
+
+      <button class="tile">
+        <div class="ic violet"><i class="fa-solid fa-shield-halved"></i></div>
+        <h3>Robo del vehículo</h3>
+        <p>Denuncia OIJ y trámite INS.</p>
+      </button>
+
+      <button class="tile">
+        <div class="ic green"><i class="fa-solid fa-cloud-showers-heavy"></i></div>
+        <h3>Vandalismo / clima</h3>
+        <p>Rayonazos, inundación, árboles (Cob. H).</p>
+      </button>
+
+      <div class="agent">
+        <div class="av">JC</div>
+        <div>
+          <div class="n">Juan Carlos Hernández</div>
+          <div class="m">Tu agente · Lic. 08-1318</div>
+        </div>
+        <div class="acts">
+          <a class="call"><i class="fa-solid fa-phone"></i></a>
+          <a class="wa"><i class="fa-brands fa-whatsapp"></i></a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <img src="../sdi-logo-blanco.svg" alt="SDI">
+    <div class="e">Plataforma de <b>Seguros Digitales SDI®</b></div>
+  </footer>
+</div>
+</body>
+</html>
