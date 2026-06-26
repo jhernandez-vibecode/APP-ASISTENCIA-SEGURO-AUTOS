@@ -34,7 +34,8 @@
       --amber:#b4690e; --amber-soft:#fdf3e7;
       --violet:#5b4b8a; --violet-soft:#f1eef8;
       --teal:#0f6f63; --teal-soft:#e7f4f1;
-      --green:#157347; --green-dark:#0f5c38;
+      --green:#157347; --green-dark:#0f5c38; --green-soft:#e6f3ec;
+      --gray-soft:#eef0f3;
 
       --shadow-card:0 14px 30px -20px rgba(12,35,64,.18);
       --shadow-pop:0 16px 30px -12px rgba(12,35,64,.28);
@@ -200,6 +201,107 @@
     @media (min-width:481px){
       .app{box-shadow:0 0 0 1px var(--line);min-height:100dvh;}
     }
+
+    /* ============ ¿QUÉ CUBRE TU ASISTENCIA? ============ */
+    .cob-entry{display:flex;align-items:center;gap:14px;width:100%;border:1px solid #cfe7e2;cursor:pointer;text-align:left;
+        background:linear-gradient(135deg,#ffffff 0%,var(--teal-soft) 135%);border-radius:16px;padding:15px 16px;
+        box-shadow:var(--shadow-card);margin-bottom:22px;transition:transform .12s,box-shadow .12s;}
+    .cob-entry:hover{transform:translateY(-1px);}
+    .cob-entry:active{transform:scale(.99);}
+    .cob-entry-ic{width:46px;height:46px;flex:0 0 46px;border-radius:13px;background:var(--teal);color:#fff;display:grid;place-items:center;font-size:19px;}
+    .cob-entry-tx{flex:1;min-width:0;}
+    .cob-entry-tx h3{margin:0;font-size:14px;font-weight:700;color:var(--ink);}
+    .cob-entry-tx p{margin:3px 0 0;font-size:11.5px;color:var(--muted);line-height:1.4;}
+    .cob-entry-ch{color:var(--teal);font-size:14px;flex-shrink:0;}
+
+    .cob-wrap{padding:18px 16px 26px;}
+    .cob-intro{display:flex;gap:11px;align-items:flex-start;background:var(--accent-soft);border:1px solid #dbe9f4;border-radius:14px;padding:12px 13px;margin-bottom:16px;}
+    .cob-intro i{color:var(--accent);font-size:15px;margin-top:1px;}
+    .cob-intro p{margin:0;font-size:12px;line-height:1.5;color:#2a4a63;}
+    .cob-intro p b{color:var(--navy);}
+    .cob-picker-label{font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin:0 2px 9px;display:flex;align-items:center;gap:7px;}
+    .cob-picker-label i{color:var(--accent);}
+    .cob-yearsel{position:relative;margin-bottom:2px;}
+    .cob-yearsel select{width:100%;font-family:'Sora',sans-serif;font-size:16px;font-weight:700;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:16px 44px 16px 44px;appearance:none;-webkit-appearance:none;cursor:pointer;font-variant-numeric:tabular-nums;transition:border-color .15s,box-shadow .15s;}
+    .cob-yearsel select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
+    .cob-yearsel select:invalid{color:var(--faint);font-weight:600;}
+    .cob-yearsel-ic{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--accent);font-size:15px;pointer-events:none;}
+    .cob-yearsel-chev{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;pointer-events:none;}
+    .cob-empty{margin-top:18px;background:var(--card);border:1px dashed #d6dbe2;border-radius:16px;padding:26px 18px;text-align:center;}
+    .cob-empty i{font-size:26px;color:var(--faint);margin-bottom:10px;}
+    .cob-empty h3{margin:0 0 5px;font-size:14px;font-weight:700;color:var(--ink);}
+    .cob-empty p{margin:0;font-size:12px;color:var(--muted);line-height:1.5;}
+
+    .cob-hero{margin-top:18px;border-radius:20px;overflow:hidden;color:#fff;box-shadow:var(--shadow-pop);position:relative;background:linear-gradient(140deg,var(--navy) 0%,var(--navy-2) 55%,var(--plan-accent,#0f6f63) 145%);}
+    .cob-hero::after{content:"";position:absolute;right:-40px;top:-40px;width:170px;height:170px;border-radius:50%;background:radial-gradient(circle,var(--plan-glow,rgba(15,111,99,.55)) 0%,transparent 70%);opacity:.85;pointer-events:none;}
+    .cob-hero-top{padding:18px 18px 4px;position:relative;z-index:1;}
+    .cob-hero-eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:10.5px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:rgba(255,255,255,.72);margin-bottom:9px;}
+    .cob-hero-badge{display:inline-flex;align-items:center;gap:7px;background:var(--plan-chip,rgba(15,111,99,.9));padding:4px 11px;border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:.4px;}
+    .cob-hero-name{font-size:27px;font-weight:800;letter-spacing:-.4px;margin:11px 0 4px;line-height:1.05;}
+    .cob-hero-sub{font-size:12.5px;color:rgba(255,255,255,.78);font-weight:500;display:flex;align-items:center;gap:7px;margin-bottom:3px;flex-wrap:wrap;}
+    .cob-hero-sub .sep{opacity:.4;}
+    .cob-hero-stats{display:flex;gap:8px;padding:14px 18px 18px;position:relative;z-index:1;}
+    .cob-stat-pill{flex:1;background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.16);border-radius:13px;padding:11px 10px;text-align:center;}
+    .cob-stat-pill .sv{font-size:16px;font-weight:800;letter-spacing:-.3px;display:block;font-variant-numeric:tabular-nums;}
+    .cob-stat-pill .sl{font-size:9.5px;color:rgba(255,255,255,.72);font-weight:600;margin-top:3px;display:block;line-height:1.25;text-transform:uppercase;letter-spacing:.3px;}
+    .cob-hero.gray{background:linear-gradient(140deg,#37404d 0%,#4a5563 70%,#5b6675 130%);}
+    .cob-hero.gray::after{background:radial-gradient(circle,rgba(255,255,255,.12) 0%,transparent 70%);}
+
+    .cob-sec-head{display:flex;align-items:center;gap:8px;margin:22px 2px 11px;}
+    .cob-sec-head h2{margin:0;font-size:13px;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.5px;}
+    .cob-sec-head .count{margin-left:auto;font-size:11px;font-weight:700;color:var(--muted);background:var(--line-2);padding:3px 9px;border-radius:999px;}
+
+    .cob-acc{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-card);margin-bottom:11px;overflow:hidden;}
+    .cob-acc summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:14px 15px;user-select:none;}
+    .cob-acc summary::-webkit-details-marker{display:none;}
+    .cob-acc-ic{width:42px;height:42px;flex:0 0 42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;}
+    .cob-acc-tt{flex:1;min-width:0;}
+    .cob-acc-tt h3{margin:0;font-size:13.5px;font-weight:700;color:var(--ink);}
+    .cob-acc-tt p{margin:2px 0 0;font-size:11.5px;color:var(--muted);font-weight:500;}
+    .cob-acc-chev{color:var(--faint);font-size:13px;transition:transform .22s;}
+    .cob-acc[open] .cob-acc-chev{transform:rotate(180deg);}
+    .cob-acc-body{border-top:1px solid var(--line-2);padding:4px 0 6px;}
+    .cob-row{display:flex;align-items:flex-start;gap:11px;padding:11px 15px;border-bottom:1px solid var(--line-2);}
+    .cob-row:last-child{border-bottom:none;}
+    .cob-row-bullet{width:6px;height:6px;border-radius:50%;margin-top:6px;flex:0 0 6px;background:var(--plan-accent,#0f6f63);}
+    .cob-row-main{flex:1;min-width:0;}
+    .cob-row-main h4{margin:0;font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.35;}
+    .cob-row-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
+    .cob-mchip{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;border-radius:7px;padding:3px 7px;font-variant-numeric:tabular-nums;}
+    .cob-mchip.ev{background:var(--accent-soft);color:var(--accent);}
+    .cob-mchip.amt{background:var(--green-soft);color:var(--green-dark);}
+    .cob-mchip.free{background:var(--teal-soft);color:var(--teal);}
+    .cob-mchip i{font-size:9px;}
+    .cob-ic-road{background:var(--accent-soft);color:var(--accent);}
+    .cob-ic-med{background:var(--red-soft);color:var(--red);}
+    .cob-ic-info{background:var(--violet-soft);color:var(--violet);}
+    .cob-ic-plus{background:var(--green-soft);color:var(--green-dark);}
+    .cob-ic-intl{background:var(--amber-soft);color:var(--amber);}
+
+    .cob-noplan{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-card);padding:18px 16px;margin-top:14px;text-align:center;}
+    .cob-nico{width:52px;height:52px;border-radius:15px;background:var(--gray-soft);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 11px;}
+    .cob-noplan h3{margin:0 0 6px;font-size:15px;font-weight:700;color:var(--ink);}
+    .cob-noplan p{margin:0;font-size:12.5px;color:var(--muted);line-height:1.5;}
+
+    .cob-btn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;padding:15px;border:none;border-radius:14px;cursor:pointer;font-family:'Sora',sans-serif;font-size:15px;font-weight:700;color:#fff;text-decoration:none;margin-top:14px;background:linear-gradient(135deg,var(--green) 0%,var(--green-dark) 100%);box-shadow:0 12px 22px -12px rgba(21,115,71,.7);transition:transform .12s;}
+    .cob-btn:active{transform:translateY(1px);}
+    .cob-btn.wa{background:linear-gradient(135deg,#25d366 0%,#1ca850 100%);box-shadow:0 12px 22px -12px rgba(37,211,102,.7);}
+
+    .cob-agent{margin-top:16px;border-radius:16px;overflow:hidden;background:linear-gradient(135deg,var(--navy) 0%,var(--navy-2) 100%);color:#fff;padding:15px 16px;display:flex;align-items:center;gap:13px;box-shadow:var(--shadow-card);}
+    .cob-agent-av{width:44px;height:44px;flex:0 0 44px;border-radius:13px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;}
+    .cob-agent-info{flex:1;min-width:0;}
+    .cob-agent-info b{display:block;font-size:13.5px;font-weight:700;}
+    .cob-agent-info span{display:block;font-size:11px;color:rgba(255,255,255,.66);margin-top:1px;}
+    .cob-agent-wa{flex:0 0 auto;width:42px;height:42px;border-radius:12px;background:#25d366;color:#fff;display:flex;align-items:center;justify-content:center;font-size:19px;text-decoration:none;transition:transform .12s;}
+    .cob-agent-wa:active{transform:scale(.93);}
+
+    .cob-legal{margin-top:20px;padding:14px 4px 0;border-top:1px solid var(--line);}
+    .cob-legal p{margin:0;font-size:10px;line-height:1.55;color:var(--faint);}
+    .cob-legal .brandline{margin-top:10px;font-size:9.5px;color:var(--faint);display:flex;align-items:center;gap:6px;justify-content:center;font-weight:600;letter-spacing:.3px;}
+    .cob-legal .brandline i{color:var(--accent);}
+
+    @keyframes cob-fadeup{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+    .cob-fade{animation:cob-fadeup .3s ease both;}
   </style>
 </head>
 <body>
@@ -237,13 +339,302 @@
       legal:'© 2026 Propiedad Intelectual de Juan Carlos Hernández Vargas. Todos los derechos reservados.'
     };
 
+    /* ===== ¿QUÉ CUBRE TU ASISTENCIA? — datos exactos del contrato INS ===== */
+    /* Solo Uso Personal · Particulares y Carga Liviana. ev: nº de eventos o "free". amt: monto literal. */
+    const COB_CURRENT_YEAR = new Date().getFullYear();
+
+    const COB_GROUPS = {
+      road: { icon:'fa-road',           cls:'cob-ic-road', title:'En carretera' },
+      med:  { icon:'fa-kit-medical',    cls:'cob-ic-med',  title:'Médico y accidente' },
+      info: { icon:'fa-headset',        cls:'cob-ic-info', title:'Información y gestión' },
+      plus: { icon:'fa-star',           cls:'cob-ic-plus', title:'Exclusivos del Plan Plus' },
+      intl: { icon:'fa-earth-americas', cls:'cob-ic-intl', title:'Internacional' }
+    };
+
+    const COB_PLUS_NAC = [
+      {g:'road', n:'Remolque por avería', ev:'5 ev', amt:'$200/ev'},
+      {g:'road', n:'Remolque por accidente / traslado a valoración y reparación (Red de Proveedores)', ev:'5 ev', amt:'$200/ev'},
+      {g:'road', n:'Cerrajería', ev:'4 ev', amt:'$150/ev'},
+      {g:'road', n:'Envío de combustible (7.6 L)', ev:'4 ev', amt:'Costo del combustible'},
+      {g:'road', n:'Cambio de llanta', ev:'3 ev', amt:'$125/ev'},
+      {g:'road', n:'Paso de corriente', ev:'3 ev', amt:'$125/ev'},
+      {g:'road', n:'Mini-rescate (atoramiento de llantas)', ev:'3 ev', amt:'$125/ev'},
+      {g:'med',  n:'Traslado en ambulancia por accidente', ev:'3 ev', amt:'$200/ev'},
+      {g:'med',  n:'Orientación en caso de accidente', ev:'free', amt:'Sin límite económico'},
+      {g:'med',  n:'Orientación médica telefónica', ev:'free', amt:'Sin límite económico'},
+      {g:'info', n:'Asesoría en la denuncia por robo total', ev:'free', amt:'Sin límite económico'},
+      {g:'info', n:'Transporte público por robo total / inmovilización', ev:'4 ev', amt:'$150/ev'},
+      {g:'info', n:'Referencia de talleres', ev:'free', amt:'Sin límite económico'},
+      {g:'info', n:'Asesoría e información sobre el viaje', ev:'free', amt:'Sin límite económico'},
+      {g:'info', n:'Transmisión de mensajes urgentes', ev:'free', amt:'Sin límite económico'},
+      {g:'info', n:'Conexión con profesionales', ev:'free', amt:'Según presupuesto del cliente'},
+      {g:'info', n:'Orientación mecánica', ev:'free', amt:'Sin límite económico'},
+      {g:'plus', n:'Vidriería', ev:'2 ev', amt:'$50/ev'},
+      {g:'plus', n:'Servicios de traslado: residencia-aeropuerto y aeropuerto-residencia', ev:'4 ev', amt:'$100/ev'},
+      {g:'plus', n:'Su Chofer INS', ev:'3 ev', amt:'$100/ev'},
+      {g:'plus', n:'Renta de vehículo sustituto', ev:'3 ev', amt:'Hasta $40/día, máx 2 días por evento'},
+      {g:'plus', n:'Hotel (eventos naturales, conflictos, catástrofes y/o inmovilización)', ev:'3 ev', amt:'Hasta $100/día, máx 3 días'},
+      {g:'plus', n:'Depósito y custodia del automóvil', ev:'3 ev', amt:'$100/ev'}
+    ];
+
+    const COB_BASICO_NAC = [
+      {g:'road', n:'Remolque por avería', ev:'4 ev', amt:'$175/ev'},
+      {g:'road', n:'Remolque por accidente / traslado a valoración y reparación', ev:'5 ev', amt:'$175/ev'},
+      {g:'road', n:'Cerrajería', ev:'3 ev', amt:'$125/ev'},
+      {g:'road', n:'Envío de combustible (7.6 L)', ev:'3 ev', amt:'Costo del combustible'},
+      {g:'road', n:'Cambio de llanta', ev:'3 ev', amt:'$100/ev'},
+      {g:'road', n:'Paso de corriente', ev:'2 ev', amt:'$100/ev'},
+      {g:'road', n:'Mini-rescate (atoramiento de llantas)', ev:'2 ev', amt:'$100/ev'},
+      {g:'med',  n:'Traslado en ambulancia por accidente', ev:'2 ev', amt:'$150/ev'},
+      {g:'med',  n:'Orientación en caso de accidente', ev:'free', amt:'Sin límite económico'},
+      {g:'med',  n:'Orientación médica telefónica', ev:'free', amt:'Sin límite económico'},
+      {g:'info', n:'Asesoría en la denuncia por robo total', ev:'free', amt:'Sin límite económico'},
+      {g:'info', n:'Transporte público por robo total / inmovilización', ev:'3 ev', amt:'$100/ev'},
+      {g:'info', n:'Referencia de talleres', ev:'free', amt:'Sin límite económico'},
+      {g:'info', n:'Asesoría e información sobre el viaje', ev:'free', amt:'Sin límite económico'},
+      {g:'info', n:'Transmisión de mensajes urgentes', ev:'free', amt:'Sin límite económico'},
+      {g:'info', n:'Conexión con profesionales', ev:'free', amt:'Según presupuesto del cliente'},
+      {g:'info', n:'Orientación mecánica', ev:'free', amt:'Sin límite económico'}
+    ];
+
+    const COB_LIMITADO_NAC = [
+      {g:'road', n:'Remolque por avería', ev:'3 ev', amt:'$175/ev'},
+      {g:'road', n:'Remolque por accidente / traslado a valoración y reparación', ev:'5 ev', amt:'$175/ev'},
+      {g:'road', n:'Cerrajería', ev:'2 ev', amt:'$125/ev'},
+      {g:'road', n:'Envío de combustible (7.6 L)', ev:'2 ev', amt:'Costo del combustible'},
+      {g:'road', n:'Cambio de llanta', ev:'2 ev', amt:'$100/ev'},
+      {g:'road', n:'Paso de corriente', ev:'2 ev', amt:'$100/ev'},
+      {g:'road', n:'Mini-rescate (atoramiento de llantas)', ev:'1 ev', amt:'$100/ev'},
+      {g:'med',  n:'Traslado en ambulancia por accidente', ev:'1 ev', amt:'$100/ev'},
+      {g:'med',  n:'Orientación en caso de accidente', ev:'free', amt:'Sin límite económico'},
+      {g:'med',  n:'Orientación médica telefónica', ev:'free', amt:'Sin límite económico'},
+      {g:'info', n:'Asesoría en la denuncia por robo total', ev:'free', amt:'Sin límite económico'},
+      {g:'info', n:'Transporte público por robo total / inmovilización', ev:'2 ev', amt:'$100/ev'},
+      {g:'info', n:'Referencia de talleres', ev:'free', amt:'Sin límite económico'},
+      {g:'info', n:'Asesoría e información sobre el viaje', ev:'free', amt:'Sin límite económico'},
+      {g:'info', n:'Transmisión de mensajes urgentes', ev:'free', amt:'Sin límite económico'},
+      {g:'info', n:'Conexión con profesionales', ev:'free', amt:'Según presupuesto del cliente'},
+      {g:'info', n:'Orientación mecánica', ev:'free', amt:'Sin límite económico'}
+    ];
+
+    const COB_INTL = [
+      {g:'intl', n:'Hotel u hospedaje por inmovilización (solo Centroamérica y Panamá)', ev:'2 ev', amt:'Hasta $100/día, máx 3 días naturales'},
+      {g:'intl', n:'Renta de vehículo sustituto (solo Centroamérica y Panamá)', ev:'2 ev', amt:'$50/día, máx 2 días naturales'},
+      {g:'intl', n:'Depósito y/o custodia del automóvil', ev:'2 ev', amt:'$100/ev'},
+      {g:'intl', n:'Asistencia y traslado por robo de documentos', ev:'3 ev', amt:'$100/ev'},
+      {g:'intl', n:'Extravío de equipaje', ev:'3 ev', amt:'$500/ev'},
+      {g:'intl', n:'Información previa a un viaje', ev:'free', amt:'Sin límite económico'},
+      {g:'intl', n:'Transmisión de mensajes urgentes', ev:'free', amt:'Sin límite económico'},
+      {g:'intl', n:'Hotel para una persona por enfermedad del asegurado', ev:'2 ev', amt:'Hasta $150/día, máx 5 días'},
+      {g:'intl', n:'Retorno de menores', ev:'2 ev', amt:'Costo del cambio de tiquete'},
+      {g:'intl', n:'Interrupción de viaje por agonía/fallecimiento de familiar o siniestro en casa', ev:'3 ev', amt:'Costo del cambio de tiquete'}
+    ];
+
+    const COB_PLANS = {
+      PLUS: {
+        name:'Plan Plus', accent:'var(--teal)', glow:'rgba(15,111,99,.55)', chip:'rgba(15,111,99,.92)',
+        nacional: COB_PLUS_NAC, intl: COB_INTL,
+        stats:[{v:'$200', l:'Grúa por avería'}, {v:'5', l:'Remolques al año'}, {v:'✓', l:'Internacional'}]
+      },
+      BASICO: {
+        name:'Plan Básico', accent:'var(--accent)', glow:'rgba(3,105,161,.55)', chip:'rgba(3,105,161,.92)',
+        nacional: COB_BASICO_NAC, intl: COB_INTL,
+        stats:[{v:'$175', l:'Grúa por avería'}, {v:'4', l:'Remolques al año'}, {v:'✓', l:'Internacional'}]
+      },
+      LIMITADO: {
+        name:'Plan Limitado', accent:'var(--amber)', glow:'rgba(180,105,14,.55)', chip:'rgba(180,105,14,.92)',
+        nacional: COB_LIMITADO_NAC, intl: null,
+        stats:[{v:'$175', l:'Grúa por avería'}, {v:'3', l:'Remolques al año'}, {v:'Solo CR', l:'Cobertura'}]
+      }
+    };
+
+    function cobPlanForAge(age){
+      if(age <= 6)  return 'PLUS';
+      if(age <= 15) return 'BASICO';
+      if(age <= 20) return 'LIMITADO';
+      return null;
+    }
+
+    function CobChips({ item }){
+      const free = item.ev === 'free';
+      return (
+        <div className="cob-row-chips">
+          {free
+            ? <span className="cob-mchip free"><i className="fa-solid fa-infinity"></i>Sin límite</span>
+            : <span className="cob-mchip ev"><i className="fa-solid fa-repeat"></i>{item.ev}</span>}
+          <span className={'cob-mchip '+(free?'free':'amt')}>{item.amt}</span>
+        </div>
+      );
+    }
+
+    function CobAcc({ gkey, items, openFirst }){
+      const rows = items.filter(i=>i.g===gkey);
+      if(!rows.length) return null;
+      const G = COB_GROUPS[gkey];
+      const label = rows.length + (rows.length===1?' servicio':' servicios');
+      return (
+        <details className="cob-acc cob-fade" open={openFirst}>
+          <summary>
+            <span className={'cob-acc-ic '+G.cls}><i className={'fa-solid '+G.icon}></i></span>
+            <span className="cob-acc-tt"><h3>{G.title}</h3><p>{label}</p></span>
+            <i className="fa-solid fa-chevron-down cob-acc-chev"></i>
+          </summary>
+          <div className="cob-acc-body">
+            {rows.map((r,idx)=>(
+              <div className="cob-row" key={idx}>
+                <span className="cob-row-bullet"></span>
+                <div className="cob-row-main">
+                  <h4>{r.n}</h4>
+                  <CobChips item={r} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </details>
+      );
+    }
+
+    function CobLegal(){
+      return (
+        <div className="cob-legal">
+          <p>Resumen informativo basado en las Condiciones Operativas de Multiasistencia de Automóviles del INS. Los límites no son acumulativos y aplican por año calendario. Sujeto a las condiciones de la póliza.</p>
+          <div className="brandline"><i className="fa-solid fa-shield-halved"></i> Seguros Digitales SDI · Asistencia INS</div>
+        </div>
+      );
+    }
+
+    function CobResult({ year, profile, waLink }){
+      const age = COB_CURRENT_YEAR - year;
+      const planKey = cobPlanForAge(age);
+      const ageTxt = age + (age===1?' año':' años');
+
+      if(planKey === null){
+        return (
+          <div>
+            <div className="cob-hero gray cob-fade">
+              <div className="cob-hero-top">
+                <span className="cob-hero-eyebrow"><i className="fa-solid fa-car-side"></i> Modelo {year}</span>
+                <div className="cob-hero-name">No aplica</div>
+                <div className="cob-hero-sub">{ageTxt} <span className="sep">·</span> +20 años de antigüedad</div>
+              </div>
+              <div className="cob-hero-stats">
+                <div className="cob-stat-pill" style={{flex:1}}>
+                  <span className="sl" style={{textTransform:'none', fontSize:'11px', color:'rgba(255,255,255,.85)'}}>La asistencia vial gratuita aplica para modelos de hasta 20 años de antigüedad.</span>
+                </div>
+              </div>
+            </div>
+            <div className="cob-noplan cob-fade">
+              <div className="cob-nico"><i className="fa-regular fa-circle-question"></i></div>
+              <h3>No aplica asistencia gratuita</h3>
+              <p>Tu carro modelo {year} supera los 20 años. Consultá con tu agente otras opciones de asistencia para tu vehículo.</p>
+            </div>
+            {waLink && (
+              <a className="cob-btn wa" href={waLink} target="_blank" rel="noopener noreferrer">
+                <i className="fa-brands fa-whatsapp"></i> Consultar otras opciones
+              </a>
+            )}
+            <CobLegal />
+          </div>
+        );
+      }
+
+      const P = COB_PLANS[planKey];
+      const firstName = (profile.name || '').trim().split(/\s+/)[0] || 'tu agente';
+      return (
+        <div style={{'--plan-accent':P.accent, '--plan-glow':P.glow, '--plan-chip':P.chip}}>
+          <div className="cob-hero cob-fade">
+            <div className="cob-hero-top">
+              <span className="cob-hero-eyebrow"><i className="fa-solid fa-car-side"></i> Te corresponde</span>
+              <div><span className="cob-hero-badge"><i className="fa-solid fa-shield-halved"></i> Asistencia INS</span></div>
+              <div className="cob-hero-name">{P.name}</div>
+              <div className="cob-hero-sub">Modelo {year} <span className="sep">·</span> {ageTxt} de antigüedad</div>
+            </div>
+            <div className="cob-hero-stats">
+              {P.stats.map((s,i)=>(
+                <div className="cob-stat-pill" key={i}><span className="sv">{s.v}</span><span className="sl">{s.l}</span></div>
+              ))}
+            </div>
+          </div>
+
+          <div className="cob-sec-head">
+            <i className="fa-solid fa-map-location-dot" style={{color:'var(--accent)'}}></i>
+            <h2>Asistencia Nacional</h2>
+            <span className="count">{P.nacional.length} servicios</span>
+          </div>
+          <CobAcc gkey="road" items={P.nacional} openFirst={true} />
+          <CobAcc gkey="med"  items={P.nacional} openFirst={false} />
+          <CobAcc gkey="info" items={P.nacional} openFirst={false} />
+          <CobAcc gkey="plus" items={P.nacional} openFirst={false} />
+
+          {P.intl && (
+            <React.Fragment>
+              <div className="cob-sec-head">
+                <i className="fa-solid fa-earth-americas" style={{color:'var(--amber)'}}></i>
+                <h2>Asistencia Internacional</h2>
+                <span className="count">{P.intl.length} servicios</span>
+              </div>
+              <CobAcc gkey="intl" items={P.intl} openFirst={false} />
+            </React.Fragment>
+          )}
+
+          <div className="cob-agent cob-fade">
+            <div className="cob-agent-av"><i className="fa-solid fa-user-tie"></i></div>
+            <div className="cob-agent-info"><b>¿Dudas con tu plan?</b><span>Escribile a {firstName}, tu agente</span></div>
+            {waLink && (
+              <a className="cob-agent-wa" href={waLink} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i className="fa-brands fa-whatsapp"></i></a>
+            )}
+          </div>
+          <CobLegal />
+        </div>
+      );
+    }
+
+    function Cobertura({ profile }){
+      const [year, setYear] = useState(null);
+      const waNumber = (profile.whatsapp || profile.phone || '').replace(/\D/g,'');
+      const waLink = waNumber ? `https://wa.me/${waNumber}` : null;
+      const years = Array.from({length:(COB_CURRENT_YEAR+1)-1990+1}, (_,i)=>(COB_CURRENT_YEAR+1)-i);
+
+      return (
+        <div className="cob-wrap">
+          <div className="cob-intro">
+            <i className="fa-solid fa-circle-info"></i>
+            <p>La asistencia vial es <b>gratuita</b> para vehículos de uso personal con las coberturas requeridas. El <b>año de tu carro</b> define qué plan te corresponde.</p>
+          </div>
+
+          <div className="cob-picker-label"><i className="fa-solid fa-calendar-day"></i> Año del modelo de tu carro</div>
+          <div className="cob-yearsel">
+            <i className="fa-solid fa-calendar-day cob-yearsel-ic"></i>
+            <select aria-label="Elegí el año del modelo de tu carro" required
+                    value={year || ''}
+                    onChange={e=>{ const v=parseInt(e.target.value,10); setYear(isNaN(v)?null:v); }}>
+              <option value="" disabled>Elegí el año de tu carro…</option>
+              {years.map(y=>(<option value={y} key={y}>{y}</option>))}
+            </select>
+            <i className="fa-solid fa-chevron-down cob-yearsel-chev"></i>
+          </div>
+
+          {year === null ? (
+            <div className="cob-empty">
+              <i className="fa-solid fa-car-side"></i>
+              <h3>Elegí el año de tu vehículo</h3>
+              <p>Te mostramos los beneficios de asistencia que te corresponden según el modelo.</p>
+            </div>
+          ) : (
+            <CobResult key={year} year={year} profile={profile} waLink={waLink} />
+          )}
+        </div>
+      );
+    }
+
     function App(){
       const [view, setView] = useState('home');
       const profile = getAgent();
 
       const titleByView = {
         accidente:'Reporte de Accidente', vial:'Asistencia Vial', robo:'Robo Total / Parcial',
-        coberturaH:'Vandalismo / Naturaleza', contactos:'Directorio de Contactos'
+        coberturaH:'Vandalismo / Naturaleza', contactos:'Directorio de Contactos',
+        cobertura:'¿Qué cubre tu asistencia?'
       };
       const waNumber = (profile.whatsapp || profile.phone || '').replace(/\D/g,'');
       const waLink = waNumber ? `https://wa.me/${waNumber}` : null;
@@ -298,6 +689,7 @@
 
           <main>
             {view === 'home' && <Home setView={setView} />}
+            {view === 'cobertura' && <Cobertura profile={profile} />}
             {view === 'accidente' && <Accidente />}
             {view === 'vial' && <Vial />}
             {view === 'robo' && <Robo />}
@@ -337,6 +729,15 @@
               <div className="sub">Línea INS 24/7 · choques y daños</div>
             </div>
             <div className="num">800-800-8000</div>
+          </button>
+
+          <button className="cob-entry" onClick={()=>setView('cobertura')}>
+            <div className="cob-entry-ic"><i className="fa-solid fa-shield-halved"></i></div>
+            <div className="cob-entry-tx">
+              <h3>¿Qué cubre tu asistencia?</h3>
+              <p>Mirá tus beneficios según el año de tu carro.</p>
+            </div>
+            <i className="fa-solid fa-chevron-right cob-entry-ch"></i>
           </button>
 
           <div className="lbl">Tipos de asistencia</div>
