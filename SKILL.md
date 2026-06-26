@@ -18,9 +18,11 @@ El cliente NUNCA configura nada — los datos del agente vienen hardcodeados en 
 
 ## Estado actual
 
-- **`80d78e6` (11 may 2026):** README.md público con tabla de URLs y guía para agregar agentes
 - **`72f0972` (11 may 2026):** agentes hardcoded por query param `?a=` (JC default + Fernando `fhv`). Elimina modal, localStorage y botón ⚙
-- **`9a45453` (11 may 2026):** rediseño completo estilo cotizador (header navy + logo INS, footer navy + logo SDI, tarjeta agente tricolor en Contactos)
+- **`9a45453` (11 may 2026):** rediseño estilo cotizador (header navy + logo INS, footer navy + logo SDI, tarjeta agente tricolor en Contactos)
+- **`98537f4`:** **Rediseño Sereno** — home con saludo "¿Qué pasó con tu vehículo?" + chip de agente en el header + banner SOS rojo + lista dividida de tipos de asistencia. **Este es el diseño vigente** (ya NO el cotizador original).
+- **`77b7626`:** pin de CDN a versión fija (React 18.3.1, Babel `@7.29.7`) tras caída por Babel 8. **NUNCA usar CDN flotante.**
+- **`6aa91c1` (26 jun 2026):** nueva sección **"¿Qué cubre tu asistencia?"** (ver sección dedicada abajo).
 - **Producción:** [appasistenciaseguroautos.netlify.app](https://appasistenciaseguroautos.netlify.app) (auto-deploy desde `main`)
 - **Repo:** [jhernandez-vibecode/APP-ASISTENCIA-SEGURO-AUTOS](https://github.com/jhernandez-vibecode/APP-ASISTENCIA-SEGURO-AUTOS)
 
@@ -85,6 +87,8 @@ const AGENTES = {
 
 ## Diseño visual
 
+> ⚠️ NOTA: las clases de abajo (`.action-card`, `.agent-strip`, `.hero-card`, `.btn-emergency`) son del cotizador original y **ya no existen** tras el Rediseño Sereno (`98537f4`). El diseño vigente usa: header navy con greet + `.agent-chip`, banner `.sos`, lista `.list`/`.row`, `.section-card` en vistas internas, y la familia `cob-*` en la sección de cobertura. La paleta (tokens `:root`) sigue siendo válida como referencia. Leer el `:root` y los componentes reales en `index.html` antes de tocar CSS.
+
 Estilo **basado en el cotizador-autos** (NO Modern SaaS Bento Tricolor — ese es de Reclamos-SDI).
 
 ### Paleta
@@ -117,12 +121,30 @@ Estilo **basado en el cotizador-autos** (NO Modern SaaS Bento Tricolor — ese e
 
 ## Vistas
 
-1. **Home** — Hero + 5 action-cards (Accidente, Vial, Robo, Vandalismo, Contactos)
-2. **Accidente** — Reporte 800-800-8000 (verde) + Pacto Amistoso (4 condiciones check) + trámites 7/10 días
+(En `index.html` el estado de vista es `view` en `App()`; cada vista es un componente y el header muestra `titleByView[view]`.)
+
+1. **Home** — saludo + chip de agente + banner SOS (accidente) + tarjeta **"¿Qué cubre tu asistencia?"** (abre `cobertura`) + lista dividida (Vial, Robo, Vandalismo, Contactos)
+2. **Accidente** — Reporte 800-800-8000 + Pacto Amistoso (4 condiciones check) + trámites 7/10 días
 3. **Vial** — 800-800-8001 + servicios (grúa, batería, cerrajero, llanta) + taxi al aeropuerto
-4. **Robo** — Denuncia 911 OIJ (gris) + reporte INS (verde) + trámites según tipo (total/parcial)
-5. **Cobertura H** — Vandalismo/Naturaleza/Otros, 800-800-8000, CED 10 días
+4. **Robo** — Denuncia 911 OIJ + reporte INS + trámites según tipo (total/parcial)
+5. **Cobertura H** (`coberturaH`) — Vandalismo/Naturaleza/Otros, 800-800-8000, CED 10 días
 6. **Contactos** — Tarjeta del agente + 3 líneas INS (8000, 8001, 8353467) + oficinas centrales
+7. **Cobertura** (`cobertura`) — **"¿Qué cubre tu asistencia?"**: el cliente elige el año del modelo y ve su plan de Multiasistencia + beneficios (ver sección dedicada).
+
+## Sección "¿Qué cubre tu asistencia?" (vista `cobertura`)
+
+Feature de auto-consulta: el cliente elige el **año del modelo** de su carro (menú desplegable) y la app calcula qué **plan de Multiasistencia INS** le corresponde por antigüedad, mostrando un hero card del plan + beneficios agrupados en acordeones.
+
+- **Alcance:** SOLO **Uso Personal · Particulares y Carga Liviana** (autos, SUV, pick-up, carga liviana). NO incluye Uso Comercial, motos, buses ni camiones (decisión de JC, 26 jun 2026).
+- **Lógica año→plan** (`cobPlanForAge`, antigüedad = año actual − año modelo):
+  - 0–6 años → **Plan Plus** (acento teal)
+  - 7–15 años → **Plan Básico** (acento azul)
+  - 16–20 años → **Plan Limitado** (acento ámbar, "Solo CR", sin internacional)
+  - 21+ años → **No aplica** asistencia gratuita → hero gris + CTA WhatsApp al agente (captar lead)
+- **Datos:** copiados LITERAL del contrato `CONDICIONES OPERATIVAS MULTIASISTENCIA DE AUTOMÓVILES.pdf` (en `OneDrive/ARCHIVO DIGITAL/Automóviles/`). Constantes `COB_PLUS_NAC`, `COB_BASICO_NAC`, `COB_LIMITADO_NAC`, `COB_INTL` con `{g, n, ev, amt}` (grupo, nombre, nº eventos, monto). **NUNCA inventar montos/eventos** — son cifras SUGESE; salen del PDF.
+- **Grupos** (`COB_GROUPS`): road / med / info / plus (exclusivos Plus) / intl (solo Plus y Básico).
+- **CSS namespaced `cob-`** para no chocar con el resto de la app. El WhatsApp del CTA usa el **agente actual** (`profile.whatsapp` según `?a=`), no hardcodeado.
+- **Selector de año:** menú desplegable `<select>` grande (`.cob-yearsel`), no chips horizontales (se cambió 26 jun por ser poco intuitivo). Acordeones = `<details>` nativos; `key={year}` resetea al cambiar año.
 
 ## Lógica de carga (resumen)
 
