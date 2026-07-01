@@ -323,9 +323,35 @@
     };
     const DEFAULT_AGENT_ID = 'jc';
 
+    /* Ficha del agente embebida en la URL (la arma el cotizador desde el perfil ⚙):
+         ?n=nombre  ?tel=teléfono  ?wa=WhatsApp  ?em=correo  ?lic=licencia  ?web=sitio
+       Con esto la guía muestra a CUALQUIER agente sin hardcodearlo. Si no viene ?n=,
+       se cae al roster fijo por ?a=<id> (blast masivo de JC / Fernando) y al default.
+       Todo se sanea: React escapa el texto; aquí filtramos correo/web/teléfono. */
+    const _q       = (v) => (v == null ? '' : String(v)).trim();
+    const _qDigits = (v) => _q(v).replace(/\D/g, '');
+    const _qPhone  = (v) => _q(v).replace(/[^\d\s()+.-]/g, '');                                   // solo caracteres de teléfono
+    const _qEmail  = (v) => { const s = _q(v); return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s) ? s : ''; };
+    const _qWeb    = (v) => { const s = _q(v); return (/^https?:\/\//i.test(s) || /^[\w.-]+\.[a-z]{2,}/i.test(s)) ? s : ''; };
+    const _qWa     = (v) => { let d = _qDigits(v); if (d.length === 8) d = '506' + d; return d; }; // CR sin código país
+
     function getAgent(){
       try{
-        const id = (new URLSearchParams(window.location.search).get('a') || DEFAULT_AGENT_ID).toLowerCase();
+        const qp = new URLSearchParams(window.location.search);
+        const name = _q(qp.get('n'));
+        // 1) Ficha personalizada por URL (basta el nombre para tomarla).
+        if (name){
+          return {
+            name:     name,
+            email:    _qEmail(qp.get('em')),
+            phone:    _qPhone(qp.get('tel')),
+            whatsapp: _qWa(qp.get('wa')) || _qWa(qp.get('tel')),
+            license:  _q(qp.get('lic')),
+            website:  _qWeb(qp.get('web'))
+          };
+        }
+        // 2) Roster fijo por ?a=<id>.
+        const id = (qp.get('a') || DEFAULT_AGENT_ID).toLowerCase();
         return AGENTES[id] || AGENTES[DEFAULT_AGENT_ID];
       }catch(e){ return AGENTES[DEFAULT_AGENT_ID]; }
     }

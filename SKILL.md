@@ -1,6 +1,6 @@
 ---
 name: especialista-asistencia-autos
-description: ESPECIALISTA APP ASISTENCIA SEGURO AUTOS — Mini-app móvil React single-file con guías de emergencia INS para automóviles (accidentes, asistencia vial, robo, vandalismo) + directorio de contactos del agente. Marca SDI fija. 2 agentes hardcoded (JC default + Fernando ?a=FHV) leídos desde query param de URL fija (no localStorage, no modal de config). Stack HTML + React 18 vía Babel CDN + Tailwind CDN + Sora. Deploy en Netlify desde main. Usar este skill cuando JC pida cualquier cambio, mejora o agregue un agente al proyecto APP-ASISTENCIA-SEGURO-AUTOS.
+description: ESPECIALISTA APP ASISTENCIA SEGURO AUTOS — Mini-app móvil React single-file con guías de emergencia INS para automóviles (accidentes, asistencia vial, robo, vandalismo) + directorio de contactos del agente. Marca SDI fija. Multi-agente: la ficha del agente (nombre, contacto, licencia, web) llega por parámetros de URL (?n,tel,wa,em,lic,web) que el cotizador arma desde el perfil ⚙; roster hardcodeado por ?a=<id> (JC default + Fernando) como fallback retrocompatible. Sin localStorage ni modal. Stack HTML + React 18 vía Babel CDN + Tailwind CDN + Sora. Deploy en Netlify desde main. Usar este skill cuando JC pida cualquier cambio, mejora o agregue un agente al proyecto APP-ASISTENCIA-SEGURO-AUTOS.
 ---
 
 # Especialista App Asistencia Seguro Autos
@@ -14,7 +14,7 @@ Mini-app móvil para clientes de agentes de Seguros Digitales SDI. El agente com
 - Guías paso a paso de emergencias INS (qué hacer en accidente / avería / robo / vandalismo)
 - Directorio de contactos: tarjeta destacada de SU agente (llamar / WhatsApp / correo) + 3 líneas oficiales INS
 
-El cliente NUNCA configura nada — los datos del agente vienen hardcodeados en el código y se eligen por el `?a=` de la URL.
+El cliente NUNCA configura nada. Los datos del agente llegan **en la URL**: el cotizador (módulo Pólizas Activas) arma el link con la ficha del agente por parámetros (`?n,tel,wa,em,lic,web`) tomada de su perfil ⚙. Si esos parámetros no vienen, se cae a un **roster fijo** por `?a=<id>` (JC / Fernando). Así la guía muestra a **cualquier** agente sin tocar el código.
 
 ## Estado actual
 
@@ -23,6 +23,7 @@ El cliente NUNCA configura nada — los datos del agente vienen hardcodeados en 
 - **`98537f4`:** **Rediseño Sereno** — home con saludo "¿Qué pasó con tu vehículo?" + chip de agente en el header + banner SOS rojo + lista dividida de tipos de asistencia. **Este es el diseño vigente** (ya NO el cotizador original).
 - **`77b7626`:** pin de CDN a versión fija (React 18.3.1, Babel `@7.29.7`) tras caída por Babel 8. **NUNCA usar CDN flotante.**
 - **`6aa91c1` (26 jun 2026):** nueva sección **"¿Qué cubre tu asistencia?"** (ver sección dedicada abajo).
+- **1 jul 2026 — Ficha del agente por URL (multi-agente):** `getAgent()` lee `?n,tel,wa,em,lic,web` (saneados) y arma el perfil del agente; si no viene `?n=`, cae al roster fijo `?a=<id>` (retrocompatible). El cotizador (`js/poliza-email.js`) **embebe automáticamente** esos parámetros en el link "Abrir mi guía" del correo de Póliza Activa, tomándolos del perfil ⚙ del agente. **Cualquier agente aparece con solo llenar su perfil en el cotizador — ya no hay que hardcodearlo aquí.** Cambio coordinado con el repo `COTIZADOR-AUTOS` (deben desplegar juntos).
 - **Producción:** [appasistenciaseguroautos.netlify.app](https://appasistenciaseguroautos.netlify.app) (auto-deploy desde `main`)
 - **Repo:** [jhernandez-vibecode/APP-ASISTENCIA-SEGURO-AUTOS](https://github.com/jhernandez-vibecode/APP-ASISTENCIA-SEGURO-AUTOS)
 
@@ -50,20 +51,34 @@ APP-ASISTENCIA-SEGURO-AUTOS/
 
 ## Agentes registrados
 
-El objeto `AGENTES` está en el `<script type="text/babel">` de `index.html` (aprox. línea 477).
+`getAgent()` (en el `<script type="text/babel">` de `index.html`, ~línea 326) resuelve al agente con esta prioridad:
 
-| id  | Nombre | Correo | Teléfono | WhatsApp | Licencia | Web |
-|---|---|---|---|---|---|---|
-| `jc` (default) | Juan Carlos Hernández Vargas | jhernandez@segurosdelins.com | 8822-1348 | 50688221348 | 08-1318 | www.segurosdelins.com |
-| `fhv` | Fernando Hernández Vargas | fhernandez@segurosdelins.com | 8526-3532 | 50685263532 | 08-1319 | (vacío) |
+1. **Ficha por URL (mecanismo principal, multi-agente).** Si viene `?n=<nombre>`, el perfil se arma con los parámetros de la URL:
 
-### URLs para plantillas
-- JC: `https://appasistenciaseguroautos.netlify.app/`
-- Fernando: `https://appasistenciaseguroautos.netlify.app/?a=FHV`
+   | Param | Campo | Notas |
+   |---|---|---|
+   | `n`   | nombre    | obligatorio (dispara este modo) |
+   | `tel` | teléfono  | se limpia a caracteres de teléfono |
+   | `wa`  | WhatsApp  | dígitos; si son 8 se antepone `506` |
+   | `em`  | correo    | validado como email o se descarta |
+   | `lic` | licencia  | |
+   | `web` | sitio web | http/https o dominio; `javascript:` se descarta |
 
-El `?a=` es **case-insensitive** (`?a=FHV` y `?a=fhv` cargan al mismo agente).
+   Estos los **arma el cotizador** (`js/poliza-email.js`) desde el perfil ⚙ del agente y los mete en el link "Abrir mi guía" del correo de Póliza Activa. Todo se sanea (React escapa el texto; los helpers `_qEmail/_qWeb/_qPhone/_qWa` filtran).
 
-### Agregar un nuevo agente
+2. **Roster fijo por `?a=<id>` (fallback / blast masivo).** Si NO viene `?n=`, se usa el objeto `AGENTES` hardcodeado (~línea 314). `?a=` es **case-insensitive**; sin nada válido → `jc`.
+
+   | id  | Nombre | Correo | Teléfono | WhatsApp | Licencia | Web |
+   |---|---|---|---|---|---|---|
+   | `jc` (default) | Juan Carlos Hernández Vargas | jhernandez@segurosdelins.com | 8822-1348 | 50688221348 | 08-1318 | www.segurosdelins.com |
+   | `fhv` | Fernando Hernández Vargas | fhernandez@segurosdelins.com | 8526-3532 | 50685263532 | 08-1319 | (vacío) |
+
+   - JC: `https://appasistenciaseguroautos.netlify.app/`
+   - Fernando: `https://appasistenciaseguroautos.netlify.app/?a=FHV`
+
+### Agregar un agente al roster `?a=` (solo para el blast masivo)
+
+Para agentes que solo comparten el link fijo por plantilla (sin pasar por el cotizador). Si el agente usa el cotizador, **NO hace falta**: con llenar su perfil ⚙ su ficha ya viaja por URL.
 
 1. Editar el objeto `AGENTES` en `index.html`:
 
@@ -150,18 +165,27 @@ Feature de auto-consulta: el cliente elige el **año del modelo** de su carro (m
 
 ```js
 function getAgent() {
-  const id = (new URLSearchParams(location.search).get('a') || 'jc').toLowerCase();
+  const qp = new URLSearchParams(location.search);
+  const name = _q(qp.get('n'));
+  if (name) {                    // 1) ficha personalizada por URL (la arma el cotizador)
+    return {
+      name, email: _qEmail(qp.get('em')), phone: _qPhone(qp.get('tel')),
+      whatsapp: _qWa(qp.get('wa')) || _qWa(qp.get('tel')),
+      license: _q(qp.get('lic')), website: _qWeb(qp.get('web'))
+    };
+  }
+  const id = (qp.get('a') || 'jc').toLowerCase();   // 2) roster fijo
   return AGENTES[id] || AGENTES.jc;
 }
 
 function App() {
   const [view, setView] = useState('home');
-  const profile = getAgent();  // se evalúa una vez en cada render
+  const profile = getAgent();  // se evalúa en cada render
   // ...
 }
 ```
 
-Sin `useEffect`, sin localStorage, sin modal, sin estado de perfil — el agente sale directo de la URL.
+Sin `useEffect`, sin localStorage, sin modal, sin estado de perfil — el agente sale directo de la URL (parámetros del cotizador o roster `?a=`).
 
 ## Flujo de trabajo (cómo hacer cambios)
 
@@ -191,6 +215,7 @@ cp C:/Users/segur/APP-ASISTENCIA-SEGURO-AUTOS/SKILL.md \
 ## Decisiones de diseño descartadas
 
 - **localStorage + modal de configuración multi-agente** (commit `9a45453`) — descartado porque el link es masivo y fijo en plantillas, no se puede personalizar por cliente. Reemplazado por agentes hardcoded por query param.
+  - **Ojo — la ficha por URL (1 jul 2026) NO revive esto.** Los parámetros `?n,tel,...` SÍ funcionan por cliente porque el agente los hornea en el link que comparte (los arma el cotizador); no dependen del navegador del cliente. Es lo contrario del localStorage descartado (que solo vivía en el navegador del agente).
 - **Modal forzado primera vez** — el cliente del agente lo veía y quedaba atrapado sin poder usar la app. Eliminado.
 - **Botón ⚙ en header** — sin sentido si no hay configuración. Eliminado.
 - **Logo INS BLANCO.png embebido base64** — se intentó por problema del panel preview de Launch que no servía assets. Se resolvió usando `npx serve` real (puerto 8900).
