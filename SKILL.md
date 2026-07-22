@@ -23,7 +23,8 @@ El cliente NUNCA configura nada. Los datos del agente llegan **en la URL**: el c
 - **`98537f4`:** **Rediseño Sereno** — home con saludo "¿Qué pasó con tu vehículo?" + chip de agente en el header + banner SOS rojo + lista dividida de tipos de asistencia. **Este es el diseño vigente** (ya NO el cotizador original).
 - **`77b7626`:** pin de CDN a versión fija (React 18.3.1, Babel `@7.29.7`) tras caída por Babel 8. **NUNCA usar CDN flotante.**
 - **`6aa91c1` (26 jun 2026):** nueva sección **"¿Qué cubre tu asistencia?"** (ver sección dedicada abajo).
-- **1 jul 2026 — Ficha del agente por URL (multi-agente):** `getAgent()` lee `?n,tel,wa,em,lic,web` (saneados) y arma el perfil del agente; si no viene `?n=`, cae al roster fijo `?a=<id>` (retrocompatible). El cotizador (`js/poliza-email.js`) **embebe automáticamente** esos parámetros en el link "Abrir mi guía" del correo de Póliza Activa, tomándolos del perfil ⚙ del agente. **Cualquier agente aparece con solo llenar su perfil en el cotizador — ya no hay que hardcodearlo aquí.** Cambio coordinado con el repo `COTIZADOR-AUTOS` (deben desplegar juntos).
+- **`46cffc3` (26 jun 2026):** SKILL.md sincronizado en las **3 ubicaciones** con el estado real del código.
+- **`b3a1e1a` (1 jul 2026) — Ficha del agente por URL (multi-agente):** `getAgent()` lee `?n,tel,wa,em,lic,web` (saneados) y arma el perfil del agente; si no viene `?n=`, cae al roster fijo `?a=<id>` (retrocompatible). El cotizador (`js/poliza-email.js`) **embebe automáticamente** esos parámetros en el link "Abrir mi guía" del correo de Póliza Activa, tomándolos del perfil ⚙ del agente. **Cualquier agente aparece con solo llenar su perfil en el cotizador — ya no hay que hardcodearlo aquí.** Cambio coordinado con el repo `COTIZADOR-AUTOS` (deben desplegar juntos).
 - **Producción:** [appasistenciaseguroautos.netlify.app](https://appasistenciaseguroautos.netlify.app) (auto-deploy desde `main`)
 - **Repo:** [jhernandez-vibecode/APP-ASISTENCIA-SEGURO-AUTOS](https://github.com/jhernandez-vibecode/APP-ASISTENCIA-SEGURO-AUTOS)
 
@@ -39,7 +40,7 @@ El cliente NUNCA configura nada. Los datos del agente llegan **en la URL**: el c
 
 ```
 APP-ASISTENCIA-SEGURO-AUTOS/
-├── index.html              # App completa (~660 líneas)
+├── index.html              # App completa (962 líneas · verificado 22 jul 2026)
 ├── ins-blanco.png          # Logo INS para header navy
 ├── INS BLANCO.png          # Copia legacy con espacios (no tocar)
 ├── sdi-logo-blanco.svg     # Logo SDI negativo para footer navy
@@ -49,9 +50,19 @@ APP-ASISTENCIA-SEGURO-AUTOS/
 └── .claude/launch.json     # Config preview local (gitignored)
 ```
 
+### Procedencia de los logos (NUNCA regenerar ni inventar)
+
+| Archivo | Origen | Verificación |
+|---|---|---|
+| `ins-blanco.png` | `C:/Users/segur/Downloads/LOGOS INS/LOGOS INS NUEVO/INS BLANCO.png` (copia idéntica · ojo: la carpeta padre es `LOGOS INS`, no está suelta en `Downloads/`) | MD5 `a02c976fccdb0bbb7a02b6c9ea9d4bb7` |
+| `INS BLANCO.png` | Copia legacy con espacios en el nombre, del repo original | Mismo MD5 `a02c976...` que `ins-blanco.png` |
+| `sdi-logo-blanco.svg` | `SDI-Brand-Kit-v1/02-Logos-SVG/04-sdi-logo-negativo.svg` (logo SDI negativo) | — |
+
+Si JC dice "el logo no es el correcto", **primero comparar el MD5** contra el original antes de reemplazar: el archivo puede estar bien y el problema ser caché, servidor o path.
+
 ## Agentes registrados
 
-`getAgent()` (en el `<script type="text/babel">` de `index.html`, ~línea 326) resuelve al agente con esta prioridad:
+`getAgent()` (en el `<script type="text/babel">` de `index.html`, línea 338) resuelve al agente con esta prioridad:
 
 1. **Ficha por URL (mecanismo principal, multi-agente).** Si viene `?n=<nombre>`, el perfil se arma con los parámetros de la URL:
 
@@ -66,7 +77,7 @@ APP-ASISTENCIA-SEGURO-AUTOS/
 
    Estos los **arma el cotizador** (`js/poliza-email.js`) desde el perfil ⚙ del agente y los mete en el link "Abrir mi guía" del correo de Póliza Activa. Todo se sanea (React escapa el texto; los helpers `_qEmail/_qWeb/_qPhone/_qWa` filtran).
 
-2. **Roster fijo por `?a=<id>` (fallback / blast masivo).** Si NO viene `?n=`, se usa el objeto `AGENTES` hardcodeado (~línea 314). `?a=` es **case-insensitive**; sin nada válido → `jc`.
+2. **Roster fijo por `?a=<id>` (fallback / blast masivo).** Si NO viene `?n=`, se usa el objeto `AGENTES` hardcodeado (línea 314). `?a=` es **case-insensitive**; sin nada válido → `jc`.
 
    | id  | Nombre | Correo | Teléfono | WhatsApp | Licencia | Web |
    |---|---|---|---|---|---|---|
@@ -123,16 +134,19 @@ Estilo **basado en el cotizador-autos** (NO Modern SaaS Bento Tricolor — ese e
 - Fuente: Sora, 400-800
 - Radius: 8px inputs, 10-12px botones, 14px cards, 16-18px modal
 - Shadow: layered (`shadow-sm/md/lg`) — capa difusa + sharp
+- **Layout mobile-first: `max-width: 480px`** en el contenedor `.app` (centrado con `margin:0 auto`), lo que encuadra también header y footer. Es la medida fija de la app — no ensanchar sin orden de JC.
 
 ### Componentes clave
-- `.app-header` — navy sticky con logo INS BLANCO + brand-text + botón ☎
+- `.app-header` — navy sticky con logo INS BLANCO + `.brand-text` + botón ☎. En Home el `.brand-text` lleva dos textos **literales, no tocar**: `.brand-t1` → **"Asistencia Autos"** y `.brand-t2` → **"Instituto Nacional de Seguros"**. En las vistas internas el brand se reemplaza por `.back-btn` + `.detail-title` con `titleByView[view]`
 - `.agent-strip` — debajo del header, "Tu agente: <nombre> · Licencia <id>"
 - `.action-card` — cards de home con `.action-icon` circular coloreado (red/amber/purple/teal/green)
 - `.hero-card` — cuadro azul tenue "¿Tienes una emergencia?"
 - `.section-card` — cards de las vistas internas con `.section-card-header` coloreado
 - `.btn-emergency` — botón verde grande con gradient + glow (`linear-gradient(180deg, --green, --green-dark)`)
 - `.agent-card` — tarjeta gradient navy→blue en Directorio de Contactos con 3 botones (Llamar / WhatsApp verde / Correo)
-- `.app-footer` — navy con logo SDI centrado (svg) + `.footer-agent` bloque destacado + leyenda
+- `.app-footer` — navy con logo SDI centrado (svg) + `.footer-agent` bloque destacado del agente (nombre, licencia, correo y website si tiene) + dos textos **literales, no tocar**:
+  - `.footer-plataforma` → **"Plataforma de Seguros Digitales SDI®"** (la marca sale de `BRAND.empresa = 'Seguros Digitales SDI®'`, con el ® incluido)
+  - `.footer-legal` → **"© 2026 Propiedad Intelectual de Juan Carlos Hernández Vargas. Todos los derechos reservados."** (`BRAND.legal`)
 
 ## Vistas
 
@@ -143,7 +157,10 @@ Estilo **basado en el cotizador-autos** (NO Modern SaaS Bento Tricolor — ese e
 3. **Vial** — 800-800-8001 + servicios (grúa, batería, cerrajero, llanta) + taxi al aeropuerto
 4. **Robo** — Denuncia 911 OIJ + reporte INS + trámites según tipo (total/parcial)
 5. **Cobertura H** (`coberturaH`) — Vandalismo/Naturaleza/Otros, 800-800-8000, CED 10 días
-6. **Contactos** — Tarjeta del agente + 3 líneas INS (8000, 8001, 8353467) + oficinas centrales
+6. **Contactos** — Tarjeta del agente + 3 líneas oficiales INS + oficinas centrales (Calle 9 y 11, Av. 7, San José · contactenos@grupoins.com)
+   - `800-800-8000` — Reporte de accidentes (choques / daños, 24/7)
+   - `800-800-8001` — Asistencia vial (grúa, batería, cerrajero)
+   - `800-8353467` — Consultas generales (línea Teleins) — **número completo, NO es `8353467` suelto**
 7. **Cobertura** (`cobertura`) — **"¿Qué cubre tu asistencia?"**: el cliente elige el año del modelo y ve su plan de Multiasistencia + beneficios (ver sección dedicada).
 
 ## Sección "¿Qué cubre tu asistencia?" (vista `cobertura`)
@@ -222,9 +239,9 @@ cp C:/Users/segur/APP-ASISTENCIA-SEGURO-AUTOS/SKILL.md \
 
 ## Pendiente
 
-- **Subdominio** `asistencia.appsegurosdigitales.com` siguiendo el patrón del portal SDI (DNS + Netlify custom domain)
-- **Fernando debe probar end-to-end** con `?a=FHV` y confirmar que sus datos están correctos
-- **PWA opcional** (manifest + service worker) para que el cliente pueda "instalar" en su iPhone como app
+1. **PWA (manifest + service worker)** para que el cliente pueda "instalar" la app en su iPhone — **NO es opcional: JC lo pidió el 26 jun 2026 y es el SIGUIENTE PASO** tras la sección "¿Qué cubre tu asistencia?".
+2. **Subdominio** `asistencia.appsegurosdigitales.com` siguiendo el patrón del portal SDI (DNS + Netlify custom domain)
+3. **Fernando debe probar end-to-end** con `?a=FHV` y confirmar que sus datos están correctos
 
 ## Reglas de trabajo con Juan Carlos (JC)
 
