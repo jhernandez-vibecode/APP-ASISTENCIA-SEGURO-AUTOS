@@ -1,6 +1,6 @@
 ---
 name: especialista-asistencia-autos
-description: ESPECIALISTA APP ASISTENCIA SEGURO AUTOS — Mini-app móvil React single-file con guías de emergencia INS para automóviles (accidentes, asistencia vial, robo, vandalismo) + directorio de contactos del agente. Marca SDI fija. Multi-agente: la ficha del agente (nombre, contacto, licencia, web) llega por parámetros de URL (?n,tel,wa,em,lic,web) que el cotizador arma desde el perfil ⚙; roster hardcodeado por ?a=<id> (JC default + Fernando) como fallback retrocompatible. Sin localStorage ni modal. Stack HTML + React 18 vía Babel CDN + Tailwind CDN + Sora. Deploy en Netlify desde main. Usar este skill cuando JC pida cualquier cambio, mejora o agregue un agente al proyecto APP-ASISTENCIA-SEGURO-AUTOS.
+description: ESPECIALISTA APP ASISTENCIA SEGURO AUTOS — Mini-app móvil React single-file con guías de emergencia INS para automóviles (accidentes, asistencia vial, robo, vandalismo) + directorio de contactos del agente. Marca SDI fija. Multi-agente: la ficha del agente (nombre, contacto, licencia, web) llega por parámetros de URL (?n,tel,wa,em,lic,web) que el cotizador arma desde el perfil ⚙; roster hardcodeado por ?a=<id> (JC default + Fernando) como fallback retrocompatible. Sin localStorage ni modal. PWA instalable (manifest + iconos de carro propios + vista "Instalá la app"; manifest dinámico conserva al agente en el start_url). Stack HTML + React 18 vía Babel CDN + Tailwind CDN + Sora. Deploy en Netlify desde main. Usar este skill cuando JC pida cualquier cambio, mejora o agregue un agente al proyecto APP-ASISTENCIA-SEGURO-AUTOS.
 ---
 
 # Especialista App Asistencia Seguro Autos
@@ -25,6 +25,7 @@ El cliente NUNCA configura nada. Los datos del agente llegan **en la URL**: el c
 - **`6aa91c1` (26 jun 2026):** nueva sección **"¿Qué cubre tu asistencia?"** (ver sección dedicada abajo).
 - **`46cffc3` (26 jun 2026):** SKILL.md sincronizado en las **3 ubicaciones** con el estado real del código.
 - **`b3a1e1a` (1 jul 2026) — Ficha del agente por URL (multi-agente):** `getAgent()` lee `?n,tel,wa,em,lic,web` (saneados) y arma el perfil del agente; si no viene `?n=`, cae al roster fijo `?a=<id>` (retrocompatible). El cotizador (`js/poliza-email.js`) **embebe automáticamente** esos parámetros en el link "Abrir mi guía" del correo de Póliza Activa, tomándolos del perfil ⚙ del agente. **Cualquier agente aparece con solo llenar su perfil en el cotizador — ya no hay que hardcodearlo aquí.** Cambio coordinado con el repo `COTIZADOR-AUTOS` (deben desplegar juntos).
+- **`d5bbd9d` (24 ago 2026) — PWA instalable:** `manifest.webmanifest` + iconos propios (carro FA6 `car-side` blanco sobre gradiente navy→azul: `favicon.svg`, `favicon.ico` 16/32/48, `icon-180` opaco iOS, `icon-192/512` any, `icon-maskable-512`) + metas iOS + vista nueva **"Instalá la app"** (pasos iPhone/Android, botón nativo `beforeinstallprompt`, detección de plataforma y de app ya instalada) + fila al final de la lista del Home. **Sin service worker** (patrón del cotizador viajero: instala igual y siempre carga fresco). 🔑 **Manifest dinámico:** si la URL trae `?n=` o `?a=`, un script en el `<head>` reemplaza el manifest por un `data:` URL cuyo `start_url` CONSERVA esos parámetros (iconos en URL absoluta, porque en un manifest `data:` las rutas relativas no resuelven) — así la app instalada por un cliente de Fernando abre con Fernando, sin localStorage. Icono generado con el glifo oficial FA 6.4.0 (CC BY 4.0), NO es logo inventado.
 - **Producción:** [appasistenciaseguroautos.netlify.app](https://appasistenciaseguroautos.netlify.app) (auto-deploy desde `main`)
 - **Repo:** [jhernandez-vibecode/APP-ASISTENCIA-SEGURO-AUTOS](https://github.com/jhernandez-vibecode/APP-ASISTENCIA-SEGURO-AUTOS)
 
@@ -40,7 +41,14 @@ El cliente NUNCA configura nada. Los datos del agente llegan **en la URL**: el c
 
 ```
 APP-ASISTENCIA-SEGURO-AUTOS/
-├── index.html              # App completa (962 líneas · verificado 22 jul 2026)
+├── index.html              # App completa (1133 líneas · verificado 24 ago 2026)
+├── manifest.webmanifest    # PWA (start_url "/" — el dinámico vive en el <head>)
+├── favicon.svg             # Favicon vectorial (carro + gradiente)
+├── favicon.ico             # Fallback pestañas desktop (16/32/48)
+├── icon-180.png            # apple-touch-icon iOS (cuadrado OPACO)
+├── icon-192.png            # PWA any
+├── icon-512.png            # PWA any (esquinas redondeadas)
+├── icon-maskable-512.png   # PWA maskable (full-bleed, zona segura 80%)
 ├── ins-blanco.png          # Logo INS para header navy
 ├── INS BLANCO.png          # Copia legacy con espacios (no tocar)
 ├── sdi-logo-blanco.svg     # Logo SDI negativo para footer navy
@@ -152,7 +160,7 @@ Estilo **basado en el cotizador-autos** (NO Modern SaaS Bento Tricolor — ese e
 
 (En `index.html` el estado de vista es `view` en `App()`; cada vista es un componente y el header muestra `titleByView[view]`.)
 
-1. **Home** — saludo + chip de agente + banner SOS (accidente) + tarjeta **"¿Qué cubre tu asistencia?"** (abre `cobertura`) + lista dividida (Vial, Robo, Vandalismo, Contactos)
+1. **Home** — saludo + chip de agente + banner SOS (accidente) + tarjeta **"¿Qué cubre tu asistencia?"** (abre `cobertura`) + lista dividida (Vial, Robo, Vandalismo, Contactos, Instalar)
 2. **Accidente** — Reporte 800-800-8000 + Pacto Amistoso (4 condiciones check) + trámites 7/10 días
 3. **Vial** — 800-800-8001 + servicios (grúa, batería, cerrajero, llanta) + taxi al aeropuerto
 4. **Robo** — Denuncia 911 OIJ + reporte INS + trámites según tipo (total/parcial)
@@ -162,6 +170,7 @@ Estilo **basado en el cotizador-autos** (NO Modern SaaS Bento Tricolor — ese e
    - `800-800-8001` — Asistencia vial (grúa, batería, cerrajero)
    - `800-8353467` — Consultas generales (línea Teleins) — **número completo, NO es `8353467` suelto**
 7. **Cobertura** (`cobertura`) — **"¿Qué cubre tu asistencia?"**: el cliente elige el año del modelo y ve su plan de Multiasistencia + beneficios (ver sección dedicada).
+8. **Instalar** (`instalar`) — **"Instalá la app"** (24 ago 2026): preview del icono como se ve en la pantalla de inicio + pasos iPhone (Safari → Compartir → Añadir a pantalla de inicio) y Android (Chrome; si `beforeinstallprompt` disparó, botón verde de instalación nativa con un toque). Detecta plataforma por UA (la del cliente se muestra primero) y modo standalone (`display-mode` / `navigator.standalone`) → card "¡Ya la tenés instalada!". CSS namespaced `pwa-`. El prompt nativo se captura en un `<script>` del `<head>` (ANTES de que Babel compile) en `window._pwaPrompt` + evento `pwa-prompt-ready`.
 
 ## Sección "¿Qué cubre tu asistencia?" (vista `cobertura`)
 
@@ -239,9 +248,11 @@ cp C:/Users/segur/APP-ASISTENCIA-SEGURO-AUTOS/SKILL.md \
 
 ## Pendiente
 
-1. **PWA (manifest + service worker)** para que el cliente pueda "instalar" la app en su iPhone — **NO es opcional: JC lo pidió el 26 jun 2026 y es el SIGUIENTE PASO** tras la sección "¿Qué cubre tu asistencia?".
-2. **Subdominio** `asistencia.appsegurosdigitales.com` siguiendo el patrón del portal SDI (DNS + Netlify custom domain)
-3. **Fernando debe probar end-to-end** con `?a=FHV` y confirmar que sus datos están correctos
+1. **Subdominio** `asistencia.appsegurosdigitales.com` siguiendo el patrón del portal SDI (DNS + Netlify custom domain). ⚠️ Al migrar de dominio, revisar el manifest dinámico y los iconos absolutos (usan `location.origin`, se adaptan solos) y avisar que las apps YA instaladas siguen apuntando al dominio viejo.
+2. **Fernando debe probar end-to-end** con `?a=FHV` y confirmar que sus datos están correctos — ahora incluye instalar la PWA desde su link y verificar que la app instalada abre con Fernando.
+3. (Opcional, no pedido) **Service worker para modo offline** de las guías de emergencia. Se decidió NO incluirlo el 24 ago 2026 para evitar caché viejo — el patrón viajero instala sin SW. Solo si JC lo pide.
+
+✅ ~~PWA (manifest + icono + explicación de instalación)~~ — **HECHO 24 ago 2026 (`d5bbd9d`)**, pedido del 26 jun.
 
 ## Reglas de trabajo con Juan Carlos (JC)
 
