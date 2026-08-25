@@ -8,6 +8,53 @@
   <meta http-equiv="Expires" content="0">
   <meta name="theme-color" content="#0c2340">
 
+  <!-- PWA: instalable con icono propio. iOS ignora los iconos del manifest para
+       el icono de inicio: usa apple-touch-icon, y tiene que ser un PNG cuadrado
+       y OPACO (iOS le aplica su propio radio; con transparencia quedan esquinas
+       negras). El manifest cubre Android/Chrome. Patrón copiado del cotizador viajero. -->
+  <link rel="icon" href="favicon.ico" sizes="32x32">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Asistencia Autos">
+
+  <script>
+    /* La identidad del agente viaja en la URL (?n=... o ?a=FHV). La app instalada
+       abre el start_url del manifest: si quedara "/", el cliente de otro agente
+       volvería a ver a JC. Por eso, cuando hay query, se reemplaza el manifest por
+       uno dinámico cuyo start_url CONSERVA esos parámetros. Los iconos van en URL
+       absoluta porque en un manifest data: las rutas relativas no resuelven. */
+    (function(){
+      if (!location.search) return;
+      var abs = function(p){ return new URL(p, location.href).href; };
+      var m = {
+        name:'Asistencia Autos INS', short_name:'Asistencia Autos', lang:'es-CR',
+        start_url: location.origin + location.pathname + location.search,
+        scope: location.origin + '/',
+        display:'standalone', orientation:'portrait',
+        background_color:'#fbfbfa', theme_color:'#0c2340',
+        icons:[
+          {src:abs('icon-192.png'),          sizes:'192x192', type:'image/png', purpose:'any'},
+          {src:abs('icon-512.png'),          sizes:'512x512', type:'image/png', purpose:'any'},
+          {src:abs('icon-maskable-512.png'), sizes:'512x512', type:'image/png', purpose:'maskable'}
+        ]
+      };
+      var link = document.querySelector('link[rel="manifest"]');
+      if (link) link.href = 'data:application/manifest+json,' + encodeURIComponent(JSON.stringify(m));
+    })();
+
+    /* Chrome/Android dispara beforeinstallprompt UNA vez y temprano: se captura
+       aquí (antes de que Babel compile la app) para que la vista "Instalar la app"
+       pueda ofrecer el botón nativo de instalación. */
+    window.addEventListener('beforeinstallprompt', function(e){
+      e.preventDefault();
+      window._pwaPrompt = e;
+      window.dispatchEvent(new Event('pwa-prompt-ready'));
+    });
+  </script>
+
   <title>Asistencia Seguro Automóviles · SDI</title>
 
   <!-- Sora -->
@@ -302,13 +349,39 @@
 
     @keyframes cob-fadeup{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
     .cob-fade{animation:cob-fadeup .3s ease both;}
+
+    /* ============ INSTALAR LA APP (PWA) ============ */
+    .pwa-preview{display:flex;flex-direction:column;align-items:center;gap:9px;
+        background:linear-gradient(140deg,var(--navy) 0%,var(--navy-2) 70%,#0a4a74 130%);
+        border-radius:18px;padding:24px 18px 18px;margin-bottom:14px;box-shadow:var(--shadow-pop);}
+    .pwa-preview img{width:66px;height:66px;border-radius:16px;box-shadow:0 12px 24px -8px rgba(0,0,0,.55);}
+    .pwa-preview .nm{color:#fff;font-size:11.5px;font-weight:600;letter-spacing:.2px;}
+    .pwa-preview .cap{color:#9fb4c9;font-size:11px;text-align:center;line-height:1.45;max-width:30ch;}
+    .pwa-step{display:flex;align-items:flex-start;gap:11px;margin-bottom:12px;}
+    .pwa-step:last-child{margin-bottom:0;}
+    .pwa-step .num{width:24px;height:24px;border-radius:50%;background:var(--accent-soft);color:var(--accent);
+        font-size:12px;font-weight:700;display:grid;place-items:center;flex-shrink:0;margin-top:1px;}
+    .pwa-step p{margin:0;font-size:13px;color:var(--muted);line-height:1.55;}
+    .pwa-step p strong{color:var(--ink);}
+    .pwa-mini-ic{display:inline-grid;place-items:center;width:21px;height:21px;border-radius:6px;
+        background:var(--accent-soft);color:var(--accent);font-size:11px;vertical-align:-5px;margin:0 3px;}
+    .pwa-installed{display:flex;align-items:center;gap:13px;background:var(--green-soft);border:1px solid #cde6d8;
+        border-radius:16px;padding:15px 16px;margin-bottom:14px;}
+    .pwa-installed i{font-size:22px;color:var(--green);}
+    .pwa-installed h3{margin:0;font-size:13.5px;font-weight:700;color:var(--green-dark);}
+    .pwa-installed p{margin:2px 0 0;font-size:12px;color:var(--muted);line-height:1.4;}
+    .pwa-btn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;padding:15px;border:none;
+        border-radius:12px;cursor:pointer;font-family:'Sora',sans-serif;font-size:15px;font-weight:700;color:#fff;
+        background:linear-gradient(180deg,var(--green),var(--green-dark));box-shadow:0 10px 20px -8px rgba(21,115,71,.5);
+        transition:transform .12s;}
+    .pwa-btn:active{transform:scale(.99);}
   </style>
 </head>
 <body>
   <div id="root"></div>
 
   <script type="text/babel">
-    const { useState } = React;
+    const { useState, useEffect } = React;
 
     /* ---------- AGENTES (link fijo por agente con ?a=<id>) ---------- */
     const AGENTES = {
@@ -660,7 +733,7 @@
       const titleByView = {
         accidente:'Reporte de Accidente', vial:'Asistencia Vial', robo:'Robo Total / Parcial',
         coberturaH:'Vandalismo / Naturaleza', contactos:'Directorio de Contactos',
-        cobertura:'¿Qué cubre tu asistencia?'
+        cobertura:'¿Qué cubre tu asistencia?', instalar:'Instalá la app'
       };
       const waNumber = (profile.whatsapp || profile.phone || '').replace(/\D/g,'');
       const waLink = waNumber ? `https://wa.me/${waNumber}` : null;
@@ -721,6 +794,7 @@
             {view === 'robo' && <Robo />}
             {view === 'coberturaH' && <CoberturaH />}
             {view === 'contactos' && <Contactos profile={profile} waLink={waLink} />}
+            {view === 'instalar' && <Instalar />}
           </main>
 
           <footer className="app-footer">
@@ -786,6 +860,11 @@
             <button className="row" onClick={()=>setView('contactos')}>
               <div className="ic accent"><i className="fa-solid fa-address-book"></i></div>
               <div className="tx"><h3>Directorio de contactos</h3><p>Tu agente y las líneas directas 24/7 del INS.</p></div>
+              <i className="fa-solid fa-chevron-right ch"></i>
+            </button>
+            <button className="row" onClick={()=>setView('instalar')}>
+              <div className="ic green"><i className="fa-solid fa-circle-down"></i></div>
+              <div className="tx"><h3>Instalá esta app en tu teléfono</h3><p>Tenela a mano en un toque, como una app más.</p></div>
               <i className="fa-solid fa-chevron-right ch"></i>
             </button>
           </div>
@@ -907,6 +986,98 @@
               <p><strong>10 días hábiles</strong> para llevar el vehículo al Centro de Estimación de Daños (CED).</p>
             </div>
           </div>
+        </div>
+      );
+    }
+
+    function Instalar(){
+      /* beforeinstallprompt se captura en el <head> (antes de compilar Babel);
+         aquí solo se consume. En iOS no existe: se muestran los pasos de Safari. */
+      const [nativePrompt, setNativePrompt] = useState(window._pwaPrompt || null);
+      const [installed, setInstalled] = useState(false);
+      useEffect(()=>{
+        const onReady = ()=>setNativePrompt(window._pwaPrompt || null);
+        const onInstalled = ()=>{ setInstalled(true); setNativePrompt(null); };
+        window.addEventListener('pwa-prompt-ready', onReady);
+        window.addEventListener('appinstalled', onInstalled);
+        return ()=>{
+          window.removeEventListener('pwa-prompt-ready', onReady);
+          window.removeEventListener('appinstalled', onInstalled);
+        };
+      },[]);
+
+      const standalone = window.matchMedia('(display-mode: standalone)').matches
+                         || window.navigator.standalone === true;
+      const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent)
+                    || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+      const doInstall = ()=>{
+        if(!nativePrompt) return;
+        nativePrompt.prompt();
+        nativePrompt.userChoice.finally(()=>{ window._pwaPrompt = null; setNativePrompt(null); });
+      };
+
+      const iosCard = (
+        <div className="section-card" key="ios">
+          <div className="section-card-header accent"><i className="fa-brands fa-apple"></i> En iPhone (Safari)</div>
+          <div className="section-card-body">
+            <div className="pwa-step"><span className="num">1</span><p>Abrí esta página en <strong>Safari</strong> (desde el link que te compartió tu agente).</p></div>
+            <div className="pwa-step"><span className="num">2</span><p>Tocá el botón <strong>Compartir</strong><span className="pwa-mini-ic"><i className="fa-solid fa-arrow-up-from-bracket"></i></span>en la barra de abajo.</p></div>
+            <div className="pwa-step"><span className="num">3</span><p>Bajá en el menú y elegí <strong>Añadir a pantalla de inicio</strong><span className="pwa-mini-ic"><i className="fa-regular fa-square-plus"></i></span></p></div>
+            <div className="pwa-step"><span className="num">4</span><p>Tocá <strong>Añadir</strong>. ¡Listo! El icono queda en tu pantalla.</p></div>
+          </div>
+        </div>
+      );
+
+      const androidCard = (
+        <div className="section-card" key="android">
+          <div className="section-card-header accent"><i className="fa-brands fa-android"></i> En Android (Chrome)</div>
+          <div className="section-card-body">
+            {nativePrompt ? (
+              <React.Fragment>
+                <p>Tu teléfono permite instalarla con un solo toque:</p>
+                <button className="pwa-btn" onClick={doInstall}><i className="fa-solid fa-circle-down"></i> Instalar la app</button>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <div className="pwa-step"><span className="num">1</span><p>Abrí esta página en <strong>Chrome</strong>.</p></div>
+                <div className="pwa-step"><span className="num">2</span><p>Tocá el menú <span className="pwa-mini-ic"><i className="fa-solid fa-ellipsis-vertical"></i></span>arriba a la derecha.</p></div>
+                <div className="pwa-step"><span className="num">3</span><p>Elegí <strong>Añadir a la pantalla principal</strong> (o <strong>Instalar app</strong>) y confirmá.</p></div>
+              </React.Fragment>
+            )}
+          </div>
+        </div>
+      );
+
+      return (
+        <div className="container">
+          <div className="pwa-preview">
+            <img src="icon-192.png" alt="Icono de Asistencia Autos" />
+            <div className="nm">Asistencia Autos</div>
+            <div className="cap">Así se ve el icono en tu pantalla de inicio: tu asistencia a un toque, sin buscar el link.</div>
+          </div>
+
+          {(standalone || installed) ? (
+            <div className="pwa-installed">
+              <i className="fa-solid fa-circle-check"></i>
+              <div>
+                <h3>¡Ya la tenés instalada!</h3>
+                <p>Estás usando la app desde tu pantalla de inicio. No hay nada más que hacer.</p>
+              </div>
+            </div>
+          ) : (
+            <React.Fragment>
+              {isIOS ? [iosCard, androidCard] : [androidCard, iosCard]}
+              <div className="section-card">
+                <div className="section-card-header gray"><i className="fa-solid fa-circle-info"></i> Bueno saber</div>
+                <div className="section-card-body">
+                  <div className="check"><i className="fa-solid fa-circle-check"></i><span><strong>No es una descarga de tienda:</strong> no pasa por App Store ni Play Store y casi no ocupa espacio.</span></div>
+                  <div className="check"><i className="fa-solid fa-circle-check"></i><span><strong>Queda con tu agente:</strong> la app instalada abre siempre con los datos de contacto de tu agente.</span></div>
+                  <div className="check"><i className="fa-solid fa-circle-check"></i><span><strong>Siempre actualizada:</strong> cada vez que la abrís carga la última versión de las guías.</span></div>
+                </div>
+              </div>
+            </React.Fragment>
+          )}
         </div>
       );
     }

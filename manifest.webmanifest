@@ -1,0 +1,19 @@
+{
+  "name": "Asistencia Autos INS",
+  "short_name": "Asistencia Autos",
+  "description": "Guía de asistencia del Seguro de Automóviles INS: qué hacer en un accidente, avería, robo o vandalismo, y el contacto directo de tu agente.",
+  "lang": "es-CR",
+  "dir": "ltr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fbfbfa",
+  "theme_color": "#0c2340",
+  "categories": ["utilities", "finance"],
+  "icons": [
+    { "src": "/icon-192.png",          "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png",          "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
