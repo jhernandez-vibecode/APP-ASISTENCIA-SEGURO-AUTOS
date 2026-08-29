@@ -1004,7 +1004,7 @@
           </main>
 
           {view !== 'home' && (
-            <Sheet title={titleByView[view]} onClosed={()=>setView('home')}>
+            <Sheet key={view} title={titleByView[view]} onClosed={()=>setView('home')}>
               {sheetContent[view]}
             </Sheet>
           )}
