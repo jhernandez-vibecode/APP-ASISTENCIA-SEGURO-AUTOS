@@ -43,6 +43,7 @@ El cliente NUNCA configura nada. Los datos del agente llegan **en la URL**: el c
   - **`favicon.svg` / `favicon.ico` NO se tocaron**: a 16-32 px el árbol del INS no se lee y solo ensucia. La
     pestaña sigue con el carro solo.
   - El `manifest.webmanifest` tampoco cambió: los nombres de archivo son los mismos.
+- **(12 oct 2026) — marca «SDI Seguros Digitales INS» (commit «marca: SDI Seguros Digitales INS», sin push):** `sdi-logo-blanco.svg` = `04-sdi-logo-negativo.svg` del kit v1.4 (leyenda SEGUROS DIGITALES INS, viewBox 252 en vez de 212); `.footer-logo` va por ALTO (46 px) → el logo pasa de ~81 a ~97 px de ancho, sin scroll a 375. Textos: `BRAND.empresa` = 'SDI Seguros Digitales INS®' (pie «Plataforma de …»), brandline de la cobertura «SDI Seguros Digitales INS · Asistencia INS» y alt del logo. Pin de Babel `@7.29.7` intacto. Los literales de `.footer-plataforma` de abajo describen la marca anterior.
 
 - **Producción:** [appasistenciaseguroautos.netlify.app](https://appasistenciaseguroautos.netlify.app) (auto-deploy desde `main`)
 - **Repo:** [jhernandez-vibecode/APP-ASISTENCIA-SEGURO-AUTOS](https://github.com/jhernandez-vibecode/APP-ASISTENCIA-SEGURO-AUTOS)
