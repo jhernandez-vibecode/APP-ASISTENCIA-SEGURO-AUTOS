@@ -43,7 +43,8 @@ El cliente NUNCA configura nada. Los datos del agente llegan **en la URL**: el c
   - **`favicon.svg` / `favicon.ico` NO se tocaron**: a 16-32 px el árbol del INS no se lee y solo ensucia. La
     pestaña sigue con el carro solo.
   - El `manifest.webmanifest` tampoco cambió: los nombres de archivo son los mismos.
-- **(12 oct 2026) — marca «SDI Seguros Digitales INS» (commit «marca: SDI Seguros Digitales INS», sin push):** `sdi-logo-blanco.svg` = `04-sdi-logo-negativo.svg` del kit v1.4 (leyenda SEGUROS DIGITALES INS, viewBox 252 en vez de 212); `.footer-logo` va por ALTO (46 px) → el logo pasa de ~81 a ~97 px de ancho, sin scroll a 375. Textos: `BRAND.empresa` = 'SDI Seguros Digitales INS®' (pie «Plataforma de …»), brandline de la cobertura «SDI Seguros Digitales INS · Asistencia INS» y alt del logo. Pin de Babel `@7.29.7` intacto. Los literales de `.footer-plataforma` de abajo describen la marca anterior.
+- **(12 oct 2026) — marca «SDI Seguros Digitales INS» (commits `87d3a64` + `b8c8e51`, ya en `main`):** `sdi-logo-blanco.svg` = `04-sdi-logo-negativo.svg` del kit v1.4 (leyenda SEGUROS DIGITALES INS, viewBox 252 en vez de 212); `.footer-logo` va por ALTO (46 px) → el logo pasa de ~81 a ~97 px de ancho, sin scroll a 375. Textos: `BRAND.empresa` = 'SDI Seguros Digitales INS®' (pie «Plataforma de …»), brandline de la cobertura «SDI Seguros Digitales INS · Asistencia INS» y alt del logo. Pin de Babel `@7.29.7` intacto. Los literales de `.footer-plataforma` de abajo describen la marca anterior.
+- **`843c2be` (19 oct 2026) — Pacto Amistoso fiel al PDF oficial (aprobado por JC sobre capturas):** la pestaña Accidente pasó de 1 tarjeta con 4 condiciones (una inexacta: «ambos vehículos asegurados») a cuándo aplica, cuándo NO aplica, el paso a paso y qué hacer si el otro conductor no usa su póliza. Ver la sección «Pacto Amistoso» abajo. De paso, «10 días hábiles para llevar el vehículo a un CED» se corrigió en Accidente **y** en Vandalismo/Naturaleza.
 
 - **Producción:** [appasistenciaseguroautos.netlify.app](https://appasistenciaseguroautos.netlify.app) (auto-deploy desde `main`)
 - **Repo:** [jhernandez-vibecode/APP-ASISTENCIA-SEGURO-AUTOS](https://github.com/jhernandez-vibecode/APP-ASISTENCIA-SEGURO-AUTOS)
@@ -169,6 +170,7 @@ Estilo **basado en el cotizador-autos** (NO Modern SaaS Bento Tricolor — ese e
 - `.action-card` — cards de home con `.action-icon` circular coloreado (red/amber/purple/teal/green)
 - `.hero-card` — cuadro azul tenue "¿Tienes una emergencia?"
 - `.section-card` — cards de las vistas internas con `.section-card-header` coloreado
+- Dentro de `.section-card-body` (19 oct 2026): `.check` ✓ verde / `.check.no` ✗ rojo; `.step` = pasos numerados con el MISMO dibujo de `.pwa-step` (selectores compartidos, no duplicar); `.warn` = aviso rojo suave; `p.after` = cierre con raya arriba; `.lnk` = enlace en texto
 - `.btn-emergency` — botón verde grande con gradient + glow (`linear-gradient(180deg, --green, --green-dark)`)
 - `.agent-card` — tarjeta gradient navy→blue en Directorio de Contactos con 3 botones (Llamar / WhatsApp verde / Correo)
 - `.app-footer` — navy con logo SDI centrado (svg) + `.footer-agent` bloque destacado del agente (nombre, licencia, correo y website si tiene) + dos textos **literales, no tocar**:
@@ -180,16 +182,33 @@ Estilo **basado en el cotizador-autos** (NO Modern SaaS Bento Tricolor — ese e
 (En `index.html` el estado de vista es `view` en `App()`; cada vista es un componente y el header muestra `titleByView[view]`.)
 
 1. **Home** — saludo + chip de agente + banner SOS (accidente) + tarjeta **"¿Qué cubre tu asistencia?"** (abre `cobertura`) + lista dividida (Vial, Robo, Vandalismo, Contactos, Instalar)
-2. **Accidente** — Reporte 800-800-8000 + Pacto Amistoso (4 condiciones check) + trámites 7/10 días
+2. **Accidente** — Reporte 800-800-8000 + Pacto Amistoso en 4 tarjetas (¿aplica? · cuándo NO aplica · paso a paso · si el otro conductor no usa su póliza) + trámites 7/10 días. Ver sección «Pacto Amistoso».
 3. **Vial** — 800-800-8001 + servicios (grúa, batería, cerrajero, llanta) + taxi al aeropuerto
 4. **Robo** — Denuncia 911 OIJ + reporte INS + trámites según tipo (total/parcial)
-5. **Cobertura H** (`coberturaH`) — Vandalismo/Naturaleza/Otros, 800-800-8000, CED 10 días
+5. **Cobertura H** (`coberturaH`) — Vandalismo/Naturaleza/Otros, 800-800-8000, 10 días hábiles para coordinar la valoración en el taller de la plataforma de servicios (ya NO «CED»)
 6. **Contactos** — Tarjeta del agente + 3 líneas oficiales INS + oficinas centrales (Calle 9 y 11, Av. 7, San José · contactenos@grupoins.com)
    - `800-800-8000` — Reporte de accidentes (choques / daños, 24/7)
    - `800-800-8001` — Asistencia vial (grúa, batería, cerrajero)
    - `800-8353467` — Consultas generales (línea Teleins) — **número completo, NO es `8353467` suelto**
 7. **Cobertura** (`cobertura`) — **"¿Qué cubre tu asistencia?"**: el cliente elige el año del modelo y ve su plan de Multiasistencia + beneficios (ver sección dedicada).
 8. **Instalar** (`instalar`) — **"Instalá la app"** (24 ago 2026): preview del icono como se ve en la pantalla de inicio + pasos iPhone (Safari → Compartir → Añadir a pantalla de inicio) y Android (Chrome; si `beforeinstallprompt` disparó, botón verde de instalación nativa con un toque). Detecta plataforma por UA (la del cliente se muestra primero) y modo standalone (`display-mode` / `navigator.standalone`) → card "¡Ya la tenés instalada!". CSS namespaced `pwa-`. El prompt nativo se captura en un `<script>` del `<head>` (ANTES de que Babel compile) en `window._pwaPrompt` + evento `pwa-prompt-ready`.
+
+## Pacto Amistoso (pestaña Accidente, `function Accidente`)
+
+🔴 **El PDF oficial manda.** Si el procedimiento no se cumple, el INS puede rechazar el reclamo, así que el texto al cliente sale SOLO de:
+- **Condiciones Operativas Pacto Amistoso** — `C:/Users/segur/COTIZADOR-AUTOS/documentos-ins/co-pacto-amistoso-v30-170.pdf` (3 págs.; es el «Pacto Amistoso.pdf» que el cotizador adjunta a cada póliza). El que publica el INS (`grupoins.com/media/4jgmjxxp/condiciones-operativas-pacto-amistoso.pdf`) tiene el mismo texto (comparado el 19 oct 2026).
+- **Condiciones Generales SVA V31** (`condiciones-generales-sva-v31-1.pdf`, misma carpeta) para los plazos: cl. 10.A.2 → 7 días hábiles **solo por fuerza mayor** y con justificación por escrito; cl. 22 → 10 días hábiles para **coordinar la valoración en el taller de su preferencia de la plataforma de servicios del INS**. El «CED» ya no aparece en la V31: no volver a escribirlo.
+
+| Tarjeta | Artículo del PDF |
+|---|---|
+| ¿Aplica el Pacto Amistoso? (✓) | art. 1: el vehículo **responsable** asegurado con aseguradora afiliada al Pacto; la póliza **propia** vigente y al día; sin motos, **bicimotos**, bicicletas ni peatones |
+| Cuándo NO aplica (✗, los 10 casos) | art. 3 → no se mueve el vehículo; sigue con Tránsito + inspector |
+| Paso a paso (5 pasos + aviso de rechazo) | art. 2: 800-800-8000 y esperar al inspector · **fotos ANTES de mover** (1 por costado, 3 de daños por vehículo, 2 panorámicas; videos opcionales) · espaldón y esperar · firmar el formulario digital · enviar las fotos. Sin celular/cámara: no mover hasta que el inspector lo indique |
+| Si el otro conductor no usa su póliza | art. 4: parte oficial por denuncia en la Policía de Tránsito |
+
+Trampas verificadas el 19 oct 2026:
+- 🔴 **El enlace del PDF para las fotos está ROTO:** `https://www.grupoins.com/FormulariosPactoAmistoso` da 404 («No umbraco document matches»), también en el PDF que publica hoy el INS. La app enlaza el formulario que SÍ funciona: **`https://formulariopactoamistoso.grupoins.com/`** («INS | Pacto Amistoso»; pide tipo y número de cédula). Si el INS arregla el enlace del PDF, se puede volver a ese. Aprobado por JC.
+- La página web del INS sobre el Pacto pone **800-800-8001** para «dar aviso del evento», pero el PDF dice **800-800-8000**. La app usa el **8000** del PDF. No «corregirlo» al 8001.
 
 ## Sección "¿Qué cubre tu asistencia?" (vista `cobertura`)
 
