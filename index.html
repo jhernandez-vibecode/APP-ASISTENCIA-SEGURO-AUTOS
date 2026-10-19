@@ -206,7 +206,13 @@
     .check.info i{color:var(--accent);}
     .check span{font-size:13px;color:var(--muted);line-height:1.5;}
     .check span strong{color:var(--ink);}
+    .check.no i{color:var(--red);}
     .note{font-size:11px;color:var(--faint);margin-top:12px;font-style:italic;line-height:1.5;}
+    .warn{display:flex;align-items:flex-start;gap:9px;background:var(--red-soft);border-radius:12px;padding:10px 12px;margin-bottom:14px;}
+    .warn i{color:var(--red);margin-top:3px;flex-shrink:0;font-size:13px;}
+    .warn span{font-size:12.5px;color:var(--ink);line-height:1.5;}
+    .section-card-body .after{margin-top:14px;padding-top:12px;border-top:1px solid var(--line-2);}
+    .lnk{color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:2px;}
 
     /* ============ AGENT CARD (contactos) ============ */
     .agent-card{background:linear-gradient(135deg,#0c2340 0%,#143055 60%,#0369a1 130%);color:#fff;border-radius:18px;
@@ -365,12 +371,12 @@
     .pwa-preview img{width:66px;height:66px;border-radius:16px;box-shadow:0 12px 24px -8px rgba(0,0,0,.55);}
     .pwa-preview .nm{color:#fff;font-size:11.5px;font-weight:600;letter-spacing:.2px;}
     .pwa-preview .cap{color:#9fb4c9;font-size:11px;text-align:center;line-height:1.45;max-width:30ch;}
-    .pwa-step{display:flex;align-items:flex-start;gap:11px;margin-bottom:12px;}
-    .pwa-step:last-child{margin-bottom:0;}
-    .pwa-step .num{width:24px;height:24px;border-radius:50%;background:var(--accent-soft);color:var(--accent);
+    .pwa-step,.step{display:flex;align-items:flex-start;gap:11px;margin-bottom:12px;}
+    .pwa-step:last-child,.step:last-child{margin-bottom:0;}
+    .pwa-step .num,.step .num{width:24px;height:24px;border-radius:50%;background:var(--accent-soft);color:var(--accent);
         font-size:12px;font-weight:700;display:grid;place-items:center;flex-shrink:0;margin-top:1px;}
-    .pwa-step p{margin:0;font-size:13px;color:var(--muted);line-height:1.55;}
-    .pwa-step p strong{color:var(--ink);}
+    .pwa-step p,.step p{margin:0;font-size:13px;color:var(--muted);line-height:1.55;}
+    .pwa-step p strong,.step p strong{color:var(--ink);}
     .pwa-mini-ic{display:inline-grid;place-items:center;width:21px;height:21px;border-radius:6px;
         background:var(--accent-soft);color:var(--accent);font-size:11px;vertical-align:-5px;margin:0 3px;}
     .pwa-installed{display:flex;align-items:center;gap:13px;background:var(--green-soft);border:1px solid #cde6d8;
@@ -1090,27 +1096,68 @@
           <div className="section-card">
             <div className="section-card-header red"><i className="fa-solid fa-triangle-exclamation"></i> Paso 1: Reporte inmediato</div>
             <div className="section-card-body">
-              <p>Si tuviste un choque, <strong>¡NO muevas el vehículo!</strong> (a menos que aplique el Pacto Amistoso). Llamá de inmediato:</p>
+              <p>Si tuviste un choque, <strong>¡NO muevas el vehículo!</strong> (con Pacto Amistoso, solo después de tomar las fotos). Llamá de inmediato:</p>
               <a href="tel:8008008000" className="btn-call red"><i className="fa-solid fa-phone"></i> <span className="n">800-800-8000</span> · Reporte</a>
             </div>
           </div>
 
+          {/* Pacto Amistoso: fiel a las Condiciones Operativas Pacto Amistoso del INS (arts. 1 a 4) */}
           <div className="section-card">
             <div className="section-card-header accent"><i className="fa-solid fa-handshake-angle"></i> ¿Aplica el Pacto Amistoso?</div>
             <div className="section-card-body">
-              <p>Podés mover el vehículo sin esperar al Tránsito SI se cumplen <strong>TODAS</strong>:</p>
-              <div className="check"><i className="fa-solid fa-circle-check"></i><span>Ambos conductores <strong>están de acuerdo</strong> en hacer el arreglo.</span></div>
+              <p>Es un arreglo voluntario entre los conductores para definir quién fue el responsable del choque, sin el Oficial de Tránsito. Aplica a cualquier hora, en choques entre <strong>dos o más vehículos</strong>, si se cumplen <strong>TODAS</strong>:</p>
+              <div className="check"><i className="fa-solid fa-circle-check"></i><span>Los conductores <strong>están de acuerdo</strong> en hacer el arreglo y en mover los vehículos sin el Oficial de Tránsito.</span></div>
               <div className="check"><i className="fa-solid fa-circle-check"></i><span>No hay lesionados ni fallecidos.</span></div>
-              <div className="check"><i className="fa-solid fa-circle-check"></i><span>No hay bicicletas, motos ni peatones involucrados.</span></div>
-              <div className="check"><i className="fa-solid fa-circle-check"></i><span>Ambos vehículos están asegurados y al día.</span></div>
+              <div className="check"><i className="fa-solid fa-circle-check"></i><span>No hay motos, bicimotos, bicicletas ni peatones involucrados.</span></div>
+              <div className="check"><i className="fa-solid fa-circle-check"></i><span>El vehículo <strong>responsable</strong> del choque está asegurado con una aseguradora <strong>afiliada al Pacto Amistoso</strong>.</span></div>
+              <div className="check"><i className="fa-solid fa-circle-check"></i><span>Tu póliza está <strong>vigente y al día</strong> en los pagos.</span></div>
+            </div>
+          </div>
+
+          <div className="section-card">
+            <div className="section-card-header gray"><i className="fa-solid fa-ban"></i> Cuándo NO aplica</div>
+            <div className="section-card-body">
+              <p>No podés usar el Pacto Amistoso si:</p>
+              <div className="check no"><i className="fa-solid fa-circle-xmark"></i><span>No hubo arreglo entre los conductores.</span></div>
+              <div className="check no"><i className="fa-solid fa-circle-xmark"></i><span>Hay una moto, bicimoto o bicicleta involucrada (la manejés vos o el otro conductor).</span></div>
+              <div className="check no"><i className="fa-solid fa-circle-xmark"></i><span>Hay peatones involucrados.</span></div>
+              <div className="check no"><i className="fa-solid fa-circle-xmark"></i><span>Hay lesionados o fallecidos.</span></div>
+              <div className="check no"><i className="fa-solid fa-circle-xmark"></i><span>Alguno de los conductores está bajo efectos del alcohol o de drogas.</span></div>
+              <div className="check no"><i className="fa-solid fa-circle-xmark"></i><span>El responsable del choque no tiene seguro, o su aseguradora no está afiliada al Pacto Amistoso.</span></div>
+              <div className="check no"><i className="fa-solid fa-circle-xmark"></i><span>Se llama al inspector del INS después de la fecha del choque.</span></div>
+              <div className="check no"><i className="fa-solid fa-circle-xmark"></i><span>El choque o vuelco fue contra un objeto fijo o un inmueble.</span></div>
+              <div className="check no"><i className="fa-solid fa-circle-xmark"></i><span>Tu póliza no estaba vigente al momento del choque.</span></div>
+              <p className="after">En esos casos <strong>no muevas el vehículo</strong>: el trámite sigue con el Oficial de Tránsito y el inspector del INS.</p>
+            </div>
+          </div>
+
+          <div className="section-card">
+            <div className="section-card-header accent"><i className="fa-solid fa-list-ol"></i> Paso a paso del Pacto Amistoso</div>
+            <div className="section-card-body">
+              <div className="warn"><i className="fa-solid fa-circle-exclamation"></i><span>Seguí los pasos <strong>en este orden</strong>. Si no se cumple el procedimiento, el INS puede rechazar el reclamo.</span></div>
+              <div className="step"><span className="num">1</span><p>Llamá al <strong>800-800-8000</strong> y esperá al <strong>inspector del INS</strong> en el lugar del choque. <strong>No hace falta</strong> llamar al Tránsito ni al 911.</p></div>
+              <div className="step"><span className="num">2</span><p><strong>Antes de mover los vehículos</strong>, tomá fotos claras: <strong>una de cada costado</strong>, <strong>tres de los daños</strong> de cada vehículo y <strong>dos panorámicas</strong> que muestren la escena y la posición de cada vehículo. Si querés, sumá videos desde distintos ángulos.</p></div>
+              <div className="step"><span className="num">3</span><p>Con las fotos listas, mové los vehículos al <strong>espaldón</strong> o costado de la carretera (si no hay, al lugar seguro más cercano, sin obstaculizar el tránsito) y <strong>esperá ahí al inspector</strong>.</p></div>
+              <div className="step"><span className="num">4</span><p>Colaborá con el inspector (puede revisar tu licencia y tu estado) y <strong>firmá el formulario digital</strong> del Pacto Amistoso que te presenta.</p></div>
+              <div className="step"><span className="num">5</span><p><strong>Enviá de inmediato</strong> las fotos y videos al inspector o por el <a className="lnk" href="https://formulariopactoamistoso.grupoins.com/" target="_blank" rel="noopener">formulario Pacto Amistoso del INS</a>.</p></div>
+              <p className="after"><strong>¿Sin celular ni cámara?</strong> No muevas los vehículos: esperá al inspector hasta que te lo indique.</p>
+              <p className="note">Si el inspector llama (o te pide llamar) al Oficial de Tránsito para hacer el parte, ya no se aplica el Pacto Amistoso.</p>
+            </div>
+          </div>
+
+          <div className="section-card">
+            <div className="section-card-header amber"><i className="fa-solid fa-scale-balanced"></i> Si el otro conductor no usa su póliza</div>
+            <div className="section-card-body">
+              <p>Si con el Pacto Amistoso quedó como responsable el otro conductor y después <strong>no usa su póliza</strong> (o el Pacto no resulta aplicable por cualquier motivo), tenés que ir a la <strong>Policía de Tránsito</strong> a pedir un <strong>parte oficial por denuncia</strong>, para iniciar el proceso judicial contra el responsable.</p>
+              <p>Si no lo hacés, el INS puede rechazar el reclamo.</p>
             </div>
           </div>
 
           <div className="section-card">
             <div className="section-card-header gray"><i className="fa-solid fa-clock"></i> Trámites posteriores</div>
             <div className="section-card-body">
-              <p><strong>7 días hábiles</strong> para formalizar el aviso por escrito si no pudiste llamar al momento.</p>
-              <p><strong>10 días hábiles</strong> para llevar el vehículo a un Centro de Estimación de Daños (CED).</p>
+              <p><strong>7 días hábiles</strong> para formalizar el aviso si por fuerza mayor no pudiste llamar o quedarte en el lugar (contados desde el día siguiente y justificando por escrito la razón).</p>
+              <p><strong>10 días hábiles</strong> (desde el día siguiente al choque) para coordinar la valoración de los daños en el taller de tu preferencia, dentro de la plataforma de servicios del INS.</p>
             </div>
           </div>
         </div>
@@ -1195,7 +1242,7 @@
             <div className="section-card-header gray">Trámites posteriores</div>
             <div className="section-card-body">
               <p><strong>Cooperación:</strong> en vandalismo, el INS puede pedir colaboración adicional para la investigación.</p>
-              <p><strong>10 días hábiles</strong> para llevar el vehículo al Centro de Estimación de Daños (CED).</p>
+              <p><strong>10 días hábiles</strong> (desde el día siguiente al evento) para coordinar la valoración de los daños en el taller de tu preferencia, dentro de la plataforma de servicios del INS.</p>
             </div>
           </div>
         </div>
