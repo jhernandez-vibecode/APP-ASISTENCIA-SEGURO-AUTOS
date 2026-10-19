@@ -61,7 +61,7 @@ El cliente NUNCA configura nada. Los datos del agente llegan **en la URL**: el c
 
 ```
 APP-ASISTENCIA-SEGURO-AUTOS/
-├── index.html              # App completa (1133 líneas · verificado 24 ago 2026)
+├── index.html              # App completa (1392 líneas · verificado 19 oct 2026)
 ├── manifest.webmanifest    # PWA (start_url "/" — el dinámico vive en el <head>)
 ├── favicon.svg             # Favicon vectorial (carro + gradiente)
 ├── favicon.ico             # Fallback pestañas desktop (16/32/48)
@@ -73,9 +73,10 @@ APP-ASISTENCIA-SEGURO-AUTOS/
 ├── INS BLANCO.png          # Copia legacy con espacios (no tocar)
 ├── sdi-logo-blanco.svg     # Logo SDI negativo para footer navy
 ├── README.md               # Doc pública en GitHub
-├── SKILL.md                # Este archivo
-├── .gitignore              # Excluye .claude/ y *.b64.txt
-└── .claude/launch.json     # Config preview local (gitignored)
+├── SKILL.md                # ⚠️ copia VIEJA (9 sep 2026), ya NO es canon: ver «Sincronización»
+├── mockups/                # Mockups de diseño · gen-iconos/ (generador del icono) · captura-sheet.mjs
+├── .gitignore              # .claude/ SÍ se versiona; quedan fuera launch.json, settings.local.json y *.b64.txt
+└── .claude/skills/especialista-asistencia-autos/SKILL.md   # ESTE archivo (canon)
 ```
 
 ### Procedencia de los logos (NUNCA regenerar ni inventar)
@@ -90,7 +91,7 @@ Si JC dice "el logo no es el correcto", **primero comparar el MD5** contra el or
 
 ## Agentes registrados
 
-`getAgent()` (en el `<script type="text/babel">` de `index.html`, línea 338) resuelve al agente con esta prioridad:
+`getAgent()` (en el `<script type="text/babel">` de `index.html`, línea 503 · 19 oct 2026) resuelve al agente con esta prioridad:
 
 1. **Ficha por URL (mecanismo principal, multi-agente).** Si viene `?n=<nombre>`, el perfil se arma con los parámetros de la URL:
 
@@ -105,7 +106,7 @@ Si JC dice "el logo no es el correcto", **primero comparar el MD5** contra el or
 
    Estos los **arma el cotizador** (`js/poliza-email.js`) desde el perfil ⚙ del agente y los mete en el link "Abrir mi guía" del correo de Póliza Activa. Todo se sanea (React escapa el texto; los helpers `_qEmail/_qWeb/_qPhone/_qWa` filtran).
 
-2. **Roster fijo por `?a=<id>` (fallback / blast masivo).** Si NO viene `?n=`, se usa el objeto `AGENTES` hardcodeado (línea 314). `?a=` es **case-insensitive**; sin nada válido → `jc`.
+2. **Roster fijo por `?a=<id>` (fallback / blast masivo).** Si NO viene `?n=`, se usa el objeto `AGENTES` hardcodeado (línea 479 · 19 oct 2026). `?a=` es **case-insensitive**; sin nada válido → `jc`.
 
    | id  | Nombre | Correo | Teléfono | WhatsApp | Licencia | Web |
    |---|---|---|---|---|---|---|
@@ -253,28 +254,30 @@ Sin `useEffect`, sin localStorage, sin modal, sin estado de perfil — el agente
 
 ## Flujo de trabajo (cómo hacer cambios)
 
-1. Editar `index.html` en `C:/Users/segur/APP-ASISTENCIA-SEGURO-AUTOS/`
-2. Verificar local con `npx serve . -p 8900` (ya está en `.claude/launch.json`)
-3. `git add` + `git commit` + `git push origin main`
-4. Netlify auto-deploya en 1-2 min
-5. **Sincronizar SKILL.md en las 3 ubicaciones** (ver siguiente sección)
+1. Editar `index.html` en `C:/Users/segur/APP-ASISTENCIA-SEGURO-AUTOS/` (solo en local, sin commit).
+2. **Si el cambio lo ve el cliente: capturas a JC y esperar su OK antes del push.** Con la app local levantada:
+   `node mockups/captura-sheet.mjs "<url>?n=Agente%20de%20Ejemplo&tel=8000-0000&wa=80000000&lic=00-0000" "<texto con que empieza la fila>" salida.png`
+   saca el sheet ENTERO en tamaño teléfono (Chrome headless, sin npm). La captura del panel de vista previa solo ve una pantalla y falla con la ventana oculta. El agente de ejemplo va en la URL para no mostrar datos reales. Mandar las imágenes con SendUserFile (en vistas largas, recortarlas por tarjetas).
+3. **Smoke local:** `preview_start` con el nombre **`asistencia-autos`** (sale de `C:/Users/segur/.claude/launch.json`: `py -m http.server 8907`). El `.claude/launch.json` del repo («mockup», puerto 8765) el panel no lo encuentra. Abrir TODAS las vistas, consola sin errores y sin scroll horizontal a 375 px.
+4. `git add` + `git commit` + `git push origin main` (el push lo hace Claude).
+5. Netlify auto-deploya en 1-2 min → verificar en producción (texto nuevo en el HTML + abrir la vista).
+6. **Sincronizar el SKILL.md en las 2 ubicaciones canon** (ver siguiente sección).
 
 ## Sincronización del SKILL.md (REGLA 🔴)
 
-Cuando se actualice este SKILL.md, sincronizar en las 3 ubicaciones:
+Desde el 6 sep 2026 (decisión 10-C) hay **2 ubicaciones canon, byte-idénticas**:
 
-1. **Repo (visible en GitHub):** `C:/Users/segur/APP-ASISTENCIA-SEGURO-AUTOS/SKILL.md`
+1. **Repo (se commitea):** `C:/Users/segur/APP-ASISTENCIA-SEGURO-AUTOS/.claude/skills/especialista-asistencia-autos/SKILL.md`
 2. **Skill instalado (Claude Code):** `C:/Users/segur/.claude/skills/especialista-asistencia-autos/SKILL.md`
-3. **Backup en Downloads:** `C:/Users/segur/Downloads/SKILL_APP_ASISTENCIA_AUTOS.md`
 
-Comando rápido para syncar las 3:
+Se edita la del repo, se copia a la del usuario y se comprueba que el MD5 dé igual:
 
 ```bash
-cp C:/Users/segur/APP-ASISTENCIA-SEGURO-AUTOS/SKILL.md \
-   C:/Users/segur/.claude/skills/especialista-asistencia-autos/SKILL.md && \
-cp C:/Users/segur/APP-ASISTENCIA-SEGURO-AUTOS/SKILL.md \
-   C:/Users/segur/Downloads/SKILL_APP_ASISTENCIA_AUTOS.md
+cp C:/Users/segur/APP-ASISTENCIA-SEGURO-AUTOS/.claude/skills/especialista-asistencia-autos/SKILL.md \
+   C:/Users/segur/.claude/skills/especialista-asistencia-autos/SKILL.md
 ```
+
+🔴 `SKILL.md` en la raíz del repo y `Downloads/SKILL_APP_ASISTENCIA_AUTOS.md` son **copias VIEJAS (9 sep 2026)**. **NUNCA copiar DESDE ellas**: pisarían el canon con información vieja. Quedan sin borrar por la regla de continuidad.
 
 ## Decisiones de diseño descartadas
 
@@ -296,7 +299,8 @@ cp C:/Users/segur/APP-ASISTENCIA-SEGURO-AUTOS/SKILL.md \
 
 - JC NO programa. Necesita código completo y/o cambios ya pusheados.
 - Pushear a main directo cuando JC autorice ("listo", "ok", "push", "actualiza github").
-- Si JC pide "mockup previo" — crear archivo separado para evaluar sin tocar `index.html`.
+- **Todo cambio que ve el cliente pasa por JC antes de publicarse** (un «dale» no salta el mockup): capturas con agente de ejemplo (paso 2 del flujo) o, si JC pide un mockup aparte, un archivo en `mockups/` sin tocar `index.html`. Así se aprobó el Pacto Amistoso el 19 oct 2026.
+- Textos de procedimientos o coberturas del INS: **solo lo que dice el documento oficial**, nada inventado. Si un enlace o teléfono del documento no funciona o choca con la web del INS, se verifica y se le plantea a JC (ver «Pacto Amistoso»).
 - Verificación visual obligatoria antes de marcar completo: `preview_screenshot` después de cada cambio observable.
 - Si JC se equivoca sobre algo (ej: "el archivo INS BLANCO no es el correcto"), validar con hash MD5 antes de cambiar — el archivo puede estar bien y el problema ser otro (cache, servidor, path).
 
