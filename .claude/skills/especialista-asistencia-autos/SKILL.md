@@ -46,6 +46,8 @@ El cliente NUNCA configura nada. Los datos del agente llegan **en la URL**: el c
 - **(12 oct 2026) — marca «SDI Seguros Digitales INS» (commits `87d3a64` + `b8c8e51`, ya en `main`):** `sdi-logo-blanco.svg` = `04-sdi-logo-negativo.svg` del kit v1.4 (leyenda SEGUROS DIGITALES INS, viewBox 252 en vez de 212); `.footer-logo` va por ALTO (46 px) → el logo pasa de ~81 a ~97 px de ancho, sin scroll a 375. Textos: `BRAND.empresa` = 'SDI Seguros Digitales INS®' (pie «Plataforma de …»), brandline de la cobertura «SDI Seguros Digitales INS · Asistencia INS» y alt del logo. Pin de Babel `@7.29.7` intacto. Los literales de `.footer-plataforma` de abajo describen la marca anterior.
 - **`843c2be` (19 oct 2026) — Pacto Amistoso fiel al PDF oficial (aprobado por JC sobre capturas):** la pestaña Accidente pasó de 1 tarjeta con 4 condiciones (una inexacta: «ambos vehículos asegurados») a cuándo aplica, cuándo NO aplica, el paso a paso y qué hacer si el otro conductor no usa su póliza. Ver la sección «Pacto Amistoso» abajo. De paso, «10 días hábiles para llevar el vehículo a un CED» se corrigió en Accidente **y** en Vandalismo/Naturaleza.
 
+- **`025dc70` (17 nov 2026) — Cargo del asesor (`cg`):** José reportó que la guía lo mostraba como «Tu agente». `getAgent()` lee `cg` = «cargo · oficina» (lo arma el cotizador desde `SDI_ASESORES` de `email-marca.js`, ej. «Asesor de Seguros · Oficina de Fernando Hernández, agente»); `_qCargo` le quita la coletilla «, agente». Con `cg`: el chip dice «Asesor de Seguros · Oficina de Fernando Hernández», el pie pone el cargo como rótulo + la oficina, y Contactos lleva «cargo · oficina» de rótulo. Sin `cg` todo queda igual. Los enlaces ya enviados no lo traen. Cambio coordinado: el cotizador agrega `cg` en `polizaAsistenciaUrl` y en `CLAVES_A` del acortador /a.
+
 - **Producción:** [appasistenciaseguroautos.netlify.app](https://appasistenciaseguroautos.netlify.app) (auto-deploy desde `main`)
 - **Repo:** [jhernandez-vibecode/APP-ASISTENCIA-SEGURO-AUTOS](https://github.com/jhernandez-vibecode/APP-ASISTENCIA-SEGURO-AUTOS)
 
@@ -103,6 +105,7 @@ Si JC dice "el logo no es el correcto", **primero comparar el MD5** contra el or
    | `em`  | correo    | validado como email o se descarta |
    | `lic` | licencia  | |
    | `web` | sitio web | http/https o dominio; `javascript:` se descarta |
+   | `cg`  | cargo · oficina | solo asesores (17 nov 2026); reemplaza «Tu agente» |
 
    Estos los **arma el cotizador** (`js/poliza-email.js`) desde el perfil ⚙ del agente y los mete en el link "Abrir mi guía" del correo de Póliza Activa. Todo se sanea (React escapa el texto; los helpers `_qEmail/_qWeb/_qPhone/_qWa` filtran).
 
