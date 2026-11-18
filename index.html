@@ -500,6 +500,16 @@
     const _qWeb    = (v) => { const s = _q(v); return (/^https?:\/\//i.test(s) || /^[\w.-]+\.[a-z]{2,}/i.test(s)) ? s : ''; };
     const _qWa     = (v) => { let d = _qDigits(v); if (d.length === 8) d = '506' + d; return d; }; // CR sin código país
 
+    // cg = "cargo · oficina" de un asesor (17 nov 2026, lo arma el cotizador desde SDI_ASESORES).
+    // Ej.: "Asesor de Seguros · Oficina de Fernando Hernández, agente". Sin cg = es agente: "Tu agente".
+    // La coletilla ", agente" del cotizador sobra acá: la oficina ya dice de quién es.
+    function _qCargo(v){
+      const partes = _q(v).slice(0, 160).split(' · ');
+      const cargo = (partes[0] || '').trim();
+      if (!cargo) return {};
+      return { cargo, oficina: (partes[1] || '').replace(/,\s*agente\s*$/i, '').trim() };
+    }
+
     function getAgent(){
       try{
         const qp = new URLSearchParams(window.location.search);
@@ -512,7 +522,8 @@
             phone:    _qPhone(qp.get('tel')),
             whatsapp: _qWa(qp.get('wa')) || _qWa(qp.get('tel')),
             license:  _q(qp.get('lic')),
-            website:  _qWeb(qp.get('web'))
+            website:  _qWeb(qp.get('web')),
+            ..._qCargo(qp.get('cg'))
           };
         }
         // 2) Roster fijo por ?a=<id>.
@@ -999,7 +1010,7 @@
               <div className="av">{initials(profile.name)}</div>
               <div>
                 <div className="n">{profile.name}</div>
-                <div className="m">Tu agente · Licencia {profile.license}</div>
+                <div className="m">{profile.cargo ? [profile.cargo, profile.oficina].filter(Boolean).join(' · ') : `Tu agente · Licencia ${profile.license}`}</div>
               </div>
               <i className="fa-solid fa-chevron-right go"></i>
             </button>
@@ -1019,8 +1030,9 @@
             <div className="footer-card">
               <img src="sdi-logo-blanco.svg" alt="SDI Seguros Digitales INS" className="footer-logo" />
               <div className="footer-agent">
-                <div className="label">Tu agente</div>
+                <div className="label">{profile.cargo || 'Tu agente'}</div>
                 <div className="name">{profile.name}</div>
+                {profile.oficina && <div className="meta">{profile.oficina}</div>}
                 <div className="meta">Licencia {profile.license} · {profile.email}</div>
                 {profile.website && (
                   <a href={profile.website.startsWith('http') ? profile.website : `https://${profile.website}`}
@@ -1345,7 +1357,7 @@
       return (
         <div className="container">
           <div className="agent-card">
-            <div className="label">Tu agente de seguros</div>
+            <div className="label">{profile.cargo ? [profile.cargo, profile.oficina].filter(Boolean).join(' · ') : 'Tu agente de seguros'}</div>
             <div className="name">{profile.name}</div>
             <div className="meta"><span><i className="fa-solid fa-id-badge"></i> Licencia {profile.license}</span></div>
             <div className="agent-actions">
